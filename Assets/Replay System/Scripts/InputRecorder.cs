@@ -38,4 +38,22 @@ public class InputRecorder
                 a.JumpIsHeld == b.JumpIsHeld &&
                 a.JumpWasReleased == b.JumpWasReleased;
     }
+
+    public InputFrame[] ToFrameArray()
+    {
+        var frames = new InputFrame[_tickCount];
+        int tick = 0;
+
+        foreach (var (frame, holdTicks) in _runs)
+        {
+            for (int h = 0; h < holdTicks && tick < frames.Length; h++, tick++)
+            {
+                var f = frame;
+                f.Tick = tick;
+                frames[tick] = f;
+            }
+        }
+
+        return frames;
+    }
 }
