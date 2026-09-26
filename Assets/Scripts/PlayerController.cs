@@ -139,24 +139,24 @@ public class PlayerController : MonoBehaviour
         WallSlideCheck();
     }
 
-     private void FixedUpdate()
-     {
-        CollisionCheck();
-        Jump();
-        LandCheck();
-        WallSlide();
+    //private void FixedUpdate()
+    //{
+    //    CollisionCheck();
+    //    Jump();
+    //    LandCheck();
+    //    WallSlide();
 
-         if (_isGrounded)
-         {
-             Move(groundAcceleration, groundDeceleration, InputManager.movement);
-         }
-         else
-         {
-             Move(airAcceleration, airDeceleration, InputManager.movement);
-         }
+    //     if (_isGrounded)
+    //     {
+    //         Move(groundAcceleration, groundDeceleration, InputManager.movement);
+    //     }
+    //     else
+    //     {
+    //         Move(airAcceleration, airDeceleration, InputManager.movement);
+    //     }
 
-        ApplyVelocity();
-    }
+    //    ApplyVelocity();
+    //}
 
     // effectively FixedUpdate, so put any changes here
     public void SimulateTick(InputFrame frame)
@@ -174,8 +174,10 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Move(airAcceleration, airDeceleration, InputManager.movement);
+            Move(airAcceleration, airDeceleration, frame.Move);
         }
+
+        ApplyVelocity();
     }
 
     public void ApplyVelocity()
