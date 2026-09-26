@@ -48,6 +48,12 @@ public class LiveInputProvider : MonoBehaviour, IInputProvider
         if (_jumpAction.WasReleasedThisFrame()) _jumpReleasedLatch = true;
     }
 
+    public void ResetLatches()
+    {
+        _jumpPressedLatch = false;
+        _jumpReleasedLatch = false;
+    }
+
     void Update()
     {
         Poll();
