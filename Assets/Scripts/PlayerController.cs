@@ -186,6 +186,7 @@ public class PlayerController : MonoBehaviour
     private void CollisionCheck()
     {
         IsGrounded();
+        BumpedHead();
     }
 
     #endregion
