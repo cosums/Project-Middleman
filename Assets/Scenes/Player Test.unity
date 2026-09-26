@@ -815,17 +815,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1ed9d2d9b61994caa5a9464e695196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  moveThreshold: 0.25
   maxWalkSpeed: 20
   groundAcceleration: 5
   groundDeceleration: 20
   airAcceleration: 5
   airDeceleration: 5
+  wallJumpMoveAcceleration: 5
+  wallJumpMoveDeceleration: 5
   jumpHeight: 4
   jumpHeightCompensationFactor: 1.054
   timeTilJumpApex: 0.35
   gravityOnReleaseMultiplier: 1.35
   maxFallSpeed: 26
   maxJumps: 1
+  resetJumpsOnWallSlide: 1
   timeForUpwardsCancel: 0.027
   apexThreshold: 0.97
   apexHangTime: 0.03
@@ -837,6 +841,13 @@ MonoBehaviour:
   groundDetectionRayLength: 0.02
   headDetectionRayLength: 0.02
   headWidth: 0.75
+  wallDetectionRayLength: 0.125
+  wallDetectionRayHeightMultiplier: 0.9
+  wallSlideSpeed: 5
+  wallSlideDecelerationSpeed: 50
+  wallJumpDirection: {x: -20, y: 6.5}
+  wallJumpPostBufferTime: 0.125
+  wallJumpGravityOnReleaseMultiplier: 1
   _feetColl: {fileID: 1647122990}
   _bodyColl: {fileID: 1760596122}
 --- !u!1 &1460690106
@@ -1107,7 +1118,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1978014641
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1222,9 +1233,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 453223774eb93f64bbf156eb2f4d2aa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  ReplayButton: {fileID: 0}
-  Ticker: {fileID: 0}
-  Controller: {fileID: 0}
+  ReplayButton: {fileID: 1978014642}
+  Ticker: {fileID: 1248962748}
+  Controller: {fileID: 1446585962}
 --- !u!1 &1984252139
 GameObject:
   m_ObjectHideFlags: 0

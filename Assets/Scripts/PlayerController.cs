@@ -126,10 +126,15 @@ public class PlayerController : MonoBehaviour
     private float _timePastWallJumpApexThreshold;
     private bool _isPastWallJumpApexThreshold;
 
+    // references for replay
+    public Vector3 StartingPos;
+
     private void Awake()
     {
         isFacingRight = true;
         rb = GetComponent<Rigidbody2D>();
+
+        StartingPos = transform.position;
     }
     private void Update()
     {
@@ -137,6 +142,11 @@ public class PlayerController : MonoBehaviour
         JumpChecks();
         LandCheck();
         WallSlideCheck();
+    }
+
+    public void RestoreStart()
+    {
+        transform.position = StartingPos;
     }
 
     //private void FixedUpdate()
