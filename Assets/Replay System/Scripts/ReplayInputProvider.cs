@@ -1,16 +1,23 @@
 using UnityEngine;
 
-public class ReplayInputProvider : MonoBehaviour
+public class ReplayInputProvider : IInputProvider
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private InputFrame[] _frames;
+    private int _cursor;
+
+    public bool IsFinished => _cursor >= _frames.Length;
+
+    public ReplayInputProvider(InputFrame[] frames)
     {
-        
+        _frames = frames;
     }
 
-    // Update is called once per frame
-    void Update()
+    public InputFrame GetInput(int tick)
     {
-        
+        if (IsFinished) return default;
+
+        var frame = _frames[_cursor];
+        _cursor++;
+        return frame;
     }
 }

@@ -79,6 +79,9 @@ public class PlayerController : MonoBehaviour
     public float initialJumpVelocity { get; private set; }
     public float adjustedJumpHeight { get; private set; }
 
+    // input reference
+    private InputFrame _currentInputFrame;
+
     private void Awake()
     {
         isFacingRight = true;
@@ -90,18 +93,36 @@ public class PlayerController : MonoBehaviour
         JumpChecks();
     }
 
-    private void FixedUpdate()
+    // private void FixedUpdate()
+    // {
+    //     CollisionCheck();
+    //     Jump();
+
+    //     if (_isGrounded)
+    //     {
+    //         Move(groundAcceleration, groundDeceleration, InputManager.movement);
+    //     }
+    //     else
+    //     {
+    //         Move(airAcceleration, airDeceleration, InputManager.movement);
+    //     }
+    // }
+
+    // effectively FixedUpdate, so put any changes here
+    public void SimulateTick(InputFrame frame)
     {
+        _currentInputFrame = frame;
+        
         CollisionCheck();
         Jump();
 
         if (_isGrounded)
         {
-            Move(groundAcceleration, groundDeceleration, InputManager.movement);
+            Move(groundAcceleration, groundDeceleration, frame.Move);
         }
         else
         {
-            Move(airAcceleration, airDeceleration, InputManager.movement);
+            Move(airAcceleration, airDeceleration, frame.Move);
         }
     }
 
@@ -302,14 +323,14 @@ public class PlayerController : MonoBehaviour
     private void JumpChecks()
     {
         //Jump button pressed
-        if (InputManager.JumpWasPressed)
+        if (_currentInputFrame.JumpWasPressed)
         {
             _jumpBufferTimer = jumpBufferTime;
             _jumpReleasedDuringBuffer = false;
         }
 
         //Jump button released
-        if (InputManager.JumpWasReleased)
+        if (_currentInputFrame.JumpWasReleased)
         {
             if (_jumpBufferTimer > 0f)
             {
