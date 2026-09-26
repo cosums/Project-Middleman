@@ -44,6 +44,7 @@ public class FixedTicker : MonoBehaviour
     {
         _recorder = new InputRecorder();
         LiveProvider.ResetLatches();
+        Player.CaptureStart();
         Begin(LiveProvider);
     }
 
