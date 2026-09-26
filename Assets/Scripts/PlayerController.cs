@@ -5,11 +5,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Walk")]
+    public float moveThreshold = 0.25f;
     public float maxWalkSpeed = 20f;
     public float groundAcceleration = 5f;
     public float groundDeceleration = 20f;
     public float airAcceleration = 5f;
     public float airDeceleration = 5f;
+    public float wallJumpMoveAcceleration = 5f;
+    public float wallJumpMoveDeceleration = 5f;
 
     [Header("Jump")]
     public float jumpHeight = 6.5f;
@@ -18,6 +21,9 @@ public class PlayerController : MonoBehaviour
     public float gravityOnReleaseMultiplier = 2f;
     public float maxFallSpeed = 26f;
     public int maxJumps = 1;
+
+    [Header("Reset Jump Options")]
+    public bool resetJumpsOnWallSlide = true;
 
     [Header("Jump Cut")]
     public float timeForUpwardsCancel = 0.027f;
@@ -37,6 +43,17 @@ public class PlayerController : MonoBehaviour
     public float groundDetectionRayLength = 0.02f;
     public float headDetectionRayLength = 0.02f;
     public float headWidth = 0.75f;
+    public float wallDetectionRayLength = 0.125f;
+    public float wallDetectionRayHeightMultiplier = 0.9f;
+
+    [Header("Wall Slide")]
+    public float wallSlideSpeed = 5f;
+    public float wallSlideDecelerationSpeed = 50f;
+
+    [Header("Wall Jump")]
+    public Vector2 wallJumpDirection = new Vector2(-20f, 6.5f);
+    public float wallJumpPostBufferTime = 0.125f;
+    public float wallJumpGravityOnReleaseMultiplier = 1f;
 
     [Header("References")]
     [SerializeField] private Collider2D _feetColl;
@@ -45,14 +62,17 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
 
     //movement variables
-    private Vector2 _moveVelocity;
+    private float horizontalVelocity;
     private bool isFacingRight;
 
     //collision check vars
     private RaycastHit2D _groundHit;
     private RaycastHit2D _headHit;
+    private RaycastHit2D _wallHit;
+    private RaycastHit2D _lastWallHit;
     private bool _isGrounded;
     private bool _headBumped;
+    private bool _isTouchingWall;
 
     //jump vars
     public float verticalVelocity { get; private set; }
@@ -75,12 +95,36 @@ public class PlayerController : MonoBehaviour
     //coyotoe time vars
     private float _coyoteTimer;
 
+    //jump
     public float Gravity { get; private set; }
     public float initialJumpVelocity { get; private set; }
     public float adjustedJumpHeight { get; private set; }
 
     // input reference
     private InputFrame _currentInputFrame;
+
+    //wall jump
+    public float WallJumpGravity { get; private set; }
+    public float initialWallJumpVelocity { get; private set; }
+    public float adjustedWallJumpHeight { get; private set; }
+
+    //wall slide
+    private bool _isWallSliding;
+    private bool _isWallSlideFalling;
+
+    //other wall jump vars (idk why theyre here)
+    private bool _useWallJumpMoveStats;
+    private bool _isWallJumping;
+    private float _wallJumpTime;
+    private float _wallJumpFastFallTime;
+    private bool _isWallJumpFastFalling;
+    private bool _isWallJumpFalling;
+
+    private float _wallJumpPostBufferTimer;
+
+    private float _wallJumpApexPoint;
+    private float _timePastWallJumpApexThreshold;
+    private bool _isPastWallJumpApexThreshold;
 
     private void Awake()
     {
@@ -91,22 +135,28 @@ public class PlayerController : MonoBehaviour
     {
         CountTimers();
         JumpChecks();
+        LandCheck();
+        WallSlideCheck();
     }
 
-    // private void FixedUpdate()
-    // {
-    //     CollisionCheck();
-    //     Jump();
+     private void FixedUpdate()
+     {
+        CollisionCheck();
+        Jump();
+        LandCheck();
+        WallSlide();
 
-    //     if (_isGrounded)
-    //     {
-    //         Move(groundAcceleration, groundDeceleration, InputManager.movement);
-    //     }
-    //     else
-    //     {
-    //         Move(airAcceleration, airDeceleration, InputManager.movement);
-    //     }
-    // }
+         if (_isGrounded)
+         {
+             Move(groundAcceleration, groundDeceleration, InputManager.movement);
+         }
+         else
+         {
+             Move(airAcceleration, airDeceleration, InputManager.movement);
+         }
+
+        ApplyVelocity();
+    }
 
     // effectively FixedUpdate, so put any changes here
     public void SimulateTick(InputFrame frame)
@@ -115,6 +165,8 @@ public class PlayerController : MonoBehaviour
         
         CollisionCheck();
         Jump();
+        Fall();
+        WallSlide();
 
         if (_isGrounded)
         {
@@ -122,25 +174,31 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Move(airAcceleration, airDeceleration, frame.Move);
+            Move(airAcceleration, airDeceleration, InputManager.movement);
         }
+    }
+
+    public void ApplyVelocity()
+    {
+        //clamp fall speed
+        verticalVelocity = Mathf.Clamp(verticalVelocity, -maxFallSpeed, 50f);
+
+        rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity);
     }
 
     #region Movement
 
     private void Move(float acceleration, float deceleration, Vector2 moveInput)
     {
-        Vector2 targetVelocity = new Vector2(moveInput.x, 0f) * maxWalkSpeed;
-        if (moveInput != Vector2.zero)
+        float targetVelocity = moveInput.x * maxWalkSpeed;
+        if (Mathf.Abs(moveInput.x) >= moveThreshold)
         {
             TurnCheck(moveInput);
-            _moveVelocity = Vector2.Lerp(_moveVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
-            rb.linearVelocity = new Vector2(_moveVelocity.x, rb.linearVelocity.y);
+            horizontalVelocity = Mathf.Lerp(horizontalVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
         }
-        else
+        else if (Mathf.Abs(moveInput.x) < moveThreshold)
         {
-            _moveVelocity = Vector2.Lerp(_moveVelocity, Vector2.zero, deceleration * Time.fixedDeltaTime);
-            rb.linearVelocity = new Vector2(_moveVelocity.x, rb.linearVelocityY);
+            horizontalVelocity = Mathf.Lerp(horizontalVelocity, 0f, deceleration * Time.fixedDeltaTime);
         }
     }
 
@@ -167,6 +225,36 @@ public class PlayerController : MonoBehaviour
         {
             isFacingRight = false;
             transform.Rotate(0f, -180f, 0f);
+        }
+    }
+
+    #endregion
+    #region Land/Fall
+
+    private void LandCheck()
+    {
+        //Landed
+        if ((_isJumping || _isFalling || _isWallJumping || _isWallSliding || _isWallSlideFalling || _isWallJumpFalling) && _isGrounded && verticalVelocity <= 0f)
+        {
+            ResetJumpValues();
+            StopWallSlide();
+            ResetWallJumpValues();
+
+            _numberOfJumpsUsed = 0;
+
+            verticalVelocity = Physics2D.gravity.y;
+        }
+    }
+    private void Fall()
+    {
+        //Normal gravity while falling
+        if (!_isGrounded && !_isJumping && !_isWallJumping && !_isWallSliding)
+        {
+            if (!_isFalling)
+            {
+                _isFalling = true;
+            }
+            verticalVelocity += Gravity * Time.fixedDeltaTime;
         }
     }
 
@@ -204,20 +292,62 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void IsTouchingWall()
+    {
+        float originEndPoint = 0f;
+        if (isFacingRight)
+        {
+            originEndPoint = _bodyColl.bounds.max.x;
+        }
+        else
+        {
+            originEndPoint = _bodyColl.bounds.min.x;
+        }
+        
+        float adjustedHeight = _bodyColl.bounds.size.y * wallDetectionRayHeightMultiplier;
+
+        Vector2 boxCastOrigin = new Vector2(originEndPoint, _bodyColl.bounds.center.y);
+        Vector2 boxCastSize = new Vector2(wallDetectionRayLength, adjustedHeight);
+
+        _wallHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, transform.right, wallDetectionRayLength, groundLayer);
+        if (_wallHit.collider != null)
+        {
+            _lastWallHit = _wallHit;
+            _isTouchingWall = true;
+        }
+        else
+        {
+            _isTouchingWall = false;
+        }
+    }
+
     private void CollisionCheck()
     {
         IsGrounded();
         BumpedHead();
+        IsTouchingWall();
     }
 
     #endregion
     #region Jump
+
+    private void ResetJumpValues()
+    {
+        _isJumping = false;
+        _isFalling = false;
+        _isFastfalling = false;
+        _fastFallTime = 0f;
+        _isPastApexThreshold = false;
+    }
     private void InitiateJump(int numberOfJumpsUsed)
     {
         if (!_isJumping)
         {
             _isJumping = true;
         }
+
+        ResetWallJumpValues();
+
         _jumpBufferTimer = 0f;
         _numberOfJumpsUsed += numberOfJumpsUsed;
         verticalVelocity = initialJumpVelocity;
@@ -264,7 +394,7 @@ public class PlayerController : MonoBehaviour
                 }
             
                 //Gravity on ascending but not past apex threshold
-                else
+                else if (!_isFastfalling)
                 {
                     verticalVelocity += Gravity * Time.fixedDeltaTime;
                     if (_isPastApexThreshold)
@@ -305,19 +435,10 @@ public class PlayerController : MonoBehaviour
             _fastFallTime += Time.fixedDeltaTime;
         }
 
-        //Normal gravity while falling
-        if (!_isGrounded && !_isJumping)
-        {
-            if (!_isFalling)
-            {
-                _isFalling = true;
-            }
-            verticalVelocity += Gravity * Time.fixedDeltaTime;
-        }
+        
 
         //Clamp fall speed
         verticalVelocity = Mathf.Clamp(verticalVelocity, -maxFallSpeed, 50f);
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, verticalVelocity);
     }
 
     private void JumpChecks()
@@ -325,7 +446,17 @@ public class PlayerController : MonoBehaviour
         //Jump button pressed
         if (_currentInputFrame.JumpWasPressed)
         {
-            _jumpBufferTimer = jumpBufferTime;
+            if (_isWallSlideFalling && _wallJumpPostBufferTimer >= 0f)
+            {
+                return;
+            }
+
+            else if (_isWallSliding || (_isTouchingWall && !_isGrounded))
+            {
+                return;
+            }
+
+                _jumpBufferTimer = jumpBufferTime;
             _jumpReleasedDuringBuffer = false;
         }
 
@@ -358,7 +489,7 @@ public class PlayerController : MonoBehaviour
         if (_jumpBufferTimer > 0f && !_isJumping && (_isGrounded || _coyoteTimer > 0f))
         {
             InitiateJump(1);
-            
+
             if (_jumpReleasedDuringBuffer)
             {
                 _isFastfalling = true;
@@ -367,31 +498,18 @@ public class PlayerController : MonoBehaviour
         }
 
         //Double jump
-        else if (_jumpBufferTimer > 0f && _isJumping && _numberOfJumpsUsed < maxJumps)
+        else if (_jumpBufferTimer > 0f && (_isJumping || _isWallJumping || _isWallSlideFalling) && !_isTouchingWall && _numberOfJumpsUsed < maxJumps)
         {
             _isFastfalling = true;
             InitiateJump(1);
         }
 
         //Air jump after coyote time lapses
-        else if (_jumpBufferTimer > 0f && _isFalling && _numberOfJumpsUsed < maxJumps - 1)
+        else if (_jumpBufferTimer > 0f && !_isWallSlideFalling && _isFalling && _numberOfJumpsUsed < maxJumps - 1)
         {
             InitiateJump(2);
             _isFastfalling = false;
-        }
-
-        //Landed
-        if ((_isJumping || _isFalling) && _isGrounded && verticalVelocity <= 0f)
-        {
-            _isJumping = false;
-            _isFalling = false;
-            _isFastfalling = false;
-            _fastFallTime = 0f;
-            _isPastApexThreshold = false;
-            _numberOfJumpsUsed = 0;
-
-            verticalVelocity = Physics2D.gravity.y;
-        }
+        }     
 
     }
 
@@ -410,6 +528,77 @@ public class PlayerController : MonoBehaviour
         adjustedJumpHeight = jumpHeight * jumpHeightCompensationFactor;
         Gravity = -(2f * adjustedJumpHeight) / Mathf.Pow(timeTilJumpApex, 2f);
         initialJumpVelocity = Mathf.Abs(Gravity) * timeTilJumpApex;
+
+        adjustedJumpHeight = wallJumpDirection.y * jumpHeightCompensationFactor;
+        WallJumpGravity = -(2f * adjustedWallJumpHeight) / Mathf.Pow(timeTilJumpApex, 2f);
+        initialWallJumpVelocity = Mathf.Abs(WallJumpGravity) * timeTilJumpApex;
+    }
+
+    #endregion
+    #region Wall Slide
+
+    private void WallSlideCheck()
+    {
+        if (_isTouchingWall && !_isGrounded)
+        {
+            if (verticalVelocity < 0 && !_isWallSliding)
+            {
+                ResetJumpValues();
+                ResetWallJumpValues();
+                
+                
+                _isWallSlideFalling = false;
+                _isWallSliding = true;
+
+                if (resetJumpsOnWallSlide)
+                {
+                    _numberOfJumpsUsed = 0;
+                }
+            }
+        }
+
+        else if (_isWallSliding && !_isTouchingWall && !_isGrounded && !_isWallSlideFalling)
+        {
+            _isWallSlideFalling = true;
+            StopWallSlide();
+        }
+        else
+        {
+            StopWallSlide();
+        }
+    }
+
+    private void StopWallSlide()
+    {
+        if (_isWallSliding)
+        {
+            _numberOfJumpsUsed++;
+            _isWallSliding = false;
+        }
+    }
+
+    private void WallSlide()
+    {
+        if (_isWallSliding)
+        {
+            verticalVelocity = Mathf.Lerp(verticalVelocity, -wallSlideSpeed, wallSlideDecelerationSpeed * Time.fixedDeltaTime);
+        }
+    }
+
+    #endregion
+    #region Wall Jump
+
+    private void ResetWallJumpValues()
+    {
+        _isWallSlideFalling = false;
+        _useWallJumpMoveStats = false;
+        _isWallJumping = false;
+        _isWallJumpFastFalling = false;
+        _isWallJumpFalling = false;
+        _isPastWallJumpApexThreshold = false;
+
+        _wallJumpFastFallTime = 0f;
+        _wallJumpTime = 0f;
     }
 
     #endregion
