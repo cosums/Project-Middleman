@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public enum GameState { MainMenu, Playing, Paused }
+    public enum GameState { Menu, Playing, Replaying }
     public GameState CurrentState { get; private set; }
 
     public static event Action OnGameQuit;
@@ -25,17 +25,18 @@ public class GameManager : MonoBehaviour
     {
         switch (newState)
         {
-            case GameState.MainMenu:
+            case GameState.Menu:
                 break;
             case GameState.Playing:
                 break;
-            case GameState.Paused:
+            case GameState.Replaying:
                 break;
         }
     }
 
     public void LoadScene(string sceneToLoad)
     {
+        Debug.Log($"Loading scene {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);
     }
 
