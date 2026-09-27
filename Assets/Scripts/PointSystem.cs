@@ -1,13 +1,15 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class PointSystem : MonoBehaviour
 {
     public static int points = 0;
     public static float multiplier = 1;
 
-    public static UnityEvent OnMultiplerChanged;
-    public static UnityEvent OnPointsChanged;
+    public static Action OnMultiplerChanged;
+    public static Action OnPointsChanged;
 
     public void AddToMuliplier(float m)
     {
@@ -27,7 +29,13 @@ public class PointSystem : MonoBehaviour
         OnPointsChanged.Invoke();
     }
 
-
+    public void Update()
+    {
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            AddScore(10);
+        }
+    }
 
 
 }

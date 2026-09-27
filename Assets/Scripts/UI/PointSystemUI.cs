@@ -8,13 +8,13 @@ public class PointSystemUI : MonoBehaviour
 
     private void Awake()
     {
-        PointSystem.OnPointsChanged.AddListener(UpdatePoints);
+        PointSystem.OnPointsChanged += UpdatePoints;
     }
 
     private void UpdatePoints()
     {
         pointsTMP.text = PointSystem.points.ToString();
-        animator.SetTrigger("changed");
+        animator.SetTrigger("change");
 
     }
 }
