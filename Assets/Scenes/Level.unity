@@ -480,7 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b6a0aef0d87664ab74881e71c05849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Parallax
-  effectMultipler: 0
+  effectMultipler: 1
 --- !u!1 &141476984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1907,6 +1907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   Player: {fileID: 1107036664}
+  smoothTime: 0.1
 --- !u!1 &906358279
 GameObject:
   m_ObjectHideFlags: 0
