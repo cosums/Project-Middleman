@@ -275,6 +275,14 @@ MonoBehaviour:
   slideAcceleration: 25
   slideDeceleration: 1.25
   slideMaxSpeedTime: 0.75
+  poseTime: 1
+  poseParticles: {fileID: 10316293373805713, guid: 974cd674e24d5f846833ae147775b125, type: 3}
+  insideFrameScore: 0.1
+  airTimeScore: 0.05
+  slideTimeScore: 0.025
+  flipScore: 0
+  poseScore: 0
+  punchScore: 0
 --- !u!1 &7206434210162189124
 GameObject:
   m_ObjectHideFlags: 0

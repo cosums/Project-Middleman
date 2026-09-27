@@ -67,6 +67,11 @@ public class PlayerController : MonoBehaviour
     public float slideDeceleration = 0.5f;
     public float slideMaxSpeedTime = 0.2f;
 
+    [Header("Pose")]
+    public float poseTime = 1f;
+    public float poseCooldown = 3f;
+    public GameObject poseParticles;
+
     [Header("Score Multipliers")]
     public float insideFrameScore = 0.1f;
     public float airTimeScore = 0.05f;
@@ -156,6 +161,11 @@ public class PlayerController : MonoBehaviour
     private float _slideMaxSpeedTimer;
     private float _slideTime;
 
+    //pose
+    private float _poseTimer;
+    private float _poseCooldownTimer;
+    private bool _isPosing;
+
     // references for replay
     private Vector3 _startingPos;
 
@@ -217,16 +227,18 @@ public class PlayerController : MonoBehaviour
         WallJumpCheck();
         SlideCheck();
         JumpChecks();
+        PoseCheck();
         Jump();
         Fall();
         LandCheck();
         WallSlide();
         WallJump();
         Slide();
+        Pose();
 
         if (AirCheck())
         {
-            //PointSystem.Instance.AddToMultiplier(airTimeScore, "Air Time!");
+            PointSystem.Instance.AddToMultiplier(airTimeScore, "Air Time!");
         }
 
         if (_isSliding)
@@ -915,6 +927,25 @@ public class PlayerController : MonoBehaviour
         _pastSlideMaxSpeed = false;
         _slideBufferTimer = -1f;
         _slideMaxSpeedTimer = slideMaxSpeedTime;
+    }
+
+    #endregion
+    #region Pose
+    public void PoseCheck()
+    {
+        if (_currentInputFrame.PoseWasPressed && !_isSliding && !_isTouchingWall)
+        {
+            _isPosing = true;
+            GameObject particles = GameObject.Instantiate(poseParticles);
+            particles.transform.position = this.transform.position;
+            particles.transform.SetParent(this.transform);
+            PointSystem.Instance.AddScore(poseScore, "Strike a Pose!");
+        }
+    }
+
+    public void Pose()
+    {
+
     }
 
     #endregion

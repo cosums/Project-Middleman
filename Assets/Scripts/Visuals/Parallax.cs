@@ -7,18 +7,19 @@ public class Parallax : MonoBehaviour
 
     [SerializeField] private float effectMultipler;
     private GameObject cam;
-    float camStartPos;
-    float objStartPos;
+    Vector3 camStartPos;
+    Vector3 objStartPos;
 
     void Awake()
     {
         cam = GameObject.Find("Main Camera");
-        objStartPos = transform.position.x;
-        camStartPos = cam.transform.position.x;
+        objStartPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        camStartPos = new Vector3(cam.transform.position.x, cam.transform.position.y, cam.transform.position.z);
     }
     void Update()
     {
-        float dist = (cam.transform.position.x - camStartPos) * effectMultipler;
-        transform.position = new Vector3(objStartPos + dist, transform.position.y, transform.position.z);
+        Vector2 dist = new Vector2((cam.transform.position.x - camStartPos.x),
+            (cam.transform.position.y - camStartPos.y)) * effectMultipler;
+        transform.position = new Vector3(objStartPos.x + dist.x, objStartPos.y + dist.y, transform.position.z);
     }
 }
