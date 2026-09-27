@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         CountTimers();
-        JumpChecks();
+        //JumpChecks();
         LandCheck();
         WallSlideCheck();
         WallJumpCheck();
@@ -203,6 +203,7 @@ public class PlayerController : MonoBehaviour
         _currentInputFrame = frame;
         
         CollisionCheck();
+        JumpChecks();
         Jump();
         LandCheck();
         WallSlide();

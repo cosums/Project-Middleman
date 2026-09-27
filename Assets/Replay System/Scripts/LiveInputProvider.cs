@@ -65,15 +65,33 @@ public class LiveInputProvider : MonoBehaviour, IInputProvider
         _attackAction = PlayerInput.actions["Attack"];
     }
 
+    private void OnEnable()
+    {
+        _jumpAction.started += ctx => _jumpPressedLatch = true;
+        _jumpAction.canceled += ctx => _jumpReleasedLatch = true;
+
+        _slideAction.started += ctx => _slidePressedLatch = true;
+        _slideAction.canceled += ctx => _slideReleasedLatch = true;
+
+        _poseAction.started += ctx => _posePressedLatch = true;
+
+        _attackAction.started += ctx => _attackPressedLatch = true;
+    }
+
+    private void OnDisable()
+    {
+        
+    }
+
     public void Poll()
     {
         _move = _moveAction.ReadValue<Vector2>();
-        if (_jumpAction.WasPressedThisFrame()) _jumpPressedLatch = true;
-        if (_jumpAction.WasReleasedThisFrame()) _jumpReleasedLatch = true;
-        if (_slideAction.WasPressedThisFrame()) _slidePressedLatch = true;
-        if (_slideAction.WasReleasedThisFrame()) _slideReleasedLatch = true;
-        if (_poseAction.WasPressedThisFrame()) _posePressedLatch = true;
-        if (_attackAction.WasPressedThisFrame()) _attackPressedLatch = true;
+        // if (_jumpAction.WasPressedThisFrame()) _jumpPressedLatch = true;
+        // if (_jumpAction.WasReleasedThisFrame()) _jumpReleasedLatch = true;
+        // if (_slideAction.WasPressedThisFrame()) _slidePressedLatch = true;
+        // if (_slideAction.WasReleasedThisFrame()) _slideReleasedLatch = true;
+        // if (_poseAction.WasPressedThisFrame()) _posePressedLatch = true;
+        // if (_attackAction.WasPressedThisFrame()) _attackPressedLatch = true;
     }
 
     public void ResetLatches()
