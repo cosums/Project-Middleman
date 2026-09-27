@@ -673,6 +673,13 @@ public class PlayerController : MonoBehaviour
 
     private void WallJump()
     {
+        Debug.Log(
+        $"WallJump: v={verticalVelocity:F2}, " +
+        $"apex={_wallJumpApexPoint:F3}, " +
+        $"past={_isPastWallJumpApexThreshold}, " +
+        $"wallJump={_isWallJumping}, " +
+        $"wallSlide={_isWallSliding}"
+        );
         //apply wall jump gravity
         if (_isWallJumping)
         {
@@ -689,11 +696,25 @@ public class PlayerController : MonoBehaviour
                 _useWallJumpMoveStats = false;
             }
 
+            if (_isPastWallJumpApexThreshold)
+            {
+                _timePastWallJumpApexThreshold += Time.fixedDeltaTime;
+                if (_timePastWallJumpApexThreshold < apexHangTime)
+                {
+                    verticalVelocity = 0f;
+                }
+                else
+                {
+                    verticalVelocity = -0.01f;
+                    _isWallJumping = false;
+                }
+            }
+
             //gravity  while ascending
             if (verticalVelocity >= 0f)
             {
                 //apex controls
-                _wallJumpApexPoint = Mathf.InverseLerp(wallJumpDirection.y, 0f, verticalVelocity);
+                _wallJumpApexPoint = Mathf.InverseLerp(initialWallJumpVelocity, 0f, verticalVelocity);
 
                 if (_wallJumpApexPoint > apexThreshold)
                 {
@@ -703,18 +724,7 @@ public class PlayerController : MonoBehaviour
                         _timePastWallJumpApexThreshold = 0f;
                     }
 
-                    if (_isPastWallJumpApexThreshold)
-                    {
-                        _timePastWallJumpApexThreshold += Time.fixedDeltaTime;
-                        if (_timePastWallJumpApexThreshold < apexHangTime)
-                        {
-                            verticalVelocity = 0f;
-                        }
-                        else
-                        {
-                            verticalVelocity = -0.01f;
-                        }
-                    }
+                    
                 }
 
                 //gravity while ascending but not past apex threshold
