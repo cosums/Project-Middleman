@@ -67,6 +67,16 @@ public class PlayerController : MonoBehaviour
     public float slideDeceleration = 0.5f;
     public float slideMaxSpeedTime = 0.2f;
 
+    [Header("Score Multipliers")]
+    public float insideFrameScore = 0.1f;
+    public float airTimeScore = 0.05f;
+    public float slideTimeScore = 0.025f;
+
+    [Header("Flat Score Points")]
+    public int flipScore;
+    public int poseScore;
+    public int punchScore;
+
     private Rigidbody2D rb;
 
     //movement variables
@@ -91,7 +101,7 @@ public class PlayerController : MonoBehaviour
     private float _fastFallTime;
     private float _fastFallReleaseSpeed;
     private int _numberOfJumpsUsed;
-    private float _currentJumpHeight;
+    private float _airtime;
 
     //apex vars
     private float _apexPoint;
@@ -141,10 +151,10 @@ public class PlayerController : MonoBehaviour
     private bool _isSliding = false;
     private float _slideSpeed;
     private float _targetSlideSpeed;
-    private float _timeSliding;
     private float _slideBufferTimer;
     private bool _pastSlideMaxSpeed = false;
     private float _slideMaxSpeedTimer;
+    private float _slideTime;
 
     // references for replay
     private Vector3 _startingPos;
@@ -154,7 +164,6 @@ public class PlayerController : MonoBehaviour
         isFacingRight = true;
         rb = GetComponent<Rigidbody2D>();
         _currentMaxWalkSpeed = maxWalkSpeed;
-        _currentJumpHeight = jumpHeight;
 
         CaptureStart();
     }
@@ -170,7 +179,7 @@ public class PlayerController : MonoBehaviour
 
     public void CaptureStart()
     {
-         _startingPos = transform.position;
+        _startingPos = transform.position;
     }
 
     public void RestoreStart()
@@ -201,7 +210,7 @@ public class PlayerController : MonoBehaviour
     public void SimulateTick(InputFrame frame)
     {
         _currentInputFrame = frame;
-        
+
         CollisionCheck();
         LandCheck();
         WallSlideCheck();
@@ -215,10 +224,15 @@ public class PlayerController : MonoBehaviour
         WallJump();
         Slide();
 
+        if (AirCheck())
+        {
+            //PointSystem.Instance.AddToMultiplier(airTimeScore, "Air Time!");
+        }
+
         if (_isSliding)
         {
             Slide();
-        } 
+        }
         else
         {
             if (_isGrounded)
@@ -311,6 +325,18 @@ public class PlayerController : MonoBehaviour
                 _isFalling = true;
             }
             verticalVelocity += Gravity * Time.fixedDeltaTime;
+        }
+    }
+
+    private bool AirCheck()
+    {
+        if ((_isFalling || _isJumping || _isWallJumping || _isWallJumpFalling || _isFastfalling || _isWallJumpFastFalling) && !_isGrounded)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -557,6 +583,7 @@ public class PlayerController : MonoBehaviour
         else if (_jumpBufferTimer > 0f && !_isGrounded && !_isTouchingWall && _numberOfJumpsUsed < maxJumps)
         {
             InitiateJump(1);
+            PointSystem.Instance.AddScore(flipScore, "Flip!");
         }
 
         //Air jump after coyote time lapses
@@ -851,6 +878,7 @@ public class PlayerController : MonoBehaviour
         _slideSpeed = horizontalVelocity;
         _targetSlideSpeed = _slideSpeed * slideSpeedMultiplier;
         _slideMaxSpeedTimer = slideMaxSpeedTime;
+        _slideTime = 0;
     }
 
     private void Slide()
@@ -876,6 +904,8 @@ public class PlayerController : MonoBehaviour
             }
 
             horizontalVelocity = _slideSpeed;
+            _slideTime += Time.fixedDeltaTime;
+            PointSystem.Instance.AddToMultiplier(slideTimeScore * Time.fixedDeltaTime, "Slide Time");
         } 
     }
 

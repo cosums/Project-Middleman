@@ -13,6 +13,7 @@ public class PlayerFollower : MonoBehaviour
     {
         Vector3 newPos = transform.position;
         newPos.x = Player.transform.position.x;
+        newPos.y = Player.transform.position.y;
         transform.position = newPos;
     }
 }
