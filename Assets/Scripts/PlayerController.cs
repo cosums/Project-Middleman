@@ -162,10 +162,10 @@ public class PlayerController : MonoBehaviour
     {
         CountTimers();
         //JumpChecks();
-        LandCheck();
-        WallSlideCheck();
-        WallJumpCheck();
-        SlideCheck();
+        //LandCheck();
+        //WallSlideCheck();
+        //WallJumpCheck();
+        //SlideCheck();
     }
 
     public void CaptureStart()
@@ -203,6 +203,10 @@ public class PlayerController : MonoBehaviour
         _currentInputFrame = frame;
         
         CollisionCheck();
+        LandCheck();
+        WallSlideCheck();
+        WallJumpCheck();
+        SlideCheck();
         JumpChecks();
         Jump();
         Fall();
