@@ -60,6 +60,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Collider2D _feetColl;
     [SerializeField] private Collider2D _bodyColl;
 
+    [Header("Slide")]
+    public float slideSpeed;
+    public float slideTime;
+    public float slideJumpHeight;
+    public float slideJumpSpeed;
+
     private Rigidbody2D rb;
 
     //movement variables
@@ -127,6 +133,10 @@ public class PlayerController : MonoBehaviour
     private float _wallJumpApexPoint;
     private float _timePastWallJumpApexThreshold;
     private bool _isPastWallJumpApexThreshold;
+
+    //slide
+    private bool _isSliding;
+    private float _timeSliding;
 
     // references for replay
     private Vector3 _startingPos;
@@ -673,13 +683,6 @@ public class PlayerController : MonoBehaviour
 
     private void WallJump()
     {
-        Debug.Log(
-        $"WallJump: v={verticalVelocity:F2}, " +
-        $"apex={_wallJumpApexPoint:F3}, " +
-        $"past={_isPastWallJumpApexThreshold}, " +
-        $"wallJump={_isWallJumping}, " +
-        $"wallSlide={_isWallSliding}"
-        );
         //apply wall jump gravity
         if (_isWallJumping)
         {
@@ -793,6 +796,14 @@ public class PlayerController : MonoBehaviour
 
         _wallJumpFastFallTime = 0f;
         _wallJumpTime = 0f;
+    }
+
+    #endregion
+    #region Slide
+
+    private void Slide()
+    {
+        
     }
 
     #endregion
