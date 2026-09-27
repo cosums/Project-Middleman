@@ -79,9 +79,9 @@ public class PointSystemUI : MonoBehaviour
     private void UpdateMultiplierUI(string source)
     {
         var multiplier = PointSystem.Instance.Multiplier;
-        multiplierTMP.text = multiplier.ToString();
+        multiplierTMP.text = "x" + multiplier.ToString("0.00##");
         UpdateMultiplierTextColor();
-       
+
         multiplierAnimator.SetTrigger("change");
     }
 

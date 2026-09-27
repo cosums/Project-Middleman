@@ -6,6 +6,14 @@ using static Unity.VisualScripting.Member;
 
 public class PointSystem : MonoBehaviour
 {
+    [Header("Mulitplier")]
+    [SerializeField] float minMultiplier = 0.5f;
+    [SerializeField] float maxMultiplier = 5;
+    [SerializeField] float multiplierDuration = 3; // if time since last multiplier change is greater, decrease multiplier
+
+    [Header("Combo")]
+    [SerializeField] float comboDuration = 3; // if time since last point source is greater, bank the combo
+
     public static PointSystem Instance;
     public int Points => points;
     public int ComboPoints => comboPoints;
@@ -20,13 +28,10 @@ public class PointSystem : MonoBehaviour
     private int comboPoints = 0;
     private float multiplier = 1;
     private List<(string pointSource, int points)> comboEntries = new List<(string pointSource, int points)>();
-
-    [Header("Timers")]
-    [SerializeField] float comboDuration = 3; // if time since last point source is greater, bank the combo
+    
+    // Timers
     private float comboTimer = 0;
     private Coroutine comboRoutine;
-
-    [SerializeField] float multiplierDuration = 3; // if time since last multiplier change is greater, decrease multiplier
     private float multiplierTimer = 0;
     private Coroutine multiplierRoutine;
 
@@ -53,6 +58,14 @@ public class PointSystem : MonoBehaviour
     public void AddToMultiplier(float m, string source)
     {
         multiplier += m;
+        if (multiplier > maxMultiplier)
+        {
+            multiplier = maxMultiplier;
+        }
+        else if (multiplier < minMultiplier)
+        {
+            multiplier = minMultiplier;
+        }
         multiplier = MathF.Floor(multiplier * 100f) / 100f;
         OnMultiplierChanged?.Invoke(source);
 
@@ -77,10 +90,8 @@ public class PointSystem : MonoBehaviour
 
     #endregion
 
-    /// <summary>
-    /// Add to combo score
-    /// </summary>
-    public void AddScore(int baseScore, string source)
+    #region Combo Score
+    public void AddToComboScore(int baseScore, string source)
     {
         int pointsToAdd = (int)(baseScore * multiplier);
         comboPoints += pointsToAdd;
@@ -109,6 +120,7 @@ public class PointSystem : MonoBehaviour
         OnComboPointsChanged?.Invoke("combo reset");
         comboRoutine = null;
     }
+    #endregion
 
     public void AddToTotalScore(int baseScore, string source)
     {
@@ -119,6 +131,6 @@ public class PointSystem : MonoBehaviour
     // For testing
     public void AddRandomPointSource()
     {
-        AddScore(UnityEngine.Random.Range(10, 500), "bleh ");
+        AddToComboScore(UnityEngine.Random.Range(10, 500), "bleh ");
     }
 }

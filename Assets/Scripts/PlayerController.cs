@@ -595,7 +595,7 @@ public class PlayerController : MonoBehaviour
         else if (_jumpBufferTimer > 0f && !_isGrounded && !_isTouchingWall && _numberOfJumpsUsed < maxJumps)
         {
             InitiateJump(1);
-            PointSystem.Instance.AddScore(flipScore, "Flip!");
+            PointSystem.Instance.AddToComboScore(flipScore, "Flip!");
         }
 
         //Air jump after coyote time lapses
@@ -939,7 +939,7 @@ public class PlayerController : MonoBehaviour
             GameObject particles = GameObject.Instantiate(poseParticles);
             particles.transform.position = this.transform.position;
             particles.transform.SetParent(this.transform);
-            PointSystem.Instance.AddScore(poseScore, "Strike a Pose!");
+            PointSystem.Instance.AddToComboScore(poseScore, "Strike a Pose!");
         }
     }
 
