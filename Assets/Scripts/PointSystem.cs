@@ -7,9 +7,20 @@ public class PointSystem : MonoBehaviour
     public static float multiplier = 1;
     [SerializeField] float comboTimer; // if time since last point source is greater, add up the points
 
-
     public static Action<string> OnMultiplierChanged;
     public static Action<string> OnPointsChanged;
+
+    public static PointSystem Instance;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(Instance);
+        }
+
+        Instance = this;
+    }
 
     public void AddToMutliplier(float m, string source)
     {
