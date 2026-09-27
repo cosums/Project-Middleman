@@ -25,19 +25,19 @@ public class PointSystem : MonoBehaviour
     public void AddToMultiplier(float m, string source)
     {
         multiplier += m;
-        OnMultiplierChanged.Invoke(source);
+        OnMultiplierChanged?.Invoke(source);
     }
 
     public void SetMultiplier(float m, string source)
     {
         multiplier = m;
-        OnMultiplierChanged.Invoke(source);
+        OnMultiplierChanged?.Invoke(source);
     }
 
     public void AddScore(int baseScore, string source)
     {
         points += (int)(baseScore * multiplier);
-        OnPointsChanged.Invoke(source);
+        OnPointsChanged?.Invoke(source);
     }
 
 }
