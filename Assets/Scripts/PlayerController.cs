@@ -205,6 +205,7 @@ public class PlayerController : MonoBehaviour
         CollisionCheck();
         JumpChecks();
         Jump();
+        Fall();
         LandCheck();
         WallSlide();
         WallJump();
@@ -285,7 +286,7 @@ public class PlayerController : MonoBehaviour
     private void LandCheck()
     {
         //Landed
-        if ((_isJumping || _isFalling || _isWallJumping || _isWallSliding || _isWallSlideFalling || _isWallJumpFalling) && _isGrounded && verticalVelocity <= 0f)
+        if ((_isJumping || _isFalling || _isWallJumping || _isWallSliding || _isWallSlideFalling || _isWallJumpFalling || _isSliding) && _isGrounded && verticalVelocity <= 0f)
         {
             ResetJumpValues();
             StopWallSlide();
@@ -549,18 +550,17 @@ public class PlayerController : MonoBehaviour
         }
 
         //Double jump
-        else if (_jumpBufferTimer > 0f && (_isJumping || _isWallJumping || _isWallSlideFalling) && !_isTouchingWall && _numberOfJumpsUsed < maxJumps)
+        else if (_jumpBufferTimer > 0f && !_isGrounded && !_isTouchingWall && _numberOfJumpsUsed < maxJumps)
         {
-            _isFastfalling = true;
             InitiateJump(1);
         }
 
         //Air jump after coyote time lapses
-        else if (_jumpBufferTimer > 0f && !_isWallSlideFalling && _isFalling && _numberOfJumpsUsed < maxJumps - 1)
-        {
-            InitiateJump(2);
-            _isFastfalling = false;
-        }     
+        //else if (_jumpBufferTimer > 0f && !_isWallSlideFalling && _isFalling && _numberOfJumpsUsed < maxJumps - 1)
+        //{
+        //    InitiateJump(2);
+        //    _isFastfalling = false;
+        //}     
 
     }
 
@@ -622,7 +622,6 @@ public class PlayerController : MonoBehaviour
     {
         if (_isWallSliding)
         {
-            _numberOfJumpsUsed++;
             _isWallSliding = false;
         }
     }
