@@ -61,16 +61,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Collider2D _bodyColl;
 
     [Header("Slide")]
-    public float slideSpeed;
-    public float slideTime;
-    public float slideJumpHeight;
-    public float slideJumpSpeed;
+    public float slideSpeedMultiplier = 1.25f;
+    public float slideBufferTime = 0.125f;
+    public float slideAcceleration = 3.5f;
+    public float slideDeceleration = 0.5f;
 
     private Rigidbody2D rb;
 
     //movement variables
     private float horizontalVelocity;
     private bool isFacingRight;
+    private float _currentMaxWalkSpeed;
 
     //collision check vars
     private RaycastHit2D _groundHit;
@@ -89,6 +90,7 @@ public class PlayerController : MonoBehaviour
     private float _fastFallTime;
     private float _fastFallReleaseSpeed;
     private int _numberOfJumpsUsed;
+    private float _currentJumpHeight;
 
     //apex vars
     private float _apexPoint;
@@ -135,8 +137,12 @@ public class PlayerController : MonoBehaviour
     private bool _isPastWallJumpApexThreshold;
 
     //slide
-    private bool _isSliding;
+    private bool _isSliding = false;
+    private float _slideSpeed;
+    private float _targetSlideSpeed;
     private float _timeSliding;
+    private float _slideBufferTimer;
+    private bool _pastSlideMaxSpeed = false;
 
     // references for replay
     private Vector3 _startingPos;
@@ -145,6 +151,8 @@ public class PlayerController : MonoBehaviour
     {
         isFacingRight = true;
         rb = GetComponent<Rigidbody2D>();
+        _currentMaxWalkSpeed = maxWalkSpeed;
+        _currentJumpHeight = jumpHeight;
 
         CaptureStart();
     }
@@ -155,6 +163,7 @@ public class PlayerController : MonoBehaviour
         LandCheck();
         WallSlideCheck();
         WallJumpCheck();
+        SlideCheck();
     }
 
     public void CaptureStart()
@@ -196,14 +205,22 @@ public class PlayerController : MonoBehaviour
         LandCheck();
         WallSlide();
         WallJump();
+        Slide();
 
-        if (_isGrounded)
+        if (_isSliding)
         {
-            Move(groundAcceleration, groundDeceleration, frame.Move);
-        }
+            Slide();
+        } 
         else
         {
-            Move(airAcceleration, airDeceleration, frame.Move);
+            if (_isGrounded)
+            {
+                Move(groundAcceleration, groundDeceleration, frame.Move);
+            }
+            else
+            {
+                Move(airAcceleration, airDeceleration, frame.Move);
+            }
         }
 
         ApplyVelocity();
@@ -576,7 +593,6 @@ public class PlayerController : MonoBehaviour
                 ResetJumpValues();
                 ResetWallJumpValues();
                 
-                
                 _isWallSlideFalling = false;
                 _isWallSliding = true;
 
@@ -801,9 +817,58 @@ public class PlayerController : MonoBehaviour
     #endregion
     #region Slide
 
+    private void SlideCheck()
+    {
+        if (_currentInputFrame.SlideWasPressed && _isGrounded && !_isSliding)
+        {
+            _isSliding = true;
+            _slideSpeed = horizontalVelocity;
+            _targetSlideSpeed = _slideSpeed * slideSpeedMultiplier;
+        }
+        else if (_currentInputFrame.SlideWasPressed)
+        {
+            _slideBufferTimer = slideBufferTime;
+        }
+        else if (_currentInputFrame.SlideIsHeld && _slideBufferTimer > 0f && _isGrounded && !_isSliding)
+        {
+            _isSliding = true;
+            _slideSpeed = horizontalVelocity;
+            _targetSlideSpeed = _slideSpeed * slideSpeedMultiplier;
+        }
+        else if (!_currentInputFrame.SlideIsHeld || _isJumping == true)
+        {
+            _isSliding = false;
+            ResetSlideValues();
+        }
+    }
+    
     private void Slide()
     {
-        
+        if (_isSliding)
+        {
+            if (!_pastSlideMaxSpeed)
+            {
+                _slideSpeed = Mathf.Lerp(_slideSpeed, _targetSlideSpeed, slideAcceleration * Time.fixedDeltaTime);
+                if (Mathf.Abs(horizontalVelocity - _targetSlideSpeed) < 0.1f)
+                {
+                    _pastSlideMaxSpeed = true;
+                }
+            }
+            else if (_isGrounded)
+            {
+                _slideSpeed = Mathf.Lerp(_slideSpeed, 0f, slideDeceleration * Time.fixedDeltaTime);
+            }
+
+
+                horizontalVelocity = _slideSpeed;
+        } 
+    }
+
+    private void ResetSlideValues()
+    {
+        _isSliding = false;
+        _pastSlideMaxSpeed = false;
+        _slideBufferTimer = -1f;
     }
 
     #endregion
@@ -825,6 +890,11 @@ public class PlayerController : MonoBehaviour
         if (!ShouldApplyWallJumpBuffer())
         {
             _wallJumpPostBufferTimer -= Time.deltaTime;
+        }
+
+        if (_slideBufferTimer > 0f)
+        {
+            _slideBufferTimer -= Time.deltaTime;
         }
     }
 
