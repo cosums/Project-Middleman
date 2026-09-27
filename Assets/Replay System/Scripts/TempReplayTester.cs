@@ -9,17 +9,18 @@ public class TempReplayTester : MonoBehaviour
 
     public void OnEnable()
     {
-        //Ticker.
+        ReplayButton.onClick.AddListener(TriggerReplay);
     }
 
     public void OnDisable()
     {
-        
+        ReplayButton.onClick.RemoveListener(TriggerReplay);
     }
 
     public void TriggerReplay()
     {
-        
+        Controller.RestoreStart();
+        Ticker.FinishAndReplay();
     }
 
     public void EndReplay()
