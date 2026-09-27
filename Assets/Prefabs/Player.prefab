@@ -270,6 +270,10 @@ MonoBehaviour:
   wallJumpGravityOnReleaseMultiplier: 1
   _feetColl: {fileID: 1799783505468356424}
   _bodyColl: {fileID: 8588344271095869751}
+  slideSpeedMultiplier: 1.5
+  slideBufferTime: 0.125
+  slideAcceleration: 15
+  slideDeceleration: 0.75
 --- !u!1 &7206434210162189124
 GameObject:
   m_ObjectHideFlags: 0

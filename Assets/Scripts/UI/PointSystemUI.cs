@@ -15,6 +15,5 @@ public class PointSystemUI : MonoBehaviour
     {
         pointsTMP.text = PointSystem.points.ToString();
         animator.SetTrigger("change");
-
     }
 }

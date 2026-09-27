@@ -1170,8 +1170,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3290749341302098565, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
+      propertyPath: maxJumps
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3290749341302098565, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
+      propertyPath: slideAcceleration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3290749341302098565, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
+      propertyPath: slideDeceleration
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3290749341302098565, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: wallJumpDirection.x
       value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3290749341302098565, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
+      propertyPath: slideJumpHeightMultiplier
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6783144415912548418, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_Name
