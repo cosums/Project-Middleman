@@ -22,7 +22,7 @@ public class PointSystem : MonoBehaviour
         Instance = this;
     }
 
-    public void AddToMutliplier(float m, string source)
+    public void AddToMultiplier(float m, string source)
     {
         multiplier += m;
         OnMultiplierChanged.Invoke(source);
