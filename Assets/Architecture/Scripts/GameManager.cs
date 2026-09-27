@@ -7,18 +7,27 @@ public class GameManager : MonoBehaviour
     public enum GameState { MainMenu, Playing, Paused }
     public GameState CurrentState { get; private set; }
     
-    public void Awake()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    public static void Autoload()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        } else
-        {
-            Debug.LogWarning(">1 Game Manager in scene!");
-            Destroy(gameObject);
-        }
+        GameObject autoObj = new GameObject("Game Manager");
+        autoObj.AddComponent<GameManager>();
+
+        Instance = autoObj.GetComponent<GameManager>();
+        DontDestroyOnLoad(autoObj);
     }
 
+    public void ChangeState(GameState newState)
+    {
+        switch (newState)
+        {
+            case GameState.MainMenu:
+                break;
+            case GameState.Playing:
+                break;
+            case GameState.Paused:
+                break;
+        }
+    }
     
 }
