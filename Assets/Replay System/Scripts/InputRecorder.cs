@@ -36,7 +36,12 @@ public class InputRecorder
         return  a.Move == b.Move && 
                 a.JumpWasPressed == b.JumpWasPressed &&
                 a.JumpIsHeld == b.JumpIsHeld &&
-                a.JumpWasReleased == b.JumpWasReleased;
+                a.JumpWasReleased == b.JumpWasReleased && 
+                a.SlideWasPressed == b.SlideWasPressed && 
+                a.SlideIsHeld == b.SlideIsHeld && 
+                a.SlideWasReleased == b.SlideWasReleased && 
+                a.PoseWasPressed == b.PoseWasPressed && 
+                a.PoseWasPressed == b.PoseWasPressed;
     }
 
     public InputFrame[] ToFrameArray()
