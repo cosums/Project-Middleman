@@ -1,24 +1,50 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public enum GameState { MainMenu, Playing, Paused }
+    public enum GameState { Menu, Playing, Replaying }
     public GameState CurrentState { get; private set; }
+
+    public static event Action OnGameQuit;
     
-    public void Awake()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    public static void Autoload()
     {
-        if (Instance == null)
+        GameObject autoObj = new GameObject("Game Manager");
+        autoObj.AddComponent<GameManager>();
+
+        Instance = autoObj.GetComponent<GameManager>();
+        DontDestroyOnLoad(autoObj);
+    }
+
+    public void ChangeState(GameState newState)
+    {
+        switch (newState)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        } else
-        {
-            Debug.LogWarning(">1 Game Manager in scene!");
-            Destroy(gameObject);
+            case GameState.Menu:
+                break;
+            case GameState.Playing:
+                break;
+            case GameState.Replaying:
+                break;
         }
     }
 
+    public void LoadScene(string sceneToLoad)
+    {
+        Debug.Log($"Loading scene {sceneToLoad}");
+        SceneManager.LoadScene(sceneToLoad);
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quitting Game...");
+        OnGameQuit?.Invoke();
+        Application.Quit();
+    }
     
 }
