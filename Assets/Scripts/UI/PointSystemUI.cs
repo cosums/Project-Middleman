@@ -11,7 +11,7 @@ public class PointSystemUI : MonoBehaviour
         PointSystem.OnPointsChanged += UpdatePoints;
     }
 
-    private void UpdatePoints()
+    private void UpdatePoints(string pointSource)
     {
         pointsTMP.text = PointSystem.points.ToString();
         animator.SetTrigger("change");

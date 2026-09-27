@@ -1,41 +1,32 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
-
 public class PointSystem : MonoBehaviour
 {
     public static int points = 0;
     public static float multiplier = 1;
+    [SerializeField] float comboTimer; // if time since last point source is greater, add up the points
 
-    public static Action OnMultiplerChanged;
-    public static Action OnPointsChanged;
 
-    public void AddToMuliplier(float m)
+    public static Action<string> OnMultiplierChanged;
+    public static Action<string> OnPointsChanged;
+
+    public void AddToMutliplier(float m, string source)
     {
         multiplier += m;
-        OnMultiplerChanged.Invoke();
+        OnMultiplierChanged.Invoke(source);
     }
 
-    public void SetMuliplier(float m)
+    public void SetMultiplier(float m, string source)
     {
         multiplier = m;
-        OnMultiplerChanged.Invoke();
+        OnMultiplierChanged.Invoke(source);
     }
 
-    public void AddScore(int baseScore)
+    public void AddScore(int baseScore, string source)
     {
         points += (int)(baseScore * multiplier);
-        OnPointsChanged.Invoke();
+        OnPointsChanged.Invoke(source);
     }
-
-    public void Update()
-    {
-        if (Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            AddScore(10);
-        }
-    }
-
 
 }
