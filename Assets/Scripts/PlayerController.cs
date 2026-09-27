@@ -226,7 +226,7 @@ public class PlayerController : MonoBehaviour
 
         if (AirCheck())
         {
-            //PointSystem.Instance.AddToMultiplier(airTimeScore, "Air Time!");
+            PointSystem.Instance.AddToMultiplier(airTimeScore, "Air Time!");
         }
 
         if (_isSliding)
