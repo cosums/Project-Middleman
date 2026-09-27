@@ -14,8 +14,11 @@ public struct InputFrame
     public bool JumpWasPressed;
     public bool JumpIsHeld;
     public bool JumpWasReleased;
-    //public bool Jumping;
-    public bool Sliding;
-    public bool Posing;
-    public bool Attacking;
+
+    public bool SlideWasPressed;
+    public bool SlideIsHeld;
+    public bool SlideWasReleased;
+
+    public bool PoseWasPressed;
+    public bool AttackWasPressed;
 }
