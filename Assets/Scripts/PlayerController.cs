@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
     public float slideBufferTime = 0.125f;
     public float slideAcceleration = 3.5f;
     public float slideDeceleration = 0.5f;
+    public float slideMaxSpeedTime = 0.2f;
 
     private Rigidbody2D rb;
 
@@ -143,6 +144,7 @@ public class PlayerController : MonoBehaviour
     private float _timeSliding;
     private float _slideBufferTimer;
     private bool _pastSlideMaxSpeed = false;
+    private float _slideMaxSpeedTimer;
 
     // references for replay
     private Vector3 _startingPos;
@@ -822,9 +824,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_currentInputFrame.SlideWasPressed && _isGrounded && !_isSliding)
         {
-            _isSliding = true;
-            _slideSpeed = horizontalVelocity;
-            _targetSlideSpeed = _slideSpeed * slideSpeedMultiplier;
+            InitiateSlide();
         }
         else if (_currentInputFrame.SlideWasPressed)
         {
@@ -832,22 +832,28 @@ public class PlayerController : MonoBehaviour
         }
         else if (_currentInputFrame.SlideIsHeld && _slideBufferTimer > 0f && _isGrounded && !_isSliding)
         {
-            _isSliding = true;
-            _slideSpeed = horizontalVelocity;
-            _targetSlideSpeed = _slideSpeed * slideSpeedMultiplier;
+            InitiateSlide();
         }
-        else if (!_currentInputFrame.SlideIsHeld || _isJumping == true)
+        else if (!_currentInputFrame.SlideIsHeld)
         {
             _isSliding = false;
             ResetSlideValues();
         }
     }
     
+    private void InitiateSlide()
+    {
+        _isSliding = true;
+        _slideSpeed = horizontalVelocity;
+        _targetSlideSpeed = _slideSpeed * slideSpeedMultiplier;
+        _slideMaxSpeedTimer = slideMaxSpeedTime;
+    }
+
     private void Slide()
     {
         if (_isSliding)
         {
-            if (!_pastSlideMaxSpeed)
+            if (!_pastSlideMaxSpeed && _isGrounded)
             {
                 _slideSpeed = Mathf.Lerp(_slideSpeed, _targetSlideSpeed, slideAcceleration * Time.fixedDeltaTime);
                 if (Mathf.Abs(horizontalVelocity - _targetSlideSpeed) < 0.1f)
@@ -855,13 +861,17 @@ public class PlayerController : MonoBehaviour
                     _pastSlideMaxSpeed = true;
                 }
             }
-            else if (_isGrounded)
+            else if (_slideMaxSpeedTimer > 0f && _isGrounded)
+            {
+                _slideMaxSpeedTimer -= Time.fixedDeltaTime;
+             
+            }
+            else if (_isGrounded && !_isJumping && _slideMaxSpeedTimer <= 0f)
             {
                 _slideSpeed = Mathf.Lerp(_slideSpeed, 0f, slideDeceleration * Time.fixedDeltaTime);
             }
 
-
-                horizontalVelocity = _slideSpeed;
+            horizontalVelocity = _slideSpeed;
         } 
     }
 
@@ -870,6 +880,7 @@ public class PlayerController : MonoBehaviour
         _isSliding = false;
         _pastSlideMaxSpeed = false;
         _slideBufferTimer = -1f;
+        _slideMaxSpeedTimer = slideMaxSpeedTime;
     }
 
     #endregion

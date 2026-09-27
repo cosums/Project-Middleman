@@ -272,8 +272,9 @@ MonoBehaviour:
   _bodyColl: {fileID: 8588344271095869751}
   slideSpeedMultiplier: 1.5
   slideBufferTime: 0.125
-  slideAcceleration: 15
-  slideDeceleration: 0.75
+  slideAcceleration: 25
+  slideDeceleration: 1.25
+  slideMaxSpeedTime: 0.75
 --- !u!1 &7206434210162189124
 GameObject:
   m_ObjectHideFlags: 0
