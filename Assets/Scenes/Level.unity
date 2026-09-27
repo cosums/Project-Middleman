@@ -782,7 +782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b6a0aef0d87664ab74881e71c05849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Parallax
-  effectMultipler: 0.025
+  effectMultipler: 0.9
 --- !u!1 &506999416
 GameObject:
   m_ObjectHideFlags: 0
