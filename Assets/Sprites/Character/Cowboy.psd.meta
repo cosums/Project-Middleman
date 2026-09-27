@@ -40,7 +40,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 100
+    spritePixelsToUnits: 32
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -716,8 +716,8 @@ ScriptedImporter:
     - name: bone_6
       guid: 4f9d64f8f6767e84888d4a2baf535cbe
       position: {x: 2.6954613, y: 15.251099, z: 0}
-      rotation: {x: 0, y: 0, z: -0.48327085, w: 0.87547094}
-      length: 16.793089
+      rotation: {x: 0, y: 0, z: -0.48327056, w: 0.8754711}
+      length: 16.793097
       parentId: -1
       color:
         serializedVersion: 2
@@ -1500,8 +1500,8 @@ ScriptedImporter:
     - name: bone_3
       guid: 43111af65ed3cff449019a592454c674
       position: {x: 9.439789, y: 12.782379, z: 0}
-      rotation: {x: 0, y: 0, z: 0.8672254, w: -0.4979158}
-      length: 13.25508
+      rotation: {x: 0, y: 0, z: 0.8672253, w: -0.497916}
+      length: 13.255076
       parentId: -1
       color:
         serializedVersion: 2
@@ -1674,8 +1674,8 @@ ScriptedImporter:
     - name: bone_12
       guid: ae099f4c4b27e83468a281fa99cc653a
       position: {x: 10.831875, y: 27.93274, z: 0}
-      rotation: {x: 0, y: 0, z: -0.6357093, w: 0.7719286}
-      length: 27.39891
+      rotation: {x: 0, y: 0, z: -0.63570905, w: 0.77192885}
+      length: 27.398897
       parentId: -1
       color:
         serializedVersion: 2
@@ -1946,9 +1946,9 @@ ScriptedImporter:
     spriteBone:
     - name: bone_13
       guid: 7853bf256e3c3c14f8291af186509b27
-      position: {x: 7.0855637, y: 24.042244, z: 0}
-      rotation: {x: 0, y: 0, z: -0.64075255, w: 0.7677475}
-      length: 20.094656
+      position: {x: 7.0855637, y: 24.042236, z: 0}
+      rotation: {x: 0, y: 0, z: -0.6559476, w: 0.7548065}
+      length: 31.783264
       parentId: -1
       color:
         serializedVersion: 2
@@ -2173,15 +2173,15 @@ ScriptedImporter:
       height: 17
     spriteID: 3e788ac3e19a9654e936b93487559bdb
     spriteBone:
-    - name: bone_14
-      guid: b0059c9e54f76d44aa231e47545fb77a
-      position: {x: 13.679955, y: 14.271671, z: 0}
-      rotation: {x: 0, y: 0, z: -0.7686421, w: 0.63967913}
-      length: 11.036494
+    - name: bone_13
+      guid: 7853bf256e3c3c14f8291af186509b27
+      position: {x: 10.085564, y: 34.04224, z: 0}
+      rotation: {x: 0, y: 0, z: -0.6559476, w: 0.7548065}
+      length: 31.783264
       parentId: -1
       color:
         serializedVersion: 2
-        rgba: 4278255360
+        rgba: 4278255615
     spriteOutline: []
     vertices:
     - position: {x: 5, y: 0.001999855}
@@ -2372,8 +2372,8 @@ ScriptedImporter:
     - name: bone_9
       guid: f82e37b53407d21488cc46c7127b66b7
       position: {x: 12.084915, y: 21.522667, z: 0}
-      rotation: {x: 0, y: 0, z: 0.8023835, w: -0.59680885}
-      length: 21.869757
+      rotation: {x: 0, y: 0, z: 0.80238336, w: -0.5968091}
+      length: 21.869759
       parentId: -1
       color:
         serializedVersion: 2
@@ -2589,9 +2589,9 @@ ScriptedImporter:
     spriteBone:
     - name: bone_10
       guid: d5fea0f4f76615041a6ef2a20d1bb9c5
-      position: {x: 10.794336, y: 32.57714, z: 0}
-      rotation: {x: 0, y: 0, z: 0.72092867, w: -0.6930093}
-      length: 28.018517
+      position: {x: 10.794334, y: 32.57714, z: 0}
+      rotation: {x: 0, y: 0, z: 0.7391184, w: -0.6735756}
+      length: 38.89355
       parentId: -1
       color:
         serializedVersion: 2
@@ -2860,15 +2860,15 @@ ScriptedImporter:
       height: 16
     spriteID: 3ce1d13eb77c5c1459bce7e1f5b91449
     spriteBone:
-    - name: bone_11
-      guid: 394b87d38dbdd7849805df0d9df925e0
-      position: {x: 16.688278, y: 13.580467, z: 0}
-      rotation: {x: 0, y: 0, z: 0.82018393, w: -0.5721}
-      length: 10.607161
+    - name: bone_10
+      guid: d5fea0f4f76615041a6ef2a20d1bb9c5
+      position: {x: 17.794334, y: 41.57714, z: 0}
+      rotation: {x: 0, y: 0, z: 0.7391184, w: -0.6735756}
+      length: 38.89355
       parentId: -1
       color:
         serializedVersion: 2
-        rgba: 4294901888
+        rgba: 4294934528
     spriteOutline: []
     vertices:
     - position: {x: 25.772, y: 4.0290003}
@@ -3013,8 +3013,8 @@ ScriptedImporter:
         boneIndex3: 0
     - position: {x: 20, y: 0}
       boneWeight:
-        weight0: 0
-        weight1: 1
+        weight0: 1
+        weight1: 0
         weight2: 0
         weight3: 0
         boneIndex0: 0
@@ -3087,16 +3087,16 @@ ScriptedImporter:
     - name: bone_3
       guid: 43111af65ed3cff449019a592454c674
       position: {x: 29.734451, y: 7.1220546, z: 0}
-      rotation: {x: 0, y: -0, z: 0.95713496, w: 0.28964233}
-      length: 13.255079
+      rotation: {x: 0, y: -0, z: 0.957135, w: 0.28964213}
+      length: 13.255078
       parentId: 0
       color:
         serializedVersion: 2
         rgba: 4278255360
     - name: bone_4
       guid: e475192353c5e174298b8746445f36fd
-      position: {x: 13.255077, y: 0.0000024739286, z: 0}
-      rotation: {x: 0, y: 0, z: -0.1137948, w: 0.9935043}
+      position: {x: 13.2550745, y: -0.000001486602, z: 0}
+      rotation: {x: 0, y: 0, z: -0.11379501, w: 0.9935043}
       length: 18.4824
       parentId: 2
       color:
@@ -3105,16 +3105,16 @@ ScriptedImporter:
     - name: bone_6
       guid: 4f9d64f8f6767e84888d4a2baf535cbe
       position: {x: 30.177975, y: -10.190326, z: 0}
-      rotation: {x: 0, y: -0, z: -0.96857446, w: 0.24872378}
-      length: 16.793089
+      rotation: {x: 0, y: -0, z: -0.9685744, w: 0.24872413}
+      length: 16.793093
       parentId: 0
       color:
         serializedVersion: 2
         rgba: 4294902015
     - name: bone_7
       guid: 068f61d86eb0ca24192e5b7d644aa63d
-      position: {x: 16.793095, y: 0.000006865976, z: 0}
-      rotation: {x: 0, y: 0, z: -0.3144317, w: 0.94928014}
+      position: {x: 16.793093, y: -0.0000017266502, z: 0}
+      rotation: {x: 0, y: 0, z: -0.31443205, w: 0.94928}
       length: 17.532648
       parentId: 4
       color:
@@ -3123,57 +3123,39 @@ ScriptedImporter:
     - name: bone_9
       guid: f82e37b53407d21488cc46c7127b66b7
       position: {x: 1.3083893, y: 5.1580906, z: 0}
-      rotation: {x: 0, y: -0, z: 0.98463434, w: 0.17462888}
-      length: 21.869757
+      rotation: {x: 0, y: -0, z: 0.9846344, w: 0.17462865}
+      length: 21.869759
       parentId: 0
       color:
         serializedVersion: 2
         rgba: 4286643968
     - name: bone_10
       guid: d5fea0f4f76615041a6ef2a20d1bb9c5
-      position: {x: 21.869759, y: 0.0000035755843, z: 0}
-      rotation: {x: 0, y: 0, z: 0.12580256, w: 0.9920553}
-      length: 28.01851
+      position: {x: 21.86976, y: -0.000008213869, z: 0}
+      rotation: {x: 0, y: 0, z: 0.09935325, w: 0.9950522}
+      length: 38.893555
       parentId: 6
       color:
         serializedVersion: 2
         rgba: 4294934528
-    - name: bone_11
-      guid: 394b87d38dbdd7849805df0d9df925e0
-      position: {x: 28.01851, y: 0.0000037864672, z: 0}
-      rotation: {x: 0, y: 0, z: -0.1559518, w: 0.9877647}
-      length: 10.6071615
-      parentId: 7
-      color:
-        serializedVersion: 2
-        rgba: 4294901888
     - name: bone_12
       guid: ae099f4c4b27e83468a281fa99cc653a
       position: {x: -0.8563765, y: -4.477514, z: 0}
-      rotation: {x: 0, y: -0, z: -0.9977682, w: 0.06677265}
-      length: 27.398905
+      rotation: {x: 0, y: -0, z: -0.9977682, w: 0.06677301}
+      length: 27.398897
       parentId: 0
       color:
         serializedVersion: 2
         rgba: 4286578943
     - name: bone_13
       guid: 7853bf256e3c3c14f8291af186509b27
-      position: {x: 27.398903, y: 0.000019454274, z: 0}
-      rotation: {x: 0, y: 0, z: -0.0065509807, w: 0.99997854}
-      length: 20.094654
-      parentId: 9
+      position: {x: 27.398903, y: -0.0000015912092, z: 0}
+      rotation: {x: 0, y: 0, z: -0.026507534, w: 0.99964863}
+      length: 31.783262
+      parentId: 8
       color:
         serializedVersion: 2
         rgba: 4278255615
-    - name: bone_14
-      guid: b0059c9e54f76d44aa231e47545fb77a
-      position: {x: 20.094652, y: 0.000010519066, z: 0}
-      rotation: {x: 0, y: 0, z: -0.18024704, w: 0.9836214}
-      length: 11.036493
-      parentId: 10
-      color:
-        serializedVersion: 2
-        rgba: 4278255360
     parts:
     - spritePosition:
         x: 10
@@ -3253,7 +3235,7 @@ ScriptedImporter:
         width: 22
         height: 36
       spriteId: 7671e10ea8119fa48944f3853a25a47c
-      bones: 09000000
+      bones: 08000000
       parentGroup: 0
       order: 0
     - spritePosition:
@@ -3262,7 +3244,7 @@ ScriptedImporter:
         width: 20
         height: 27
       spriteId: 4196e383c97000f439913eec596254de
-      bones: 0a000000
+      bones: 09000000
       parentGroup: 0
       order: 0
     - spritePosition:
@@ -3271,7 +3253,7 @@ ScriptedImporter:
         width: 22
         height: 17
       spriteId: 3e788ac3e19a9654e936b93487559bdb
-      bones: 0b000000
+      bones: 09000000
       parentGroup: 0
       order: 0
     - spritePosition:
@@ -3298,7 +3280,7 @@ ScriptedImporter:
         width: 26
         height: 16
       spriteId: 3ce1d13eb77c5c1459bce7e1f5b91449
-      bones: 08000000
+      bones: 07000000
       parentGroup: 0
       order: 0
     dimension: {x: 0, y: 0}
