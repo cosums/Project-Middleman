@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -6,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     public enum GameState { MainMenu, Playing, Paused }
     public GameState CurrentState { get; private set; }
+
+    public static event Action OnGameQuit;
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Autoload()
@@ -28,6 +32,18 @@ public class GameManager : MonoBehaviour
             case GameState.Paused:
                 break;
         }
+    }
+
+    public void LoadScene(string sceneToLoad)
+    {
+        SceneManager.LoadScene(sceneToLoad);
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quitting Game...");
+        OnGameQuit?.Invoke();
+        Application.Quit();
     }
     
 }
