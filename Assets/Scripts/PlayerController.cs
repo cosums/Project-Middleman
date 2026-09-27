@@ -493,6 +493,7 @@ public class PlayerController : MonoBehaviour
         //Jump button pressed
         if (_currentInputFrame.JumpWasPressed)
         {
+            Debug.Log("Jump pressed");
             if (_isWallSlideFalling && _wallJumpPostBufferTimer >= 0f)
             {
                 return;
