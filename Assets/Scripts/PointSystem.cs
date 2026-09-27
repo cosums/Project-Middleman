@@ -2,29 +2,34 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 public class PointSystem : MonoBehaviour
 {
-    private int points = 0;
-    private int comboPoints = 0;
-    private float multiplier = 1;
-
-    [SerializeField] float comboDuration = 3; // if time since last point source is greater, bank the combo
-    private float comboTimer = 0;
-    private Coroutine comboRoutine;
-    private List<(string pointSource, int points)> comboEntries
-        = new List<(string pointSource, int points)>();
-
-    public Action<string> OnMultiplierChanged;
-    public Action<string> OnComboPointsChanged;
-    public Action<string> OnPointsChanged;
-
+    public static PointSystem Instance;
     public int Points => points;
     public int ComboPoints => comboPoints;
     public float Multiplier => multiplier;
     public IReadOnlyList<(string pointSource, int points)> ComboEntries => comboEntries;
 
-    public static PointSystem Instance;
+    public Action<string> OnMultiplierChanged;
+    public Action<string> OnComboPointsChanged;
+    public Action<string> OnPointsChanged;
+
+    private int points = 0;
+    private int comboPoints = 0;
+    private float multiplier = 1;
+    private List<(string pointSource, int points)> comboEntries = new List<(string pointSource, int points)>();
+
+    [Header("Timers")]
+    [SerializeField] float comboDuration = 3; // if time since last point source is greater, bank the combo
+    private float comboTimer = 0;
+    private Coroutine comboRoutine;
+
+    [SerializeField] float multiplierDuration = 3; // if time since last multiplier change is greater, decrease multiplier
+    private float multiplierTimer = 0;
+    private Coroutine multiplierRoutine;
+
 
     private void Awake()
     {
@@ -37,18 +42,39 @@ public class PointSystem : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        OnMultiplierChanged?.Invoke("");
+        OnComboPointsChanged?.Invoke("");
+        OnPointsChanged?.Invoke("");
+    }
+
     #region Multiplier
     public void AddToMultiplier(float m, string source)
     {
         multiplier += m;
+        multiplier = MathF.Floor(multiplier * 100f) / 100f;
         OnMultiplierChanged?.Invoke(source);
+
+        // start combo timer
+        multiplierTimer = multiplierDuration;
+        if (multiplierRoutine == null) multiplierRoutine = StartCoroutine(MultiplierTimer());
     }
 
-    public void SetMultiplier(float m, string source)
+    private IEnumerator MultiplierTimer()
     {
-        multiplier = m;
-        OnMultiplierChanged?.Invoke(source);
+        while (multiplierTimer > 0)
+        {
+            multiplierTimer -= Time.deltaTime;
+            yield return null;
+        }
+        Debug.Log("Rest multiplier");
+        multiplier = 0.5f;
+        OnMultiplierChanged?.Invoke("Reset");
+        multiplierRoutine = null;
+
     }
+
     #endregion
 
     /// <summary>
@@ -61,14 +87,9 @@ public class PointSystem : MonoBehaviour
         comboEntries.Add((source, pointsToAdd));
         OnComboPointsChanged?.Invoke(source);
 
-        // reset the countdown
+        // start combo timer
         comboTimer = comboDuration;
-
-        // start the timer if it isn't already running
-        if (comboRoutine == null)
-        {
-            comboRoutine = StartCoroutine(ComboTimer());
-        }
+        if (comboRoutine == null) comboRoutine = StartCoroutine(ComboTimer());
     }
 
     private IEnumerator ComboTimer()

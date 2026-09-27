@@ -8,16 +8,22 @@ public class PointSystemUI : MonoBehaviour
     [SerializeField] Animator totalPointsAnimator;
 
     [Header("Combo UI")]
-    [SerializeField] GameObject comboPanel;
+    [SerializeField] GameObject comboScorePanel;
     [SerializeField] TextMeshProUGUI comboPointsTMP;
     [SerializeField] Animator comboPointsAnimator;
+    [SerializeField] GameObject comboEntriesPanel;
     [SerializeField] TextMeshProUGUI comboEntryPrefab;
+
+    [Header("Multiplier UI")]
+    [SerializeField] TextMeshProUGUI multiplierTMP;
+    [SerializeField] Animator multiplierAnimator;
 
     private void Start()
     {
         PointSystem.Instance.OnPointsChanged += UpdateTotalPointsUI;
         PointSystem.Instance.OnComboPointsChanged += UpdateComboPointsUI;
         PointSystem.Instance.OnComboPointsChanged += UpdateComboPanelUI;
+        PointSystem.Instance.OnMultiplierChanged += UpdateMultiplierUI;
     }
 
     private void OnDisable()
@@ -27,8 +33,10 @@ public class PointSystemUI : MonoBehaviour
         PointSystem.Instance.OnPointsChanged -= UpdateTotalPointsUI;
         PointSystem.Instance.OnComboPointsChanged -= UpdateComboPointsUI;
         PointSystem.Instance.OnComboPointsChanged -= UpdateComboPanelUI;
+        PointSystem.Instance.OnMultiplierChanged -= UpdateMultiplierUI;
     }
 
+    #region Points UI
     private void UpdateTotalPointsUI(string source)
     {
         totalPointsTMP.text = PointSystem.Instance.Points.ToString();
@@ -43,21 +51,58 @@ public class PointSystemUI : MonoBehaviour
 
     private void UpdateComboPanelUI(string source)
     {
-        foreach (Transform child in comboPanel.transform)
+        foreach (Transform child in comboEntriesPanel.transform)
         {
             GameObject.Destroy(child.gameObject);
         }
+
+        // No more combos
         if (PointSystem.Instance.ComboEntries.Count == 0)
         {
             Debug.Log("Empty");
+            comboScorePanel.SetActive(false);
             return;
         }
 
+        comboScorePanel.SetActive(true);
 
         foreach ((string s, int points) in PointSystem.Instance.ComboEntries)
         {
-            TextMeshProUGUI entry = Instantiate(comboEntryPrefab, comboPanel.transform);
+            TextMeshProUGUI entry = Instantiate(comboEntryPrefab, comboEntriesPanel.transform);
             entry.text = "+" + points.ToString() + s;
         }
     }
+
+    #endregion
+
+    #region Multiplier
+    private void UpdateMultiplierUI(string source)
+    {
+        var multiplier = PointSystem.Instance.Multiplier;
+        multiplierTMP.text = multiplier.ToString();
+        UpdateMultiplierTextColor();
+       
+        multiplierAnimator.SetTrigger("change");
+    }
+
+    private void UpdateMultiplierTextColor()
+    {
+        if (PointSystem.Instance.Multiplier < 1.5)
+        {
+            multiplierTMP.color = Color.white;
+        }
+        else if (PointSystem.Instance.Multiplier < 3)
+        {
+            multiplierTMP.color = Color.orange;
+        }
+        else if (PointSystem.Instance.Multiplier < 5)
+        {
+            multiplierTMP.color = Color.red;
+        }
+        else
+        {
+            multiplierTMP.color = Color.purple;
+        }
+    }
+    #endregion
 }
