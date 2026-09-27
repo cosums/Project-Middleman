@@ -9,19 +9,19 @@ public class PointSystem : MonoBehaviour
     public static UnityEvent OnMultiplerChanged;
     public static UnityEvent OnPointsChanged;
 
-    void AddToMuliplier(float m)
+    public void AddToMuliplier(float m)
     {
         multiplier += m;
         OnMultiplerChanged.Invoke();
     }
 
-    void SetMuliplier(float m)
+    public void SetMuliplier(float m)
     {
         multiplier = m;
         OnMultiplerChanged.Invoke();
     }
 
-    void AddScore(int baseScore)
+    public void AddScore(int baseScore)
     {
         points += (int)(baseScore * multiplier);
         OnPointsChanged.Invoke();
