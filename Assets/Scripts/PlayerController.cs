@@ -72,6 +72,12 @@ public class PlayerController : MonoBehaviour
     public float poseCooldown = 3f;
     public GameObject poseParticles;
 
+    [Header("Attack")]
+    public float attackTime = 0.2f;
+    public float attackCoolDown = 2f;
+    public GameObject attackParticles;
+    public Collider2D attackCollider;
+
     [Header("Score Multipliers")]
     public float insideFrameScore = 0.1f;
     public float airTimeScore = 0.05f;
@@ -166,6 +172,12 @@ public class PlayerController : MonoBehaviour
     private float _poseCooldownTimer;
     private bool _isPosing;
 
+    // attack
+    private float _attackTimer;
+    private float _attackCooldownTimer;
+    private bool _isAttacking;
+
+
     // references for replay
     private Vector3 _startingPos;
 
@@ -228,6 +240,7 @@ public class PlayerController : MonoBehaviour
         SlideCheck();
         JumpChecks();
         PoseCheck();
+        AttackCheck();
         Jump();
         Fall();
         LandCheck();
@@ -235,6 +248,7 @@ public class PlayerController : MonoBehaviour
         WallJump();
         Slide();
         Pose();
+        Attack();
 
         if (AirCheck())
         {
@@ -941,14 +955,46 @@ public class PlayerController : MonoBehaviour
             particles.transform.SetParent(this.transform);
             PointSystem.Instance.AddToComboScore(poseScore, "Strike a Pose!");
         }
+        else if (!_currentInputFrame.PoseWasPressed)
+        {
+            _isPosing = false;
+        }
     }
 
     public void Pose()
     {
+        if (_isPosing)
+        {
+            // TODO posing
+            Debug.Log("Strike a pose!");
+        }
+    }
+    #endregion
 
+    #region Attack
+    public void AttackCheck()
+    {
+        if (_currentInputFrame.AttackWasPressed)
+        {
+            _isAttacking = true;
+        }
+        else if (!_currentInputFrame.AttackWasPressed)
+        {
+            _isAttacking = false;
+        }
+    }
+
+    public void Attack()
+    {
+        if (_isAttacking)
+        {
+            // TODO attacking
+            Debug.Log("Hit something!");
+        }
     }
 
     #endregion
+
     #region Timers
 
     private void CountTimers()
@@ -973,6 +1019,16 @@ public class PlayerController : MonoBehaviour
         {
             _slideBufferTimer -= Time.deltaTime;
         }
+
+        if (_poseCooldownTimer > 0f)
+        {
+            _poseCooldownTimer -= Time.deltaTime;
+        }
+
+        if (_attackCooldownTimer > 0f)
+        {
+            _attackCooldownTimer -= Time.deltaTime;
+        }        
     }
 
     #endregion
