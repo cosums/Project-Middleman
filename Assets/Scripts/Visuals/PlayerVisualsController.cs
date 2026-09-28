@@ -39,15 +39,9 @@ public class PlayerVisualsController : MonoBehaviour
             if (punchParticle != null) punchParticle.Play();
         }
 
-
-        playerRigAnimator.SetFloat(xVelocityFloat, Mathf.Abs(f.Move.x));
-    }
-
-    private void Update()
-    {
-        Debug.Log("Jumping: " + playerController.GetInAir() + " Sliding: " + playerController.GetIsSliding());
         playerRigAnimator.SetBool(JumpBool, playerController.GetInAir());
         playerRigAnimator.SetBool(SlideBool, playerController.GetIsSliding());
+        playerRigAnimator.SetFloat(xVelocityFloat, Mathf.Abs(f.Move.x));
     }
 
 
