@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PointSystemUI : MonoBehaviour
 {
@@ -60,6 +61,7 @@ public class PointSystemUI : MonoBehaviour
 
         TextMeshProUGUI entry = Instantiate(comboEntryPrefab, comboEntriesPanel.transform).comboText;
         entry.text = "+" + points.ToString() + " " + source;
+        entry.gameObject.SetActive(true);
         entry.color = MultiplierToColor(multiplier);
     }
 
@@ -88,7 +90,7 @@ public class PointSystemUI : MonoBehaviour
         }
         else if (multiplier < 2.5)
         {
-            return Color.orange;
+            return Color.aquamarine;
         }
         else if (multiplier < 4)
         {

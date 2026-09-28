@@ -1,10 +1,14 @@
-using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
+[RequireComponent(typeof(PlayerVisualsController))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Visuals")]
+    PlayerVisualsController playerVisualsController;
+
     [Header("Walk")]
     public float moveThreshold = 0.25f;
     public float maxWalkSpeed = 20f;
@@ -59,6 +63,8 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Collider2D _feetColl;
     [SerializeField] private Collider2D _bodyColl;
+    [SerializeField] private Collider2D _attackColl;
+    [SerializeField] private Collider2D _slideAttackColl;
 
     [Header("Slide")]
     public float slideSpeedMultiplier = 1.25f;
@@ -66,6 +72,8 @@ public class PlayerController : MonoBehaviour
     public float slideAcceleration = 3.5f;
     public float slideDeceleration = 0.5f;
     public float slideMaxSpeedTime = 0.2f;
+    public float minSlideSpeedToScore = 10f;
+    public float minSlideSpeedToHit = 12.5f;
 
     [Header("Pose")]
     public float poseTime = 1f;
@@ -76,7 +84,6 @@ public class PlayerController : MonoBehaviour
     public float attackTime = 0.2f;
     public float attackCoolDown = 2f;
     public GameObject attackParticles;
-    public Collider2D attackCollider;
 
     [Header("Score Multipliers")]
     public float insideFrameScore = 0.1f;
@@ -87,6 +94,8 @@ public class PlayerController : MonoBehaviour
     public int flipScore;
     public int poseScore;
     public int punchScore;
+
+    public static Action OnPlayerAttack;
 
     private Rigidbody2D rb;
 
@@ -185,6 +194,7 @@ public class PlayerController : MonoBehaviour
     {
         isFacingRight = true;
         rb = GetComponent<Rigidbody2D>();
+        playerVisualsController = GetComponent<PlayerVisualsController>();
         _currentMaxWalkSpeed = maxWalkSpeed;
 
         CaptureStart();
@@ -232,6 +242,7 @@ public class PlayerController : MonoBehaviour
     public void SimulateTick(InputFrame frame)
     {
         _currentInputFrame = frame;
+        playerVisualsController.SimulateTick(frame);
 
         CollisionCheck();
         LandCheck();
@@ -280,6 +291,21 @@ public class PlayerController : MonoBehaviour
         verticalVelocity = Mathf.Clamp(verticalVelocity, -maxFallSpeed, 50f);
 
         rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity);
+    }
+
+    public bool GetInAir()
+    {
+        return !_isGrounded;
+    }
+
+    public bool GetIsSliding()
+    {
+        return _isSliding;
+    }
+
+    public float GetPlayerSpeed()
+    {
+        return Mathf.Abs(rb.linearVelocityX);
     }
 
     #region Movement
@@ -911,8 +937,11 @@ public class PlayerController : MonoBehaviour
     {
         if (_isSliding)
         {
-            PointSystem.Instance.AddToMultiplier(slideTimeScore * Time.fixedDeltaTime, "Sliding!");
-
+            if (Mathf.Abs(horizontalVelocity) > minSlideSpeedToScore)
+            {
+                PointSystem.Instance.AddToMultiplier(slideTimeScore * Time.fixedDeltaTime, "Sliding!");
+            }
+            
             if (!_pastSlideMaxSpeed && _isGrounded)
             {
                 _slideSpeed = Mathf.Lerp(_slideSpeed, _targetSlideSpeed, slideAcceleration * Time.fixedDeltaTime);
@@ -975,7 +1004,7 @@ public class PlayerController : MonoBehaviour
     #region Attack
     public void AttackCheck()
     {
-        if (_currentInputFrame.AttackWasPressed)
+        if ((_currentInputFrame.AttackWasPressed && !_isSliding) || (_isSliding && Mathf.Abs(horizontalVelocity) >= minSlideSpeedToHit))
         {
             _isAttacking = true;
         }
@@ -989,8 +1018,15 @@ public class PlayerController : MonoBehaviour
     {
         if (_isAttacking)
         {
+            if (_isSliding)
+            {
+                _slideAttackColl.enabled = true;
+                _attackColl.enabled = false;
+            }
+            
             // TODO attacking
             Debug.Log("Hit something!");
+            OnPlayerAttack?.Invoke();
         }
     }
 
