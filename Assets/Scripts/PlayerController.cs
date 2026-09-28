@@ -982,7 +982,7 @@ public class PlayerController : MonoBehaviour
     #region Attack
     public void AttackCheck()
     {
-        if (_currentInputFrame.AttackWasPressed)
+        if (_currentInputFrame.AttackWasPressed || (_isSliding && Mathf.Abs(horizontalVelocity) >= minSlideSpeedToHit))
         {
             _isAttacking = true;
         }
