@@ -14,6 +14,12 @@ public class PointSystem : MonoBehaviour
     [SerializeField] float quicktimeMaxMult = 1f;
     [SerializeField] float insideFrameMaxMult = 1.5f;
 
+    [Header("Multiplier Decay Delays")]
+    [SerializeField] float airtimeDelay = 0.5f;
+    [SerializeField] float slidingDelay = 1f;
+    [SerializeField] float quicktimeDelay = 5f;
+    [SerializeField] float insideFrameDelay = 0.25f;
+
     [Header("Combo")]
     [SerializeField] float comboDuration = 3;
 
@@ -43,6 +49,7 @@ public class PointSystem : MonoBehaviour
         public float value;
         public float maxValue;
         public float timer;
+        public float delay;
         public Coroutine timerRoutine;
         public Coroutine decayRoutine;
     }
@@ -69,9 +76,16 @@ public class PointSystem : MonoBehaviour
         OnPointsChanged?.Invoke("");
 
         airtime.maxValue = airtimeMaxMult;
+        airtime.delay = airtimeDelay;
+
         sliding.maxValue = slidingMaxMult;
+        sliding.delay = slidingDelay;
+
         quicktime.maxValue = quicktimeMaxMult;
+        quicktime.delay = quicktimeDelay;
+
         insideFrame.maxValue = insideFrameMaxMult;
+        insideFrame.delay = insideFrameDelay;
 
         maxMultiplier = minMultiplier + airtimeMaxMult + slidingMaxMult + quicktimeMaxMult + insideFrameMaxMult;
     }
@@ -111,7 +125,7 @@ public class PointSystem : MonoBehaviour
         OnMultiplierChanged?.Invoke(true);
 
         // Reset (or start) this source's own delay-before-decay timer
-        src.timer = multiplierDuration;
+        src.timer = src.delay;
         if (src.timerRoutine == null)
         {
             src.timerRoutine = StartCoroutine(SourceTimer(src));
