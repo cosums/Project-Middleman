@@ -5,21 +5,14 @@ public class insideFilmFrame : MonoBehaviour
     public float insideFrameMult = 0.01f;
     private bool playerInside = false;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(UnityEngine.Collider2D other)
     {
-        GameObject otherObject = other.gameObject;
-        if (otherObject.layer == 7)
-        {
-            playerInside = true;
-        }
+          print("entered");
+          playerInside = true;
     }
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(UnityEngine.Collider2D other)
     {
-        GameObject otherObject = other.gameObject;
-        if (otherObject.layer == 7)
-        {
-            playerInside = false;
-        }
+          playerInside = false;
     }
 
     // Update is called once per frame

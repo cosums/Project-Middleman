@@ -108,7 +108,7 @@ public class PointSystem : MonoBehaviour
             }
         }
 
-        multiplier = airtimeMult + slidingMult + quicktimeMult;
+        multiplier = airtimeMult + slidingMult + quicktimeMult + insideFrameMult;
 
         if (multiplier > maxMultiplier)
         {
