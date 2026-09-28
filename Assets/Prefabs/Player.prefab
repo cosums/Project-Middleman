@@ -668,7 +668,7 @@ MonoBehaviour:
   attackCollider: {fileID: 1060693049844350942}
   insideFrameScore: 0.02
   airTimeScore: 0.01
-  slideTimeScore: 0.025
+  slideTimeScore: 0.1
   flipScore: 100
   poseScore: 250
   punchScore: 500
