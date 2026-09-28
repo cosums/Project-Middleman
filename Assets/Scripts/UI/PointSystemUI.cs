@@ -12,7 +12,7 @@ public class PointSystemUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI comboPointsTMP;
     [SerializeField] Animator comboPointsAnimator;
     [SerializeField] GameObject comboEntriesPanel;
-    [SerializeField] TextMeshProUGUI comboEntryPrefab;
+    [SerializeField] ComboEntryUI comboEntryPrefab;
 
     [Header("Multiplier UI")]
     [SerializeField] TextMeshProUGUI multiplierTMP;
@@ -43,65 +43,60 @@ public class PointSystemUI : MonoBehaviour
         totalPointsAnimator.SetTrigger("change");
     }
 
-    private void UpdateComboPointsUI(string source)
+    private void UpdateComboPointsUI(string source, int points, float multiplier)
     {
         comboPointsTMP.text = PointSystem.Instance.ComboPoints.ToString();
         comboPointsAnimator.SetTrigger("change");
     }
 
-    private void UpdateComboPanelUI(string source)
+    private void UpdateComboPanelUI(string source, int points, float multiplier)
     {
-        foreach (Transform child in comboEntriesPanel.transform)
-        {
-            GameObject.Destroy(child.gameObject);
-        }
-
         // No more combos
         if (PointSystem.Instance.ComboEntries.Count == 0)
         {
-            Debug.Log("Empty");
-            comboScorePanel.SetActive(false);
+            Debug.Log("Empty Combo Panel");
             return;
         }
 
-        comboScorePanel.SetActive(true);
-
-        foreach ((string s, int points) in PointSystem.Instance.ComboEntries)
-        {
-            TextMeshProUGUI entry = Instantiate(comboEntryPrefab, comboEntriesPanel.transform);
-            entry.text = "+" + points.ToString() + s;
-        }
+        TextMeshProUGUI entry = Instantiate(comboEntryPrefab, comboEntriesPanel.transform).comboText;
+        entry.text = "+" + points.ToString() + " " + source;
+        entry.color = MultiplierToColor(multiplier);
     }
 
     #endregion
 
     #region Multiplier
-    private void UpdateMultiplierUI(string source)
+    private void UpdateMultiplierUI(bool increasing)
     {
         var multiplier = PointSystem.Instance.Multiplier;
         multiplierTMP.text = "x" + multiplier.ToString("0.00##");
         UpdateMultiplierTextColor();
 
-        multiplierAnimator.SetTrigger("change");
+        if (increasing) multiplierAnimator.SetTrigger("change");
     }
 
     private void UpdateMultiplierTextColor()
     {
-        if (PointSystem.Instance.Multiplier < 1.5)
+        multiplierTMP.color = MultiplierToColor(PointSystem.Instance.Multiplier);
+    }
+
+    private Color MultiplierToColor(float multiplier)
+    {
+        if (multiplier < 1.5)
         {
-            multiplierTMP.color = Color.white;
+            return Color.white;
         }
-        else if (PointSystem.Instance.Multiplier < 3)
+        else if (multiplier < 3)
         {
-            multiplierTMP.color = Color.orange;
+            return Color.orange;
         }
-        else if (PointSystem.Instance.Multiplier < 5)
+        else if (multiplier < 5)
         {
-            multiplierTMP.color = Color.red;
+            return Color.red;
         }
         else
         {
-            multiplierTMP.color = Color.purple;
+            return Color.purple;
         }
     }
     #endregion

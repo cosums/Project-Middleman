@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.33333334}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.98039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7842,7 +7842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.33333334}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.98039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8464,7 +8464,7 @@ MonoBehaviour:
   comboPointsTMP: {fileID: 9153383768248674130}
   comboPointsAnimator: {fileID: 908475583923920231}
   comboEntriesPanel: {fileID: 906358279}
-  comboEntryPrefab: {fileID: 2303262929982334711, guid: e7b715b921c5f1945b8d1e18348c328c, type: 3}
+  comboEntryPrefab: {fileID: 310559466371954253, guid: e7b715b921c5f1945b8d1e18348c328c, type: 3}
   multiplierTMP: {fileID: 987775535}
   multiplierAnimator: {fileID: 987775533}
 --- !u!114 &854489190
@@ -8643,9 +8643,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: -0.555773
-    width: 0.99999994
-    height: 2.113503
+    y: -0.5546875
+    width: 1
+    height: 2.109375
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -8883,7 +8883,7 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 1
-  m_ReverseArrangement: 0
+  m_ReverseArrangement: 1
 --- !u!114 &906358284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9459,7 +9459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.33333334}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.98039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10039,8 +10039,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PointSystem
   minMultiplier: 0.5
   maxMultiplier: 5
-  multiplierDuration: 3
-  comboDuration: 3
+  multiplierDuration: 2
+  multiplierDecayRate: 2
+  comboDuration: 2
 --- !u!1 &1635397673
 GameObject:
   m_ObjectHideFlags: 0
