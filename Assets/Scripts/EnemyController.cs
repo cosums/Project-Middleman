@@ -5,6 +5,7 @@ public class EnemyController : MonoBehaviour
 {
     public List<Transform> Waypoints;
     public float MoveSpeed;
+    public Collider2D Collider;
 
     private int _waypointIndex;
     private int _dir = 1;
