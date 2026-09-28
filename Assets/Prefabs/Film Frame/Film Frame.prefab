@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5579178199525675002}
   - component: {fileID: 7247044484377163337}
-  - component: {fileID: 5098266314951922190}
   - component: {fileID: 5767884569048228674}
-  - component: {fileID: 8674270661045670613}
+  - component: {fileID: 2730403917162389513}
   m_Layer: 0
   m_Name: Film Frame
   m_TagString: Untagged
@@ -95,29 +94,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &5098266314951922190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 893173804989020951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29a074d529cf945029ef7cf40540c9df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineAnimate
-  m_Target: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_LoopMode: 1
-  m_Method: 0
-  m_Duration: 20
-  m_MaxSpeed: 7.7197447
-  m_EasingMode: 0
-  m_AlignmentMode: 1
-  m_ObjectForwardAxis: 0
-  m_ObjectUpAxis: 5
-  m_StartOffset: 0
 --- !u!61 &5767884569048228674
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -164,7 +140,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 24, y: 13}
   m_EdgeRadius: 0
---- !u!114 &8674270661045670613
+--- !u!114 &2730403917162389513
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,9 +149,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 893173804989020951}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: affc70df1bd4fc14a9557a667f9905e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 135b1089238a3714d9fb63aeca975524, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::InsideFilmFrame
   insideFrameMult: 0.01
 --- !u!1 &3467060338022827504
 GameObject:
