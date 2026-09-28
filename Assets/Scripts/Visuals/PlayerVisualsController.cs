@@ -1,8 +1,13 @@
+using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class PlayerVisualsController : MonoBehaviour
 {
     [SerializeField] Animator playerRigAnimator;
+
+    [Header("Particles")]
+    [SerializeField] ParticleSystem runParticle;
+    [SerializeField] ParticleSystem slideParticle;
     [SerializeField] ParticleSystem punchParticle;
 
     private PlayerController playerController;
@@ -24,6 +29,7 @@ public class PlayerVisualsController : MonoBehaviour
     {
         _currentInputFrame = frame;
         UpdatePlayerAnimation();
+        UpdatePlayerParticles();
     }
 
 
@@ -42,6 +48,48 @@ public class PlayerVisualsController : MonoBehaviour
         playerRigAnimator.SetBool(JumpBool, playerController.GetInAir());
         playerRigAnimator.SetBool(SlideBool, playerController.GetIsSliding());
         playerRigAnimator.SetFloat(xVelocityFloat, Mathf.Abs(f.Move.x));
+    }
+
+    private void UpdatePlayerParticles()
+    {
+
+        // Ground particles
+        if (playerController.GetInAir()) return;
+        if (playerController.GetPlayerSpeed() < 1f)
+        {
+            DisableParticle(runParticle);
+            DisableParticle(slideParticle);
+            return;
+        }
+
+
+
+        // Sliding Particles
+        if (_currentInputFrame.SlideWasPressed)
+        {
+            slideParticle.Emit(10);
+        }
+        if (playerController.GetIsSliding())
+        { 
+            EnableParticle(slideParticle);
+            DisableParticle(runParticle);
+            return;
+        }
+
+        // Running particles
+        if (Mathf.Abs(_currentInputFrame.Move.x) > 0.01f) EnableParticle(runParticle);
+    }
+
+    private void EnableParticle(ParticleSystem particle)
+    {
+        if (!particle.isPlaying)
+            particle.Play();
+    }
+
+    private void DisableParticle(ParticleSystem particle)
+    {
+        if (particle.isPlaying)
+            particle.Stop();
     }
 
 

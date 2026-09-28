@@ -303,6 +303,11 @@ public class PlayerController : MonoBehaviour
         return _isSliding;
     }
 
+    public float GetPlayerSpeed()
+    {
+        return Mathf.Abs(rb.linearVelocityX);
+    }
+
     #region Movement
 
     private void Move(float acceleration, float deceleration, Vector2 moveInput)
