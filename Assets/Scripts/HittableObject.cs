@@ -1,4 +1,5 @@
 using System;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class HittableObject : MonoBehaviour
@@ -7,14 +8,17 @@ public class HittableObject : MonoBehaviour
     public GameObject DeathParticles;
     public int pointsGivenOnBreak;
     public string onHitScoreMessage;
+    public float screenShakeAmount;
 
     public static Action ObjectHit;
 
     private bool _inPlayerAttackBox;
+    private CinemachineImpulseSource impulseSource;
 
     public void OnEnable()
     {
         PlayerController.OnPlayerAttack += HandlePlayerAttack;
+        impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     public void OnDisable()
@@ -43,9 +47,14 @@ public class HittableObject : MonoBehaviour
         if (_inPlayerAttackBox)
         {
             if (DeathParticles != null) {
-                Instantiate(DeathParticles);
-                DeathParticles.transform.position = transform.position;
-                DeathParticles.GetComponent<ParticleSystem>().Play();
+                GameObject particles = Instantiate(DeathParticles);
+                particles.transform.position = transform.position;
+                particles.GetComponent<ParticleSystem>().Play();
+            }
+
+            if (impulseSource != null)
+            {
+                impulseSource.GenerateImpulseWithForce(screenShakeAmount);
             }
 
             ObjectHit?.Invoke();
