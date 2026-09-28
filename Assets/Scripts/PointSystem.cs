@@ -99,7 +99,7 @@ public class PointSystem : MonoBehaviour
                 quicktimeMult = quicktimeMaxMult;
             }
         }
-        else if (source == "Inside Frame!")
+        else if (source == "In Frame!")
         {
             insideFrameMult += m;
             if (insideFrameMult > insideFrameMaxMult)
