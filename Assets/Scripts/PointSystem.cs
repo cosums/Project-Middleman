@@ -7,7 +7,7 @@ public class PointSystem : MonoBehaviour
 {
     [Header("Mulitplier")]
     [SerializeField] float minMultiplier = 0.5f;
-    [SerializeField] float multiplierDuration = 3f; // if time since last multiplier change is greater, start decaying
+    [SerializeField] float multiplierDuration = 3f; // delay before an individual source starts decaying
     [SerializeField] float multiplierDecayRate = 1f; // multiplier units lost per second while decaying
     [SerializeField] float airtimeMaxMult = 1f;
     [SerializeField] float slidingMaxMult = 1f;
@@ -15,7 +15,7 @@ public class PointSystem : MonoBehaviour
     [SerializeField] float insideFrameMaxMult = 1.5f;
 
     [Header("Combo")]
-    [SerializeField] float comboDuration = 3; // if time since last point source is greater, bank the combo
+    [SerializeField] float comboDuration = 3;
 
     public static PointSystem Instance;
     public int Points => points;
@@ -23,28 +23,34 @@ public class PointSystem : MonoBehaviour
     public float Multiplier => multiplier;
     public IReadOnlyList<(string pointSource, int points)> ComboEntries => comboEntries;
 
-    public Action<bool> OnMultiplierChanged; // bool isIncreasing
-    public Action<string, int, float> OnComboPointsChanged; // string source, int points, float currMultiplier
+    public Action<bool> OnMultiplierChanged;
+    public Action<string, int, float> OnComboPointsChanged;
     public Action<string> OnPointsChanged;
 
     private int points = 0;
     private int comboPoints = 0;
     private float multiplier = 1;
     private float maxMultiplier = 5;
-    private float airtimeMult = 0f;
-    private float slidingMult = 0f;
-    private float quicktimeMult = 0f;
-    private float insideFrameMult = 0f;
     private List<(string pointSource, int points)> comboEntries = new List<(string pointSource, int points)>();
-    
 
     // Timers
     private float comboTimer = 0;
     private Coroutine comboRoutine;
-    private float multiplierTimer = 0;
-    private Coroutine multiplierRoutine;
-    private Coroutine multiplierDecayRoutine;
 
+    // --- Per-source multiplier state ---
+    private class MultiplierSource
+    {
+        public float value;
+        public float maxValue;
+        public float timer;
+        public Coroutine timerRoutine;
+        public Coroutine decayRoutine;
+    }
+
+    private MultiplierSource airtime = new MultiplierSource();
+    private MultiplierSource sliding = new MultiplierSource();
+    private MultiplierSource quicktime = new MultiplierSource();
+    private MultiplierSource insideFrame = new MultiplierSource();
 
     private void Awake()
     {
@@ -53,7 +59,6 @@ public class PointSystem : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
     }
 
@@ -62,169 +67,104 @@ public class PointSystem : MonoBehaviour
         OnMultiplierChanged?.Invoke(false);
         OnComboPointsChanged?.Invoke("", 0, 0);
         OnPointsChanged?.Invoke("");
+
+        airtime.maxValue = airtimeMaxMult;
+        sliding.maxValue = slidingMaxMult;
+        quicktime.maxValue = quicktimeMaxMult;
+        insideFrame.maxValue = insideFrameMaxMult;
+
         maxMultiplier = minMultiplier + airtimeMaxMult + slidingMaxMult + quicktimeMaxMult + insideFrameMaxMult;
     }
 
     #region Multiplier
+    private MultiplierSource GetSource(string source)
+    {
+        switch (source)
+        {
+            case "Air Time!": return airtime;
+            case "Sliding!": return sliding;
+            case "Pose on Queue!": return quicktime;
+            case "In Frame!": return insideFrame;
+            default:
+                Debug.LogWarning($"Unknown multiplier source: {source}");
+                return null;
+        }
+    }
+
     public void AddToMultiplier(float m, string source)
     {
-        // Adding to the multiplier cancels any in-progress decay
-        if (multiplierDecayRoutine != null)
+        MultiplierSource src = GetSource(source);
+        if (src == null) return;
+
+        // Adding to this source cancels only ITS in-progress decay
+        if (src.decayRoutine != null)
         {
-            StopCoroutine(multiplierDecayRoutine);
-            multiplierDecayRoutine = null;
+            StopCoroutine(src.decayRoutine);
+            src.decayRoutine = null;
         }
 
-        if (source == "Air Time!")
-        {
-            airtimeMult += m;
-            if (airtimeMult > airtimeMaxMult)
-            {
-                airtimeMult = airtimeMaxMult;
-            }
-        }
-        else if (source == "Sliding!")
-        {
-            slidingMult += m;
-            if (slidingMult > slidingMaxMult)
-            {
-                slidingMult = slidingMaxMult;
-            }
-        }
-        else if (source == "Pose on Queue!")
-        {
-            quicktimeMult += m;
-            if (quicktimeMult > quicktimeMaxMult)
-            {
-                quicktimeMult = quicktimeMaxMult;
-            }
-        }
-        else if (source == "In Frame!")
-        {
-            insideFrameMult += m;
-            if (insideFrameMult > insideFrameMaxMult)
-            {
-                insideFrameMult = insideFrameMaxMult;
-            }
-        }
+        src.value += m;
+        if (src.value > src.maxValue) src.value = src.maxValue;
+        if (src.value < 0) src.value = 0;
 
-        multiplier = minMultiplier + airtimeMult + quicktimeMult + slidingMult + insideFrameMult;
-        if (multiplier > maxMultiplier)
-        {
-            multiplier = maxMultiplier;
-        }
-        else if (multiplier < minMultiplier)
-        {
-            multiplier = minMultiplier;
-        }
-        multiplier = MathF.Floor(multiplier * 100f) / 100f;
+        RecalculateMultiplier();
         OnMultiplierChanged?.Invoke(true);
 
-        multiplierTimer = multiplierDuration;
-        if (multiplierRoutine == null) multiplierRoutine = StartCoroutine(MultiplierTimer());
+        // Reset (or start) this source's own delay-before-decay timer
+        src.timer = multiplierDuration;
+        if (src.timerRoutine == null)
+        {
+            src.timerRoutine = StartCoroutine(SourceTimer(src));
+        }
     }
 
     /// <summary>
-    /// Timer resets after multiplier is updated
-    /// When timer hits 0, start decaying multiplier value
+    /// Per-source timer. Resets whenever that source is added to.
+    /// When it hits 0, that source (only) starts decaying.
     /// </summary>
-    /// <returns></returns>
-    private IEnumerator MultiplierTimer()
+    private IEnumerator SourceTimer(MultiplierSource src)
     {
-        while (multiplierTimer > 0)
+        while (src.timer > 0)
         {
-            multiplierTimer -= Time.deltaTime;
+            src.timer -= Time.deltaTime;
             yield return null;
         }
 
-        multiplierRoutine = null;
+        src.timerRoutine = null;
 
-        if (multiplierDecayRoutine == null)
+        if (src.decayRoutine == null)
         {
-            multiplierDecayRoutine = StartCoroutine(MultiplierDecay());
+            src.decayRoutine = StartCoroutine(SourceDecay(src));
         }
     }
 
     /// <summary>
-    /// Decreases the multiplier by a certain rate
+    /// Decays a single source's value independently of all others.
     /// </summary>
-    /// <returns></returns>
-    private IEnumerator MultiplierDecay()
+    private IEnumerator SourceDecay(MultiplierSource src)
     {
-        float activeMultipliers = 0;
+        while (src.value > 0)
+        {
+            src.value -= multiplierDecayRate * Time.deltaTime;
+            if (src.value < 0) src.value = 0;
 
-        if (airtimeMult > 0)
-        {
-            activeMultipliers += airtimeMaxMult;
-        }
-        if (slidingMult > 0)
-        {
-            activeMultipliers += slidingMaxMult;
-        }
-        if (quicktimeMult > 0)
-        {
-            activeMultipliers += quicktimeMaxMult;
-        }
-        if (insideFrameMult > 0)
-        {
-            activeMultipliers += insideFrameMaxMult;
-        }
-
-        while (multiplier > minMultiplier)
-        {
-            
-            if (airtimeMult > 0)
-            {
-                airtimeMult -= airtimeMaxMult / activeMultipliers * Time.deltaTime;
-                if (airtimeMult < 0)
-                {
-                    airtimeMult = 0;
-                    activeMultipliers -= airtimeMaxMult;
-                }
-            }
-            if (slidingMult > 0)
-            {
-                slidingMult -= slidingMaxMult / activeMultipliers * Time.deltaTime;
-                if (slidingMult < 0)
-                {
-                    slidingMult = 0;
-                    activeMultipliers -= slidingMaxMult;
-                }
-            }
-            if (quicktimeMult > 0)
-            {
-                quicktimeMult -= quicktimeMaxMult / activeMultipliers * Time.deltaTime;
-                if (quicktimeMult < 0)
-                {
-                    quicktimeMult = 0;
-                    activeMultipliers -= quicktimeMaxMult;
-                }
-            }
-            if (insideFrameMult > 0)
-            {
-                insideFrameMult -= insideFrameMaxMult / activeMultipliers * Time.deltaTime;
-                if (insideFrameMult < 0)
-                {
-                    insideFrameMult = 0;
-                    activeMultipliers -= insideFrameMaxMult;
-                }
-            }
-
-            multiplier = minMultiplier + airtimeMult + quicktimeMult + slidingMult + insideFrameMult;
-            multiplier = MathF.Floor(multiplier * 100f) / 100f;
-            if (multiplier < minMultiplier)
-            {
-                multiplier = minMultiplier;
-            }
-
+            RecalculateMultiplier();
             OnMultiplierChanged?.Invoke(false);
             yield return null;
         }
 
-        Debug.Log("Multiplier decayed to minimum");
-        multiplierDecayRoutine = null;
+        src.decayRoutine = null;
     }
 
+    private void RecalculateMultiplier()
+    {
+        multiplier = minMultiplier + airtime.value + sliding.value + quicktime.value + insideFrame.value;
+
+        if (multiplier > maxMultiplier) multiplier = maxMultiplier;
+        else if (multiplier < minMultiplier) multiplier = minMultiplier;
+
+        multiplier = MathF.Floor(multiplier * 100f) / 100f;
+    }
     #endregion
 
     #region Combo Score
@@ -235,7 +175,6 @@ public class PointSystem : MonoBehaviour
         comboEntries.Add((source, pointsToAdd));
         OnComboPointsChanged?.Invoke(source, pointsToAdd, multiplier);
 
-        // start combo timer
         comboTimer = comboDuration;
         if (comboRoutine == null) comboRoutine = StartCoroutine(ComboTimer());
     }
@@ -269,7 +208,6 @@ public class PointSystem : MonoBehaviour
         OnPointsChanged?.Invoke(source);
     }
 
-    // For testing
     public void AddRandomPointSource()
     {
         AddToComboScore(UnityEngine.Random.Range(10, 500), "bleh ");
