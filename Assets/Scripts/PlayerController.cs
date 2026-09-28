@@ -67,6 +67,7 @@ public class PlayerController : MonoBehaviour
     public float slideDeceleration = 0.5f;
     public float slideMaxSpeedTime = 0.2f;
     public float minSlideSpeedToScore = 10f;
+    public float minSlideSpeedToHit = 12.5f;
 
     [Header("Pose")]
     public float poseTime = 1f;
@@ -981,7 +982,7 @@ public class PlayerController : MonoBehaviour
     #region Attack
     public void AttackCheck()
     {
-        if (_currentInputFrame.AttackWasPressed)
+        if ((_currentInputFrame.AttackWasPressed && !_isSliding) || (_isSliding && Mathf.Abs(horizontalVelocity) >= minSlideSpeedToHit))
         {
             _isAttacking = true;
         }
