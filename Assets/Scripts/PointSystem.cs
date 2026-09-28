@@ -108,8 +108,7 @@ public class PointSystem : MonoBehaviour
             }
         }
 
-        multiplier = airtimeMult + slidingMult + quicktimeMult + insideFrameMult;
-
+        multiplier = minMultiplier + airtimeMult + quicktimeMult + slidingMult + insideFrameMult;
         if (multiplier > maxMultiplier)
         {
             multiplier = maxMultiplier;
@@ -174,7 +173,6 @@ public class PointSystem : MonoBehaviour
         while (multiplier > minMultiplier)
         {
             
-            multiplier -= multiplierDecayRate * Time.deltaTime;
             if (airtimeMult > 0)
             {
                 airtimeMult -= airtimeMaxMult / activeMultipliers * Time.deltaTime;
@@ -204,7 +202,7 @@ public class PointSystem : MonoBehaviour
             }
             if (insideFrameMult > 0)
             {
-                insideFrameMult -= insideFrameMult / activeMultipliers * Time.deltaTime;
+                insideFrameMult -= insideFrameMaxMult / activeMultipliers * Time.deltaTime;
                 if (insideFrameMult < 0)
                 {
                     insideFrameMult = 0;
@@ -212,6 +210,7 @@ public class PointSystem : MonoBehaviour
                 }
             }
 
+            multiplier = minMultiplier + airtimeMult + quicktimeMult + slidingMult + insideFrameMult;
             multiplier = MathF.Floor(multiplier * 100f) / 100f;
             if (multiplier < minMultiplier)
             {
