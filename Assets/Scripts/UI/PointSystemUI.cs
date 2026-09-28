@@ -86,17 +86,21 @@ public class PointSystemUI : MonoBehaviour
         {
             return Color.white;
         }
-        else if (multiplier < 3)
+        else if (multiplier < 2.5)
         {
             return Color.orange;
         }
-        else if (multiplier < 5)
+        else if (multiplier < 4)
         {
             return Color.red;
         }
-        else
+        else if (multiplier <= 5)
         {
             return Color.purple;
+        }
+        else
+        {
+            return Color.pink;
         }
     }
     #endregion

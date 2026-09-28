@@ -47,8 +47,8 @@ MonoBehaviour:
   minMultiplier: 0.5
   multiplierDuration: 0.5
   multiplierDecayRate: 2
-  airtimeMaxMult: 2
-  slidingMaxMult: 2
-  quicktimeMaxMult: 1
+  airtimeMaxMult: 1.5
+  slidingMaxMult: 1
+  quicktimeMaxMult: 1.5
   insideFrameMaxMult: 1.5
   comboDuration: 2
