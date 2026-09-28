@@ -66,6 +66,7 @@ public class PlayerController : MonoBehaviour
     public float slideAcceleration = 3.5f;
     public float slideDeceleration = 0.5f;
     public float slideMaxSpeedTime = 0.2f;
+    public float minSlideSpeedToScore = 10f;
 
     [Header("Pose")]
     public float poseTime = 1f;
@@ -913,8 +914,11 @@ public class PlayerController : MonoBehaviour
     {
         if (_isSliding)
         {
-            PointSystem.Instance.AddToMultiplier(slideTimeScore * Time.fixedDeltaTime, "Sliding!");
-
+            if (Mathf.Abs(horizontalVelocity) > minSlideSpeedToScore)
+            {
+                PointSystem.Instance.AddToMultiplier(slideTimeScore * Time.fixedDeltaTime, "Sliding!");
+            }
+            
             if (!_pastSlideMaxSpeed && _isGrounded)
             {
                 _slideSpeed = Mathf.Lerp(_slideSpeed, _targetSlideSpeed, slideAcceleration * Time.fixedDeltaTime);
