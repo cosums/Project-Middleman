@@ -3,8 +3,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
+[RequireComponent(typeof(PlayerVisualsController))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Visuals")]
+    PlayerVisualsController playerVisualsController;
+
     [Header("Walk")]
     public float moveThreshold = 0.25f;
     public float maxWalkSpeed = 20f;
@@ -190,6 +194,7 @@ public class PlayerController : MonoBehaviour
     {
         isFacingRight = true;
         rb = GetComponent<Rigidbody2D>();
+        playerVisualsController = GetComponent<PlayerVisualsController>();
         _currentMaxWalkSpeed = maxWalkSpeed;
 
         CaptureStart();
@@ -237,6 +242,7 @@ public class PlayerController : MonoBehaviour
     public void SimulateTick(InputFrame frame)
     {
         _currentInputFrame = frame;
+        playerVisualsController.SimulateTick(frame);
 
         CollisionCheck();
         LandCheck();
@@ -285,6 +291,16 @@ public class PlayerController : MonoBehaviour
         verticalVelocity = Mathf.Clamp(verticalVelocity, -maxFallSpeed, 50f);
 
         rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity);
+    }
+
+    public bool GetInAir()
+    {
+        return !_isGrounded;
+    }
+
+    public bool GetIsSliding()
+    {
+        return _isSliding;
     }
 
     #region Movement
