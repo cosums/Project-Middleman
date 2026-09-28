@@ -5,6 +5,8 @@ public class HittableObject : MonoBehaviour
 {
     public Collider2D Collider;
     public GameObject DeathParticles;
+    public int pointsGivenOnBreak;
+    public string onHitScoreMessage;
 
     public static Action ObjectHit;
 
@@ -47,6 +49,8 @@ public class HittableObject : MonoBehaviour
             }
 
             ObjectHit?.Invoke();
+
+            PointSystem.Instance.AddToComboScore(pointsGivenOnBreak, onHitScoreMessage);
 
             Destroy(gameObject);
         }
