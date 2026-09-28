@@ -911,6 +911,8 @@ public class PlayerController : MonoBehaviour
     {
         if (_isSliding)
         {
+            PointSystem.Instance.AddToMultiplier(slideTimeScore * Time.fixedDeltaTime, "Sliding!");
+
             if (!_pastSlideMaxSpeed && _isGrounded)
             {
                 _slideSpeed = Mathf.Lerp(_slideSpeed, _targetSlideSpeed, slideAcceleration * Time.fixedDeltaTime);
@@ -931,7 +933,6 @@ public class PlayerController : MonoBehaviour
 
             horizontalVelocity = _slideSpeed;
             _slideTime += Time.fixedDeltaTime;
-            PointSystem.Instance.AddToMultiplier(slideTimeScore * Time.fixedDeltaTime, "Sliding!");
         } 
     }
 
