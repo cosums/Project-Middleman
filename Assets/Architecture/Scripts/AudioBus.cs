@@ -22,9 +22,6 @@ public class AudioBus : MonoBehaviour
     {
         // Create and configure audio sources
         SetupAudioSources();
-        
-        // Start playing background music
-        PlayMusic(musicTrack, true);
     }
     
     void SetupAudioSources()
