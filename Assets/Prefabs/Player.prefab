@@ -668,9 +668,9 @@ MonoBehaviour:
   insideFrameScore: 0.1
   airTimeScore: 0.05
   slideTimeScore: 0.025
-  flipScore: 0
-  poseScore: 0
-  punchScore: 0
+  flipScore: 100
+  poseScore: 250
+  punchScore: 500
 --- !u!1 &7206434210162189124
 GameObject:
   m_ObjectHideFlags: 0
