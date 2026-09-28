@@ -917,7 +917,7 @@ public class PlayerController : MonoBehaviour
 
             horizontalVelocity = _slideSpeed;
             _slideTime += Time.fixedDeltaTime;
-            PointSystem.Instance.AddToMultiplier(slideTimeScore * Time.fixedDeltaTime, "Slide Time");
+            PointSystem.Instance.AddToMultiplier(slideTimeScore * Time.fixedDeltaTime, "Sliding!");
         } 
     }
 

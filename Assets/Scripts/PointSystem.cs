@@ -7,9 +7,11 @@ public class PointSystem : MonoBehaviour
 {
     [Header("Mulitplier")]
     [SerializeField] float minMultiplier = 0.5f;
-    [SerializeField] float maxMultiplier = 5;
-    [SerializeField] float multiplierDuration = 3; // if time since last multiplier change is greater, start decaying
+    [SerializeField] float multiplierDuration = 3f; // if time since last multiplier change is greater, start decaying
     [SerializeField] float multiplierDecayRate = 1f; // multiplier units lost per second while decaying
+    [SerializeField] float airtimeMaxMult = 2f;
+    [SerializeField] float slidingMaxMult = 1.5f;
+    [SerializeField] float quicktimeMaxMult = 1f;
 
     [Header("Combo")]
     [SerializeField] float comboDuration = 3; // if time since last point source is greater, bank the combo
@@ -27,7 +29,12 @@ public class PointSystem : MonoBehaviour
     private int points = 0;
     private int comboPoints = 0;
     private float multiplier = 1;
+    private float maxMultiplier = 5;
+    private float airtimeMult = 0f;
+    private float slidingMult = 0f;
+    private float quicktimeMult = 0f;
     private List<(string pointSource, int points)> comboEntries = new List<(string pointSource, int points)>();
+    
 
     // Timers
     private float comboTimer = 0;
@@ -53,6 +60,7 @@ public class PointSystem : MonoBehaviour
         OnMultiplierChanged?.Invoke(false);
         OnComboPointsChanged?.Invoke("", 0, 0);
         OnPointsChanged?.Invoke("");
+        maxMultiplier = minMultiplier + airtimeMaxMult + slidingMaxMult + quicktimeMaxMult;
     }
 
     #region Multiplier
@@ -65,7 +73,32 @@ public class PointSystem : MonoBehaviour
             multiplierDecayRoutine = null;
         }
 
-        multiplier += m;
+        if (source == "Air Time!")
+        {
+            airtimeMult += m;
+            if (airtimeMult > airtimeMaxMult)
+            {
+                airtimeMult = airtimeMaxMult;
+            }
+        }
+        else if (source == "Sliding!")
+        {
+            slidingMult += m;
+            if (slidingMult > slidingMaxMult)
+            {
+                slidingMult = slidingMaxMult;
+            }
+        }
+        else if (source == "Pose on Queue!")
+        {
+            quicktimeMult += m;
+            if (quicktimeMult > quicktimeMaxMult)
+            {
+                quicktimeMult = quicktimeMaxMult;
+            }
+        }
+
+        multiplier = airtimeMult + slidingMult + quicktimeMult;
         if (multiplier > maxMultiplier)
         {
             multiplier = maxMultiplier;
@@ -108,9 +141,53 @@ public class PointSystem : MonoBehaviour
     /// <returns></returns>
     private IEnumerator MultiplierDecay()
     {
+        float activeMultipliers = 0;
+
+        if (airtimeMult > 0)
+        {
+            activeMultipliers += airtimeMaxMult;
+        }
+        if (slidingMult > 0)
+        {
+            activeMultipliers += slidingMaxMult;
+        }
+        if (quicktimeMult > 0)
+        {
+            activeMultipliers += quicktimeMaxMult;
+        }
+
         while (multiplier > minMultiplier)
         {
+            
             multiplier -= multiplierDecayRate * Time.deltaTime;
+            if (airtimeMult > 0)
+            {
+                airtimeMult -= airtimeMaxMult / activeMultipliers * Time.deltaTime;
+                if (airtimeMult < 0)
+                {
+                    airtimeMult = 0;
+                    activeMultipliers -= airtimeMaxMult;
+                }
+            }
+            if (slidingMult > 0)
+            {
+                slidingMult -= slidingMaxMult / activeMultipliers * Time.deltaTime;
+                if (slidingMult < 0)
+                {
+                    slidingMult = 0;
+                    activeMultipliers -= slidingMaxMult;
+                }
+            }
+            if (quicktimeMult > 0)
+            {
+                quicktimeMult -= quicktimeMaxMult / activeMultipliers * Time.deltaTime;
+                if (quicktimeMult < 0)
+                {
+                    quicktimeMult = 0;
+                    activeMultipliers -= quicktimeMaxMult;
+                }
+            }
+
             multiplier = MathF.Floor(multiplier * 100f) / 100f;
             if (multiplier < minMultiplier)
             {
