@@ -11,7 +11,7 @@ public class PointSystem : MonoBehaviour
     [SerializeField] float multiplierDecayRate = 1f; // multiplier units lost per second while decaying
     [SerializeField] float airtimeMaxMult = 1f;
     [SerializeField] float slidingMaxMult = 1f;
-    [SerializeField] float quicktimeMaxMult = 1f;
+    [SerializeField] float quicktimeMaxMult = 2.5f;
     [SerializeField] float insideFrameMaxMult = 1.5f;
 
     [Header("Multiplier Decay Delays")]

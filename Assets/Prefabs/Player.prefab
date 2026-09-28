@@ -609,7 +609,7 @@ MonoBehaviour:
   attackCollider: {fileID: 1060693049844350942}
   insideFrameScore: 0.02
   airTimeScore: 0.01
-  slideTimeScore: 0.25
+  slideTimeScore: 0.5
   flipScore: 100
   poseScore: 250
   punchScore: 500
@@ -679,7 +679,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.03923562, y: -0.7964665}
+  m_Offset: {x: -0.05305487, y: -0.7964665}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -689,7 +689,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.3532097, y: 0.3263718}
+  m_Size: {x: 1.1044742, y: 0.3263718}
   m_EdgeRadius: 0
 --- !u!1 &7543039566982831019
 GameObject:
