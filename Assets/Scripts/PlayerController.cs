@@ -1,7 +1,7 @@
-using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -87,6 +87,8 @@ public class PlayerController : MonoBehaviour
     public int flipScore;
     public int poseScore;
     public int punchScore;
+
+    public static Action OnPlayerAttack;
 
     private Rigidbody2D rb;
 
@@ -991,6 +993,7 @@ public class PlayerController : MonoBehaviour
         {
             // TODO attacking
             Debug.Log("Hit something!");
+            OnPlayerAttack?.Invoke();
         }
     }
 
