@@ -664,6 +664,8 @@ MonoBehaviour:
   wallJumpGravityOnReleaseMultiplier: 1
   _feetColl: {fileID: 1799783505468356424}
   _bodyColl: {fileID: 8588344271095869751}
+  _attackColl: {fileID: 3415250129658431489}
+  _slideAttackColl: {fileID: 4311273045981576095}
   slideSpeedMultiplier: 1.5
   slideBufferTime: 0.125
   slideAcceleration: 25
@@ -677,7 +679,6 @@ MonoBehaviour:
   attackTime: 0.2
   attackCoolDown: 2
   attackParticles: {fileID: 0}
-  attackCollider: {fileID: 0}
   insideFrameScore: 0.02
   airTimeScore: 0.01
   slideTimeScore: 0.5

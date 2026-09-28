@@ -59,6 +59,8 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Collider2D _feetColl;
     [SerializeField] private Collider2D _bodyColl;
+    [SerializeField] private Collider2D _attackColl;
+    [SerializeField] private Collider2D _slideAttackColl;
 
     [Header("Slide")]
     public float slideSpeedMultiplier = 1.25f;
@@ -78,7 +80,6 @@ public class PlayerController : MonoBehaviour
     public float attackTime = 0.2f;
     public float attackCoolDown = 2f;
     public GameObject attackParticles;
-    public Collider2D attackCollider;
 
     [Header("Score Multipliers")]
     public float insideFrameScore = 0.1f;
@@ -996,6 +997,12 @@ public class PlayerController : MonoBehaviour
     {
         if (_isAttacking)
         {
+            if (_isSliding)
+            {
+                _slideAttackColl.enabled = true;
+                _attackColl.enabled = false;
+            }
+            
             // TODO attacking
             Debug.Log("Hit something!");
             OnPlayerAttack?.Invoke();
