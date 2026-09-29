@@ -41632,9 +41632,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: -0.43103448
+    y: -0.80629545
     width: 1
-    height: 1.862069
+    height: 2.6150122
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -42196,6 +42196,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crate (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8548898610738252899, guid: d16c816d6658f82458895eec6ac9a517, type: 3}
+      propertyPath: woodenBreakSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 58b4049fbf0e78473925430e5dbae66a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -45478,6 +45482,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crate
       objectReference: {fileID: 0}
+    - target: {fileID: 8548898610738252899, guid: d16c816d6658f82458895eec6ac9a517, type: 3}
+      propertyPath: woodenBreakSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 58b4049fbf0e78473925430e5dbae66a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
