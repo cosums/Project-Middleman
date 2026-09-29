@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Diagnostics.Tracing;
 using System.Runtime.CompilerServices;
 using UnityEditor.Experimental.GraphView;
@@ -13,12 +14,17 @@ public class PlayerVisualsController : MonoBehaviour
     [SerializeField] ParticleSystem punchParticle;
 
     private PlayerController playerController;
-    
-    static readonly int FlipBool = Animator.StringToHash("isFlipping");
-    static readonly int KickTrigger = Animator.StringToHash("kick");
+
+    static readonly int IsAttackingBool = Animator.StringToHash("isAttacking");
     static readonly int XVelocityFloat = Animator.StringToHash("xVelocity");
-    static readonly int JumpBool = Animator.StringToHash("inAir");
+    static readonly int InAirBool = Animator.StringToHash("inAir");
+    static readonly int FlipBool = Animator.StringToHash("isFlipping");
     static readonly int SlideBool = Animator.StringToHash("isSliding");
+
+    private bool inAir;
+    private bool isFlipping;
+    private bool isSliding;
+
 
     InputFrame _currentInputFrame;
 
@@ -30,6 +36,7 @@ public class PlayerVisualsController : MonoBehaviour
     public void SimulateTick(InputFrame frame)
     {
         _currentInputFrame = frame;
+
         UpdatePlayerAnimation();
         UpdatePlayerParticles();
     }
@@ -42,20 +49,29 @@ public class PlayerVisualsController : MonoBehaviour
         
         if (f.AttackWasPressed)
         {
-            if (playerController.GetInAir()) playerRigAnimator.SetTrigger(KickTrigger);
-            if (punchParticle != null) punchParticle.Play();
+            StartCoroutine(AttackBoolSequence());
         }
 
-
         // jump
-        playerRigAnimator.SetBool(JumpBool, playerController.GetInAir());
+        if (inAir != playerController.GetInAir())
+        {
+            inAir = playerController.GetInAir();
+            playerRigAnimator.SetBool(InAirBool, inAir);
+        }
 
         // flip
-        bool isFlipping = playerController.GetRemainingJumps() == 0;
-        playerRigAnimator.SetBool(FlipBool, isFlipping);
-
+        if (isFlipping != (playerController.GetRemainingJumps() == 0))
+        {
+            isFlipping = (playerController.GetRemainingJumps() == 0);
+            playerRigAnimator.SetBool(FlipBool, isFlipping);
+        }
+        
         // Movement
-        playerRigAnimator.SetBool(SlideBool, playerController.GetIsSliding());
+        if (isSliding != playerController.GetIsSliding())
+        {
+            isSliding = playerController.GetIsSliding();
+            playerRigAnimator.SetBool(SlideBool, isSliding);
+        }
         playerRigAnimator.SetFloat(XVelocityFloat, Mathf.Abs(f.Move.x));
     }
 
@@ -70,8 +86,6 @@ public class PlayerVisualsController : MonoBehaviour
             DisableParticle(slideParticle);
             return;
         }
-
-
 
         // Sliding Particles
         if (_currentInputFrame.SlideWasPressed)
@@ -99,6 +113,13 @@ public class PlayerVisualsController : MonoBehaviour
     {
         if (particle.isPlaying)
             particle.Stop();
+    }
+
+    private IEnumerator AttackBoolSequence()
+    {
+        playerRigAnimator.SetBool(IsAttackingBool, true);
+        yield return new WaitForSeconds(0.4f);
+        playerRigAnimator.SetBool(IsAttackingBool, false);
     }
 
 
