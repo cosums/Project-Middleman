@@ -188,7 +188,7 @@ public class PlayerController : MonoBehaviour
     private bool _isPosing;
 
     // attack
-    private float _attackTimer;
+    private float _airAttackTimer;
     private float _attackCooldownTimer;
     private bool _isAttacking;
 
@@ -1075,10 +1075,18 @@ public class PlayerController : MonoBehaviour
         if ((_currentInputFrame.AttackWasPressed && !_isSliding) || (_isSliding && Mathf.Abs(horizontalVelocity) >= minSlideSpeedToHit))
         {
             _isAttacking = true;
+            if (!_isGrounded)
+            {
+                _airAttackTimer = 0.35f;
+            }
         }
         else if (!_currentInputFrame.AttackWasPressed)
         {
-            _isAttacking = false;
+            if (_isGrounded || _airAttackTimer <= 0)
+            {
+                _isAttacking = false;
+                _airAttackTimer = 0f;
+            }
         }
     }
 
@@ -1086,12 +1094,17 @@ public class PlayerController : MonoBehaviour
     {
         if (_isAttacking)
         {
-            if (_isSliding)
+            if (_isSliding || GetInAir())
             {
                 _slideAttackColl.enabled = true;
                 _attackColl.enabled = false;
             }
-            
+            else
+            {
+                _slideAttackColl.enabled = false;
+                _attackColl.enabled = true;
+            }
+
             // TODO attacking
             Debug.Log("Hit something!");
             OnPlayerAttack?.Invoke();
@@ -1133,7 +1146,12 @@ public class PlayerController : MonoBehaviour
         if (_attackCooldownTimer > 0f)
         {
             _attackCooldownTimer -= Time.deltaTime;
-        }        
+        }
+        
+        if (_airAttackTimer > 0f && !_isGrounded)
+        {
+            _airAttackTimer -= Time.deltaTime;
+        }
     }
 
     #endregion
