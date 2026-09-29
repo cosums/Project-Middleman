@@ -176,6 +176,7 @@ public class PlayerController : MonoBehaviour
     private bool _pastSlideMaxSpeed = false;
     private float _slideMaxSpeedTimer;
     private float _slideTime;
+    private float _absoluteMaxSlideSpeed;
 
     //pose
     private float _poseTimer;
@@ -197,6 +198,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerVisualsController = GetComponent<PlayerVisualsController>();
         _currentMaxWalkSpeed = maxWalkSpeed;
+        _absoluteMaxSlideSpeed = maxWalkSpeed * slideSpeedMultiplier;
 
         CaptureStart();
     }
@@ -293,6 +295,7 @@ public class PlayerController : MonoBehaviour
 
         if (_isGrounded)
         {
+            horizontalVelocity = Mathf.Clamp(horizontalVelocity, -_absoluteMaxSlideSpeed, _absoluteMaxSlideSpeed);
             rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity) + _currentGorund.linearVelocity;
             print(_currentGorund.linearVelocity);
         }
@@ -983,6 +986,7 @@ public class PlayerController : MonoBehaviour
         _pastSlideMaxSpeed = false;
         _slideBufferTimer = -1f;
         _slideMaxSpeedTimer = slideMaxSpeedTime;
+        _currentMaxWalkSpeed = maxWalkSpeed;
     }
 
     #endregion
