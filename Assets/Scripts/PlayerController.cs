@@ -297,7 +297,6 @@ public class PlayerController : MonoBehaviour
         {
             horizontalVelocity = Mathf.Clamp(horizontalVelocity, -_absoluteMaxSlideSpeed, _absoluteMaxSlideSpeed);
             rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity) + _currentGorund.linearVelocity;
-            print(_currentGorund.linearVelocity);
         }
         else
         {
