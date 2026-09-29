@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour
     private bool _isGrounded;
     private bool _headBumped;
     private bool _isTouchingWall;
+    private Rigidbody2D _currentGorund;
 
     //jump vars
     public float verticalVelocity { get; private set; }
@@ -290,7 +291,16 @@ public class PlayerController : MonoBehaviour
         //clamp fall speed
         verticalVelocity = Mathf.Clamp(verticalVelocity, -maxFallSpeed, 50f);
 
-        rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity);
+        if (_isGrounded)
+        {
+            rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity) + _currentGorund.linearVelocity;
+            print(_currentGorund.linearVelocity);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity);
+        }
+  
     }
 
     public bool GetInAir()
@@ -419,10 +429,12 @@ public class PlayerController : MonoBehaviour
         if (_groundHit.collider != null)
         {
             _isGrounded = true;
+            _currentGorund = _groundHit.collider.gameObject.GetComponent<Rigidbody2D>();
         }
         else
         {
             _isGrounded = false;
+            _currentGorund = null;
         }
     }
 
