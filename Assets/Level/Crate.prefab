@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HittableObject
   Collider: {fileID: 3790555712976920005}
   DeathParticles: {fileID: 6136045748305344917, guid: ddcce2f78be6b5140bd447b989bb9b91, type: 3}
+  ComicVFX: {fileID: 8713410876577157266, guid: a8b1e467d38c0af44914315ae980af45, type: 3}
   pointsGivenOnBreak: 75
   onHitScoreMessage: Crate Smashed!
   screenShakeAmount: 1.5
