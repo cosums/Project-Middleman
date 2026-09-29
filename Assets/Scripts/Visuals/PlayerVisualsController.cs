@@ -19,6 +19,7 @@ public class PlayerVisualsController : MonoBehaviour
     private PlayerController playerController;
 
     static readonly int IsAttackingBool = Animator.StringToHash("isAttacking");
+    static readonly int AttackTrigger = Animator.StringToHash("attack");
     static readonly int XVelocityFloat = Animator.StringToHash("xVelocity");
     static readonly int InAirBool = Animator.StringToHash("inAir");
     static readonly int FlipBool = Animator.StringToHash("isFlipping");
@@ -27,6 +28,7 @@ public class PlayerVisualsController : MonoBehaviour
     private bool inAir;
     private bool isFlipping;
     private bool isSliding;
+    private bool isAttacking;
 
 
     InputFrame _currentInputFrame;
@@ -52,7 +54,9 @@ public class PlayerVisualsController : MonoBehaviour
         
         if (f.AttackWasPressed)
         {
-            StartCoroutine(AttackBoolSequence());
+            playerRigAnimator.SetTrigger(AttackTrigger);
+            StartCoroutine(AttackBoolSequence(true));
+
         }
 
         // jump
@@ -147,11 +151,19 @@ public class PlayerVisualsController : MonoBehaviour
             particle.Stop();
     }
 
-    private IEnumerator AttackBoolSequence()
+    private IEnumerator AttackBoolSequence(bool enable)
     {
+        if (isAttacking == enable) yield break;
+
+        Debug.Log("attack bool sequence");
+
+        isAttacking = enable;
         playerRigAnimator.SetBool(IsAttackingBool, true);
-        yield return new WaitForSeconds(0.4f);
-        playerRigAnimator.SetBool(IsAttackingBool, false);
+
+        yield return new WaitForSeconds(0.3f);
+
+        playerRigAnimator.SetBool(IsAttackingBool, !isAttacking);
+        isAttacking = !isAttacking;
     }
 
 
