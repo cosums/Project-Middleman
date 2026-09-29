@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Ground/Collision Checks")]
     public LayerMask groundLayer;
+    public LayerMask headBumbpLayer;
     public float groundDetectionRayLength = 0.02f;
     public float headDetectionRayLength = 0.02f;
     public float headWidth = 0.75f;
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Collider2D _bodyColl;
     [SerializeField] private Collider2D _attackColl;
     [SerializeField] private Collider2D _slideAttackColl;
+    [SerializeField] private Collider2D _jumpThruScanColl;
 
     [Header("Slide")]
     public float slideSpeedMultiplier = 1.25f;
@@ -113,6 +115,7 @@ public class PlayerController : MonoBehaviour
     private bool _headBumped;
     private bool _isTouchingWall;
     private Rigidbody2D _currentGorund;
+    private int _numOveralppingPlatforms = 0;
 
     //jump vars
     public float verticalVelocity { get; private set; }
@@ -416,7 +419,7 @@ public class PlayerController : MonoBehaviour
         Vector2 boxCastOrigin = new Vector2(_feetColl.bounds.center.x, _bodyColl.bounds.max.y);
         Vector2 boxCastSize = new Vector2(_feetColl.bounds.size.x * headWidth, headDetectionRayLength);
 
-        _headHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.up, headDetectionRayLength, groundLayer);
+        _headHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.up, headDetectionRayLength, headBumbpLayer);
         if (_headHit.collider != null)
         {
             _headBumped = true;
@@ -433,6 +436,16 @@ public class PlayerController : MonoBehaviour
         Vector2 boxCastSize = new Vector2(_feetColl.bounds.size.x, groundDetectionRayLength);
 
         _groundHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.down, groundDetectionRayLength, groundLayer);
+
+        // Ignore a ground hit against a jump-thru platform we're currently overlapping/passing through
+        if (_groundHit.collider != null &&
+            _groundHit.collider.gameObject.layer == LayerMask.NameToLayer("Jumpthru Platform Trigger") &&
+            _numOveralppingPlatforms > 0)
+        {
+            _groundHit = default;
+            return;
+        }
+
         if (_groundHit.collider != null)
         {
             _isGrounded = true;
@@ -463,7 +476,7 @@ public class PlayerController : MonoBehaviour
         Vector2 boxCastSize = new Vector2(wallDetectionRayLength, adjustedHeight);
 
         _wallHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, transform.right, wallDetectionRayLength, groundLayer);
-        if (_wallHit.collider != null)
+        if (_wallHit.collider != null && _numOveralppingPlatforms == 0)
         {
             _lastWallHit = _wallHit;
             _isTouchingWall = true;
@@ -476,9 +489,39 @@ public class PlayerController : MonoBehaviour
 
     private void CollisionCheck()
     {
+        LayerMask playerLayer = LayerMask.NameToLayer("Player");
+        LayerMask platformLayer = LayerMask.NameToLayer("Jumpthru Platform");
+
+        if (verticalVelocity > 0)
+        {
+            Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, true);
+        }
+        else if (_numOveralppingPlatforms == 0)
+        {
+            Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, false);
+        }
+
         IsGrounded();
         BumpedHead();
         IsTouchingWall();
+
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Jumpthru Platform Trigger"))
+        {
+            _numOveralppingPlatforms++;
+            print(_numOveralppingPlatforms);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Jumpthru Platform Trigger"))
+        {
+            _numOveralppingPlatforms--;
+            print(_numOveralppingPlatforms);
+        }
     }
 
     #endregion
@@ -595,6 +638,11 @@ public class PlayerController : MonoBehaviour
 
     private void JumpChecks()
     {
+        if (_isWallJumping && _wallJumpTime <= 0f)
+        {
+            return; // wall jump already handled this press
+        }
+
         //Jump button pressed
         if (_currentInputFrame.JumpWasPressed)
         {
@@ -692,7 +740,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallSlideCheck()
     {
-        if (_isTouchingWall && !_isGrounded)
+        if (_isTouchingWall && !_isGrounded && _numOveralppingPlatforms == 0)
         {
             if (verticalVelocity < 0 && !_isWallSliding)
             {
@@ -770,6 +818,7 @@ public class PlayerController : MonoBehaviour
         if (_currentInputFrame.JumpWasPressed && _wallJumpPostBufferTimer > 0f)
         {
             InitiateWallJump();
+            _wallJumpPostBufferTimer = 0f;
         }
     }
 
@@ -896,14 +945,7 @@ public class PlayerController : MonoBehaviour
 
     private bool ShouldApplyWallJumpBuffer()
     {
-        if (!_isGrounded && (_isTouchingWall || _isWallSliding))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return !_isGrounded && _numOveralppingPlatforms == 0 && (_isTouchingWall || _isWallSliding);
     }
 
     private void ResetWallJumpValues()
