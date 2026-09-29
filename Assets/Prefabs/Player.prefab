@@ -671,7 +671,7 @@ MonoBehaviour:
   wallJumpGravityOnReleaseMultiplier: 1
   _feetColl: {fileID: 1799783505468356424}
   _bodyColl: {fileID: 8588344271095869751}
-  _attackColl: {fileID: 3415250129658431489}
+  _attackColl: {fileID: 447796897786785387}
   _slideAttackColl: {fileID: 4311273045981576095}
   _jumpThruScanColl: {fileID: 3071796955792490385}
   groundPoint: {fileID: 8376839070288095231}
@@ -1027,7 +1027,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2867158999066790958}
-  - component: {fileID: 3415250129658431489}
+  - component: {fileID: 447796897786785387}
   m_Layer: 7
   m_Name: Attack Collider
   m_TagString: Untagged
@@ -1050,8 +1050,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6966218845231003667}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &3415250129658431489
-CircleCollider2D:
+--- !u!70 &447796897786785387
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1066,7 +1066,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -1084,8 +1084,9 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.8
+  m_Offset: {x: -0.05840957, y: -0.13767958}
+  m_Size: {x: 1.1341608, y: 2.1765351}
+  m_Direction: 0
 --- !u!1001 &3566450696520899376
 PrefabInstance:
   m_ObjectHideFlags: 0

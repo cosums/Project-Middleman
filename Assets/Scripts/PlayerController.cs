@@ -188,6 +188,7 @@ public class PlayerController : MonoBehaviour
     private bool _isPosing;
 
     // attack
+    private float _groundAttackTimer;
     private float _airAttackTimer;
     private float _attackCooldownTimer;
     private bool _isAttacking;
@@ -1079,10 +1080,14 @@ public class PlayerController : MonoBehaviour
             {
                 _airAttackTimer = 0.35f;
             }
+            else
+            {
+                _groundAttackTimer = 0.15f;
+            }
         }
         else if (!_currentInputFrame.AttackWasPressed)
         {
-            if (_isGrounded || _airAttackTimer <= 0)
+            if ((_isGrounded && _groundAttackTimer <= 0) || (!_isGrounded && _airAttackTimer <= 0))
             {
                 _isAttacking = false;
                 _airAttackTimer = 0f;
@@ -1151,6 +1156,11 @@ public class PlayerController : MonoBehaviour
         if (_airAttackTimer > 0f && !_isGrounded)
         {
             _airAttackTimer -= Time.deltaTime;
+        }
+
+        if (_groundAttackTimer > 0f && _isGrounded)
+        {
+            _groundAttackTimer -= Time.deltaTime;
         }
     }
 
