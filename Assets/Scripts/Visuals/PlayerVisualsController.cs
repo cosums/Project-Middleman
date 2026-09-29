@@ -1,4 +1,5 @@
 using System.Diagnostics.Tracing;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerVisualsController : MonoBehaviour
@@ -45,7 +46,23 @@ public class PlayerVisualsController : MonoBehaviour
             if (punchParticle != null) punchParticle.Play();
         }
 
-        playerRigAnimator.SetBool(JumpBool, playerController.GetInAir());
+
+        if (playerController.GetInAir())
+        {
+            if (playerController.GetRemainingJumps() == 1)
+            {
+                playerRigAnimator.SetBool(JumpBool, true);
+            }
+            else if (playerController.GetRemainingJumps() == 0)
+            {
+
+            }
+        }
+        else
+        {
+            playerRigAnimator.SetBool(JumpBool, false);
+        }
+
         playerRigAnimator.SetBool(SlideBool, playerController.GetIsSliding());
         playerRigAnimator.SetFloat(xVelocityFloat, Mathf.Abs(f.Move.x));
     }

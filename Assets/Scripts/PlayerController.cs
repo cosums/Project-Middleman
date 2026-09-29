@@ -310,6 +310,11 @@ public class PlayerController : MonoBehaviour
         return !_isGrounded;
     }
 
+    public int GetRemainingJumps()
+    {
+        return maxJumps - _numberOfJumpsUsed;
+    }
+
     public bool GetIsSliding()
     {
         return _isSliding;
