@@ -12,6 +12,9 @@ public class PlayerVisualsController : MonoBehaviour
     [SerializeField] ParticleSystem runParticle;
     [SerializeField] ParticleSystem slideParticle;
     [SerializeField] ParticleSystem punchParticle;
+    [SerializeField] ParticleSystem jumpParticle;
+    [SerializeField] ParticleSystem flipParticle;
+    [SerializeField] ParticleSystem kickParticle;
 
     private PlayerController playerController;
 
@@ -57,6 +60,12 @@ public class PlayerVisualsController : MonoBehaviour
         {
             inAir = playerController.GetInAir();
             playerRigAnimator.SetBool(InAirBool, inAir);
+
+            if (playerController.GetRemainingJumps() >= 0)
+            {
+                ParticleSystem particle = Instantiate(jumpParticle);
+                particle.transform.position = GetGroundPosition();
+            }
         }
 
         // flip
@@ -64,6 +73,13 @@ public class PlayerVisualsController : MonoBehaviour
         {
             isFlipping = (playerController.GetRemainingJumps() == 0);
             playerRigAnimator.SetBool(FlipBool, isFlipping);
+
+            if (playerController.GetInAir())
+            {
+                ParticleSystem particle = Instantiate(flipParticle);
+                particle.transform.position = playerController.GetFeetCollider().transform.position;
+                particle.transform.SetParent(playerController.GetFeetCollider().transform);
+            }
         }
         
         // Movement
@@ -101,6 +117,22 @@ public class PlayerVisualsController : MonoBehaviour
 
         // Running particles
         if (Mathf.Abs(_currentInputFrame.Move.x) > 0.01f) EnableParticle(runParticle);
+    }
+
+    private Vector3 GetGroundPosition()
+    {
+        Vector3 origin = playerController.groundPoint.transform.position;
+
+        // Start slightly above the feet so the ray doesn't begin inside the ground
+        RaycastHit2D hit = Physics2D.Raycast(origin + Vector3.up * 0.5f, Vector2.down, 10f, playerController.groundLayer);
+        if (hit.collider != null)
+        {
+            return hit.point;
+        }
+
+        // Fallback if nothing was hit
+        print("nothing hit");
+        return origin;
     }
 
     private void EnableParticle(ParticleSystem particle)

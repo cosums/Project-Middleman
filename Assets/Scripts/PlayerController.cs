@@ -67,6 +67,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Collider2D _attackColl;
     [SerializeField] private Collider2D _slideAttackColl;
     [SerializeField] private Collider2D _jumpThruScanColl;
+    public GameObject groundPoint;
 
     [Header("Slide")]
     public float slideSpeedMultiplier = 1.25f;
@@ -522,6 +523,11 @@ public class PlayerController : MonoBehaviour
             _numOveralppingPlatforms--;
             print(_numOveralppingPlatforms);
         }
+    }
+
+    public Collider2D GetFeetCollider()
+    {
+        return _feetColl;
     }
 
     #endregion
