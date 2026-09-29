@@ -1,4 +1,5 @@
 using System.Diagnostics.Tracing;
+using System.Runtime.CompilerServices;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -13,9 +14,9 @@ public class PlayerVisualsController : MonoBehaviour
 
     private PlayerController playerController;
     
-    static readonly int PoseTrigger = Animator.StringToHash("Pose");
-    static readonly int AttackTrigger = Animator.StringToHash("Attack");
-    static readonly int xVelocityFloat = Animator.StringToHash("xVelocity");
+    static readonly int FlipBool = Animator.StringToHash("isFlipping");
+    static readonly int KickTrigger = Animator.StringToHash("kick");
+    static readonly int XVelocityFloat = Animator.StringToHash("xVelocity");
     static readonly int JumpBool = Animator.StringToHash("inAir");
     static readonly int SlideBool = Animator.StringToHash("isSliding");
 
@@ -38,33 +39,24 @@ public class PlayerVisualsController : MonoBehaviour
     private void UpdatePlayerAnimation()
     {
         var f = _currentInputFrame;
-
-        if (f.PoseWasPressed) playerRigAnimator.SetTrigger(PoseTrigger);
+        
         if (f.AttackWasPressed)
         {
-            playerRigAnimator.SetTrigger(AttackTrigger);
+            if (playerController.GetInAir()) playerRigAnimator.SetTrigger(KickTrigger);
             if (punchParticle != null) punchParticle.Play();
         }
 
 
-        if (playerController.GetInAir())
-        {
-            if (playerController.GetRemainingJumps() == 1)
-            {
-                playerRigAnimator.SetBool(JumpBool, true);
-            }
-            else if (playerController.GetRemainingJumps() == 0)
-            {
+        // jump
+        playerRigAnimator.SetBool(JumpBool, playerController.GetInAir());
 
-            }
-        }
-        else
-        {
-            playerRigAnimator.SetBool(JumpBool, false);
-        }
+        // flip
+        bool isFlipping = playerController.GetRemainingJumps() == 0;
+        playerRigAnimator.SetBool(FlipBool, isFlipping);
 
+        // Movement
         playerRigAnimator.SetBool(SlideBool, playerController.GetIsSliding());
-        playerRigAnimator.SetFloat(xVelocityFloat, Mathf.Abs(f.Move.x));
+        playerRigAnimator.SetFloat(XVelocityFloat, Mathf.Abs(f.Move.x));
     }
 
     private void UpdatePlayerParticles()
