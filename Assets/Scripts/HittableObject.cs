@@ -6,7 +6,7 @@ public class HittableObject : MonoBehaviour
 {
     public Collider2D Collider;
     public GameObject DeathParticles;
-    public AudioClip breakSound;
+    public AudioClip[] breakSounds;
     public int pointsGivenOnBreak;
     public string onHitScoreMessage;
     public float screenShakeAmount;
@@ -62,7 +62,7 @@ public class HittableObject : MonoBehaviour
 
             PointSystem.Instance.AddToComboScore(pointsGivenOnBreak, onHitScoreMessage);
 
-            AudioBus.Instance.PlaySFX(breakSound);
+            AudioBus.Instance.PlayRandomSFX(breakSounds);
 
             Destroy(gameObject);
         }

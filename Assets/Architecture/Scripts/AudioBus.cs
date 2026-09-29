@@ -3,6 +3,7 @@ using UnityEngine;
 public class AudioBus : MonoBehaviour
 {
     public static AudioBus Instance;
+    public float pitchRandom = 0.15f;
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Autoload()
@@ -57,23 +58,23 @@ public class AudioBus : MonoBehaviour
         musicSource.Play();
     }
     
-    // Play a sound effect once
-    public void PlaySFX(AudioClip clip)
-    {
-        if (clip == null) return;
-        
-        // Play the sound effect
-        sfxSource.PlayOneShot(clip);
-    }
-    
     // Play a sound effect with volume control
-    public void PlaySFX(AudioClip clip, float volume)
+    public void PlaySFX(AudioClip clip, float volume = 1.0f, bool pitchRandomization = true)
     {
         if (clip == null) return;
+
+        if (pitchRandomization) {
+            sfxSource.pitch = Random.Range(1.0f - pitchRandom, 1.0f + pitchRandom);
+        }
         
         sfxSource.PlayOneShot(clip, volume);
+
+        sfxSource.pitch = 1.0f;
     }
     
+    public void PlayRandomSFX(AudioClip[] clips) {
+        sfxSource.PlayOneShot(clips[Random.Range(0, clips.Length - 1)]);
+    }
     // Control music volume
     public void SetMusicVolume(float volume)
     {
