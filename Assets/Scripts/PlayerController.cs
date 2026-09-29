@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour
     private bool _isGrounded;
     private bool _headBumped;
     private bool _isTouchingWall;
+    private Rigidbody2D _currentGorund;
 
     //jump vars
     public float verticalVelocity { get; private set; }
@@ -175,6 +176,7 @@ public class PlayerController : MonoBehaviour
     private bool _pastSlideMaxSpeed = false;
     private float _slideMaxSpeedTimer;
     private float _slideTime;
+    private float _absoluteMaxSlideSpeed;
 
     //pose
     private float _poseTimer;
@@ -196,6 +198,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerVisualsController = GetComponent<PlayerVisualsController>();
         _currentMaxWalkSpeed = maxWalkSpeed;
+        _absoluteMaxSlideSpeed = maxWalkSpeed * slideSpeedMultiplier;
 
         CaptureStart();
     }
@@ -290,7 +293,16 @@ public class PlayerController : MonoBehaviour
         //clamp fall speed
         verticalVelocity = Mathf.Clamp(verticalVelocity, -maxFallSpeed, 50f);
 
-        rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity);
+        if (_isGrounded)
+        {
+            horizontalVelocity = Mathf.Clamp(horizontalVelocity, -_absoluteMaxSlideSpeed, _absoluteMaxSlideSpeed);
+            rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity) + _currentGorund.linearVelocity;
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity);
+        }
+  
     }
 
     public bool GetInAir()
@@ -419,10 +431,12 @@ public class PlayerController : MonoBehaviour
         if (_groundHit.collider != null)
         {
             _isGrounded = true;
+            _currentGorund = _groundHit.collider.gameObject.GetComponent<Rigidbody2D>();
         }
         else
         {
             _isGrounded = false;
+            _currentGorund = null;
         }
     }
 
@@ -971,6 +985,7 @@ public class PlayerController : MonoBehaviour
         _pastSlideMaxSpeed = false;
         _slideBufferTimer = -1f;
         _slideMaxSpeedTimer = slideMaxSpeedTime;
+        _currentMaxWalkSpeed = maxWalkSpeed;
     }
 
     #endregion
