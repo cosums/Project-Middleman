@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6adcd831f9be4a24982d9ae7c4368f71
+guid: 3382ba12812c53d46870d20df12f776f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WoodTileMap_0
+      name: BetterWood_0
       rect:
         serializedVersion: 2
         x: 0
@@ -112,14 +112,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 63a2f67a60017044ca02b075a9510e42
-      internalID: -482765314
+      spriteID: e90d7149cc5131c4fb6aa6ce7ffbabfb
+      internalID: -2118396754
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodTileMap_1
+      name: BetterWood_1
       rect:
         serializedVersion: 2
         x: 32
@@ -134,14 +134,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 522a4d71ec535aa4c8cebff469a44e80
-      internalID: 2143348021
+      spriteID: bda5826f96aa1094fad2324d03b4d9b7
+      internalID: -780122579
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodTileMap_2
+      name: BetterWood_2
       rect:
         serializedVersion: 2
         x: 64
@@ -156,14 +156,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 689be6ab529dd8245ab8d8aa2e7452cf
-      internalID: -454338400
+      spriteID: 28fa25c7c15dfbc48ae6bafe111642f7
+      internalID: -1122823873
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodTileMap_3
+      name: BetterWood_3
       rect:
         serializedVersion: 2
         x: 0
@@ -178,14 +178,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a2349633f70bedf40a3f886272b8502a
-      internalID: -387684510
+      spriteID: c6099e8613da8bd4c8d1d0d5b597b8c7
+      internalID: 562699898
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodTileMap_4
+      name: BetterWood_4
       rect:
         serializedVersion: 2
         x: 32
@@ -200,14 +200,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 258230a604838ba4d8c75b8111634fee
-      internalID: 1949996978
+      spriteID: 970b07eefd54c474cac1c0d83fd561f1
+      internalID: 1179231733
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodTileMap_5
+      name: BetterWood_5
       rect:
         serializedVersion: 2
         x: 64
@@ -222,14 +222,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1930e9801bb5ce542801c47f0e3eaf88
-      internalID: 379654918
+      spriteID: f7832c58eccd6cd48ae4792f4daf5785
+      internalID: 2131894569
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodTileMap_6
+      name: BetterWood_6
       rect:
         serializedVersion: 2
         x: 0
@@ -244,8 +244,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 841f47b846472534d92dd58091ebf3da
-      internalID: 56944468
+      spriteID: c763b6caf51e22444bd51d8182a23e5e
+      internalID: 1805229391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BetterWood_7
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35484794114d5214da96fc7af2ac184f
+      internalID: 158424136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BetterWood_8
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cec6188e10ea6941ae71d4a444bece4
+      internalID: -664847723
       vertices: []
       indices: 
       edges: []
@@ -254,7 +298,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 33f652f4cb9d15d4bb8ba64a1c247cdc
+    spriteID: 34b09cc0317df544f8a2893422fd3b6e
     internalID: 0
     vertices: []
     indices: 
@@ -266,13 +310,15 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      WoodTileMap_0: -482765314
-      WoodTileMap_1: 2143348021
-      WoodTileMap_2: -454338400
-      WoodTileMap_3: -387684510
-      WoodTileMap_4: 1949996978
-      WoodTileMap_5: 379654918
-      WoodTileMap_6: 56944468
+      BetterWood_0: -2118396754
+      BetterWood_1: -780122579
+      BetterWood_2: -1122823873
+      BetterWood_3: 562699898
+      BetterWood_4: 1179231733
+      BetterWood_5: 2131894569
+      BetterWood_6: 1805229391
+      BetterWood_7: 158424136
+      BetterWood_8: -664847723
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
