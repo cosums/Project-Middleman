@@ -293,7 +293,7 @@ public class PlayerController : MonoBehaviour
         //clamp fall speed
         verticalVelocity = Mathf.Clamp(verticalVelocity, -maxFallSpeed, 50f);
 
-        if (_isGrounded)
+        if (_isGrounded && _currentGorund != null)
         {
             horizontalVelocity = Mathf.Clamp(horizontalVelocity, -_absoluteMaxSlideSpeed, _absoluteMaxSlideSpeed);
             rb.linearVelocity = new Vector2(horizontalVelocity, verticalVelocity) + _currentGorund.linearVelocity;
