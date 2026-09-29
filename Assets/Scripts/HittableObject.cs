@@ -36,7 +36,7 @@ public class HittableObject : MonoBehaviour
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             _inPlayerAttackBox = false;
         }
