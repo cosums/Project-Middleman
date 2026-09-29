@@ -2748,6 +2748,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crate (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8548898610738252899, guid: d16c816d6658f82458895eec6ac9a517, type: 3}
+      propertyPath: woodenBreakSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 58b4049fbf0e78473925430e5dbae66a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4742,6 +4746,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crate
       objectReference: {fileID: 0}
+    - target: {fileID: 8548898610738252899, guid: d16c816d6658f82458895eec6ac9a517, type: 3}
+      propertyPath: woodenBreakSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 58b4049fbf0e78473925430e5dbae66a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

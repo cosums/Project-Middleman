@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class InsideFilmFrame : MonoBehaviour
 {
+    public AudioClip playerEntered;
+
     public float insideFrameMult = 0.01f;
     private bool playerInside = false;
 

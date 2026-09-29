@@ -6,7 +6,7 @@ public class HittableObject : MonoBehaviour
 {
     public Collider2D Collider;
     public GameObject DeathParticles;
-    public GameObject ComicVFX; // "BANG" or "POW"
+    public AudioClip[] breakSounds;
     public int pointsGivenOnBreak;
     public string onHitScoreMessage;
     public float screenShakeAmount;
@@ -52,11 +52,6 @@ public class HittableObject : MonoBehaviour
                 particles.transform.position = transform.position;
                 particles.GetComponent<ParticleSystem>().Play();
             }
-            if (ComicVFX)
-            {
-                Instantiate(ComicVFX, transform.position, Quaternion.identity);
-            }
-
 
             if (impulseSource != null)
             {
@@ -66,6 +61,8 @@ public class HittableObject : MonoBehaviour
             ObjectHit?.Invoke();
 
             PointSystem.Instance.AddToComboScore(pointsGivenOnBreak, onHitScoreMessage);
+
+            AudioBus.Instance.PlayRandomSFX(breakSounds);
 
             Destroy(gameObject);
         }
