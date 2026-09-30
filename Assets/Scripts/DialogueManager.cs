@@ -10,6 +10,9 @@ public class DialogueManager : MonoBehaviour
     private List<DialogueLine> dialogueQueue = new List<DialogueLine>();
     private DialogueLine head;
 
+    private float _currentLineTime;
+    private float _currentLineElapsed;
+
     public static DialogueManager Instance { get; private set; }
 
     private void Awake()
@@ -32,6 +35,7 @@ public class DialogueManager : MonoBehaviour
         {
             head = dialogue;
             head.Play();
+            _currentLineTime = head.minDurationTimer;
         }
     }
 
@@ -43,10 +47,46 @@ public class DialogueManager : MonoBehaviour
         {
             head = dialogueQueue[0];
             head.Play();
+            _currentLineTime = head.minDurationTimer;
         }
         else
         {
             head = null;
+        }
+    }
+
+    public DialogueLine NewDialogueLine(string speaker, string content, AudioClip clip)
+    {
+        DialogueLine line = new DialogueLine();
+        line.speaker = speaker;
+        line.contents = content;
+        line.clip = clip;
+
+        return line;
+    }
+
+    public DialogueLine NewDialogueLine(string speaker, string content, float time)
+    {
+        DialogueLine line = new DialogueLine();
+        line.speaker = speaker;
+        line.contents = content;
+        line.minDurationTimer = time;
+
+        return line;
+    }
+
+    public void Update()
+    {
+        if (dialogueQueue.Count > 0 && head.clip == null)
+        {
+            if (_currentLineTime > 0)
+            {
+                _currentLineTime -= Time.deltaTime;
+            }
+            else
+            {
+                DequeueDialogue();
+            }
         }
     }
 
@@ -64,8 +104,7 @@ public class DialogueLine : MonoBehaviour
     public AudioClip clip;
     public float minDurationTimer;
 
-    private bool playing = false;
-
+    public bool playing = false;
         
     public void Init(string speaker, string contents, AudioClip audio)
     {
@@ -85,14 +124,13 @@ public class DialogueLine : MonoBehaviour
 
     public void Play()
     {
-        playing = true;
         if (clip != null)
         {
             AudioBus.Instance.PlaySFX(clip);
             StartCoroutine(WaitForClipEnd());
-            DialogueDisplay.Instance.SetDialogueLine(this);
-            DialogueDisplay.Instance.ShowDialogue();
         }
+        DialogueDisplay.Instance.SetDialogueLine(this);
+        DialogueDisplay.Instance.ShowDialogue();
     }
 
     private IEnumerator WaitForClipEnd()
@@ -100,20 +138,5 @@ public class DialogueLine : MonoBehaviour
         yield return new WaitForSeconds(clip.length);
 
         DialogueManager.Instance.DequeueDialogue();
-    }
-
-    public void Update()
-    {
-        if (playing)
-        {
-            if (minDurationTimer > 0)
-            {
-                minDurationTimer -= Time.deltaTime;
-            }
-            else if (clip == null)
-            {
-                DialogueManager.Instance.DequeueDialogue();
-            }
-        }
     }
 }

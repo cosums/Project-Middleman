@@ -4,6 +4,7 @@ using UnityEngine;
 public class FixedTicker : MonoBehaviour
 {
     public PlayerController Player;
+    public DialogueTester Tester;
     public LiveInputProvider LiveProvider;
     private InputRecorder _recorder;
 
@@ -61,6 +62,10 @@ public class FixedTicker : MonoBehaviour
 
         var frame = _inputProvider.GetInput(CurrentTick);
         Player.SimulateTick(frame);
+        if (Tester != null)
+        {
+            Tester.SimulateTick(frame);
+        }
         _recorder.RecordFrame(frame);
 
         CurrentTick++;
