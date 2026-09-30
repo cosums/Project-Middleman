@@ -1953,8 +1953,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ReplayButton: {fileID: 790861591}
-  Ticker: {fileID: 1929632798}
-  Controller: {fileID: 1107036663}
 --- !u!114 &790861591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2244,9 +2242,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: -0.3469388
+    y: 0
     width: 1
-    height: 1.6954474
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60

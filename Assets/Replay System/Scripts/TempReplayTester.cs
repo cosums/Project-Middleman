@@ -19,9 +19,4 @@ public class TempReplayTester : MonoBehaviour
     {
         GameManager.Instance.PlayReplay();
     }
-
-    public void EndReplay()
-    {
-        
-    }
 }
