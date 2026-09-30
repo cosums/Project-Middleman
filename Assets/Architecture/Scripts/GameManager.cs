@@ -100,6 +100,26 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(string sceneToLoad)
     {
+        if (SceneFader.Instance != null) {
+            FadeToSceneWrapper(sceneToLoad);
+        } 
+        else HardLoadScene(sceneToLoad);
+    }
+
+    private async void FadeToSceneWrapper(string sceneToLoad)
+    {
+        try
+        {
+            await SceneFader.Instance.FadeToScene(sceneToLoad);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Scene transition failed: {e.Message}");
+        }
+    }
+
+    public void HardLoadScene(string sceneToLoad)
+    {
         Debug.Log($"Loading scene {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);
     }
