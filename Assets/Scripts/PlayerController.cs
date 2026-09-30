@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public float footstepInterval = 0.2f; // Interval in seconds.
     public AudioClip footstepAudio;
     public AudioClip jumpAudio;
+    public AudioClip wallJumpAudio;
     public AudioClip bounceAudio;
     public AudioClip floorSlideAudio;
     public AudioClip wallSlideAudio;
@@ -570,6 +571,8 @@ public class PlayerController : MonoBehaviour
     }
     private void InitiateJump(int numberOfJumpsUsed)
     {
+        AudioBus.Instance.PlaySFX(jumpAudio);
+
         if (!_isJumping)
         {
             _isJumping = true;
@@ -863,6 +866,8 @@ public class PlayerController : MonoBehaviour
             _isWallJumping = true;
             _useWallJumpMoveStats = true;
         }
+
+        AudioBus.Instance.PlaySFX(wallJumpAudio);
 
         StopWallSlide();
         ResetJumpValues();
