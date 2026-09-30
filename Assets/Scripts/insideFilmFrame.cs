@@ -57,7 +57,9 @@ public class InsideFilmFrame : MonoBehaviour
             }
         }
 
-        UpdateCountdownUI();
+        if (GameManager.Instance.CurrentState == GameState.Playing) {
+            UpdateCountdownUI();
+        }
     }
 
     private void UpdateCountdownUI()
