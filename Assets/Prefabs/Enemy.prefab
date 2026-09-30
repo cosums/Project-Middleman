@@ -359,7 +359,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5110473600551529226}
   m_Layer: 0
-  m_Name: SandEnemyPath
+  m_Name: Enemy Path
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -745,7 +745,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9134329544014177912}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.058278807, w: 0.9983004}
+  m_LocalRotation: {x: -0, y: -0, z: 0.05827824, w: 0.9983004}
   m_LocalPosition: {x: 1.184, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -838,7 +838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6594074206647689048, guid: 0ec4b3ce6dd697c47b93a6c623e2b9e9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.16050567
+      value: 0.1605051
       objectReference: {fileID: 0}
     - target: {fileID: 6594074206647689048, guid: 0ec4b3ce6dd697c47b93a6c623e2b9e9, type: 3}
       propertyPath: m_LocalRotation.y
@@ -846,7 +846,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6594074206647689048, guid: 0ec4b3ce6dd697c47b93a6c623e2b9e9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.987035
+      value: 0.98703504
       objectReference: {fileID: 0}
     - target: {fileID: 6736957807164001479, guid: 0ec4b3ce6dd697c47b93a6c623e2b9e9, type: 3}
       propertyPath: m_LocalRotation.w
