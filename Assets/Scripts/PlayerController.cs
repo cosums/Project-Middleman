@@ -199,6 +199,7 @@ public class PlayerController : MonoBehaviour
     private float _poseTimer;
     private float _poseCooldownTimer = 0f;
     private bool _isPosing;
+    private bool _quicktime = false;
     
 
     // attack
@@ -260,7 +261,6 @@ public class PlayerController : MonoBehaviour
         WallSlide();
         WallJump();
         Slide();
-        Pose();
         Attack();
 
         if (AirCheck())
@@ -1083,21 +1083,20 @@ public class PlayerController : MonoBehaviour
             {
                 print("QUICK TIME");
                 PointSystem.Instance.AddToMultiplier(2.5f, "Pose On Queue!");
+                _quicktime = true;
             }
         }
         else if (_isPosing && _poseTimer <= 0)
         {
             _isPosing = false;
             rb.bodyType = RigidbodyType2D.Dynamic;
+            _quicktime = false;
         }
     }
 
-    public void Pose()
+    public bool IsInQuicktime()
     {
-        if (_isPosing)
-        {
-
-        }
+        return _quicktime;
     }
 
     #endregion
