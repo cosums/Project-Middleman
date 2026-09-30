@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -14,12 +15,18 @@ public class HittableObject : MonoBehaviour
     public static Action ObjectHit;
 
     private bool _inPlayerAttackBox;
+    private ContactFilter2D _playerFilter;
+    private List<Collider2D> _overlaps = new();
     private CinemachineImpulseSource impulseSource;
 
     public void OnEnable()
     {
         PlayerController.OnPlayerAttack += HandlePlayerAttack;
         impulseSource = GetComponent<CinemachineImpulseSource>();
+
+        _playerFilter = new ContactFilter2D();
+        _playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
+        _playerFilter.useTriggers = true;
     }
 
     public void OnDisable()
@@ -27,44 +34,35 @@ public class HittableObject : MonoBehaviour
         PlayerController.OnPlayerAttack -= HandlePlayerAttack;
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
+    private bool IsPlayerOverlapping()
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-            _inPlayerAttackBox = true;
-        }
-    }
-
-    public void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-            _inPlayerAttackBox = false;
-        }
+        _overlaps.Clear();
+        Collider.Overlap(_playerFilter, _overlaps);
+        return _overlaps.Count > 0;
     }
 
     public void HandlePlayerAttack()
     {
-        if (_inPlayerAttackBox)
-        {
-            if (DeathParticles != null) {
-                GameObject particles = Instantiate(DeathParticles);
-                particles.transform.position = transform.position;
-                particles.GetComponent<ParticleSystem>().Play();
-            }
-
-            if (impulseSource != null)
-            {
-                impulseSource.GenerateImpulseWithForce(screenShakeAmount);
-            }
-
-            ObjectHit?.Invoke();
-
-            PointSystem.Instance.AddToComboScore(pointsGivenOnBreak, onHitScoreMessage);
-
-            AudioBus.Instance.PlayRandomSFX(breakSounds);
-
-            Destroy(gameObject);
+        if (!IsPlayerOverlapping()) return;
+        
+        if (DeathParticles != null) {
+            GameObject particles = Instantiate(DeathParticles);
+            particles.transform.position = transform.position;
+            particles.GetComponent<ParticleSystem>().Play();
         }
+
+        if (impulseSource != null)
+        {
+            impulseSource.GenerateImpulseWithForce(screenShakeAmount);
+        }
+
+        ObjectHit?.Invoke();
+
+        PointSystem.Instance.AddToComboScore(pointsGivenOnBreak, onHitScoreMessage);
+
+        AudioBus.Instance.PlayRandomSFX(breakSounds);
+
+        Destroy(gameObject);
+        
     }
 }

@@ -1099,8 +1099,6 @@ public class PlayerController : MonoBehaviour
                 _attackColl.enabled = true;
             }
 
-            // TODO attacking
-            Debug.Log("Hit something!");
             OnPlayerAttack?.Invoke();
         }
     }
