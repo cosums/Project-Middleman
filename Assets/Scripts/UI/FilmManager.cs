@@ -23,4 +23,9 @@ public class FilmManager : MonoBehaviour
             GameManager.Instance.FinishReplay();
         }
     }
+
+    public void QuickTimeEvent()
+    {
+        QuicktimeManager.Instance.AddQuickTimeEvent();
+    }
 }
