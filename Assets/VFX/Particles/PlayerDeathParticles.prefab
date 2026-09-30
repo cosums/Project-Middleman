@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6135108520289902656}
   - component: {fileID: 28159450962502581}
   m_Layer: 0
-  m_Name: 'PlayerDeathParticles '
+  m_Name: PlayerDeathParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4802,9 +4802,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1423068121
+  m_SortingLayer: 4
+  m_SortingOrder: 30
   m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
