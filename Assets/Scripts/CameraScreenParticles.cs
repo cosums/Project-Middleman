@@ -21,7 +21,7 @@ public class CameraScreenParticles : MonoBehaviour
             burst.transform.position = activeQuickTimeParticles.transform.position;
             activeQuickTimeParticles.Play();
         }
-        if (playerController.IsInQuicktime() && quickTime == true) {
+        if (!playerController.IsInQuicktime() && quickTime == true) {
             activeQuickTimeParticles.Stop();
             quickTime = false;
         }

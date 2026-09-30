@@ -250,7 +250,7 @@ MonoBehaviour:
     AmplitudeGain: 1
     FrequencyGain: 1
     Duration: 1
-    m_NoiseOffsets: {x: 0, y: 0, z: 0}
+    m_NoiseOffsets: {x: -172.94324, y: -724.1278, z: -143.00192}
 --- !u!1 &8814055336763565424
 GameObject:
   m_ObjectHideFlags: 0
