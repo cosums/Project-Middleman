@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won }
+public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won, Finished }
 public enum DeathCondition { Death, OutOfFrame }
 
 public class GameManager : MonoBehaviour
@@ -83,12 +83,19 @@ public class GameManager : MonoBehaviour
     public void WinGame()
     {
         ChangeState(GameState.Won);
+        PlayReplay(); // CHANGE THIS LATER
     }
 
     public void PlayReplay()
     {
         ChangeState(GameState.Replaying);
         LoadScene("Level");
+    }
+
+    public void FinishReplay()
+    {
+        ChangeState(GameState.Finished);
+        LoadScene("Menu");
     }
 
     public void LoadScene(string sceneToLoad)
