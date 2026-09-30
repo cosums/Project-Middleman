@@ -1,19 +1,20 @@
-using NUnit.Framework;
-using System;
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Rendering;
+using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
-    private List<DialogueLine> dialogueQueue = new List<DialogueLine>();
-    private DialogueLine head;
-
-    private float _currentLineTime;
-    private float _currentLineElapsed;
-
     public static DialogueManager Instance { get; private set; }
+
+    private readonly List<DialogueLine> dialogueQueue = new List<DialogueLine>();
+    private Coroutine playRoutine;
+    private bool skipRequested;
+
+    // Never stored separately, so it can't go stale:
+    // the active line is always the front of the queue, or null when idle.
+    public DialogueLine Head => dialogueQueue.Count > 0 ? dialogueQueue[0] : null;
+    public DialogueLine GetHead() => Head;
+    public bool IsPlaying => playRoutine != null;
 
     private void Awake()
     {
@@ -28,115 +29,61 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void EnqueueDialogue(DialogueLine dialogue)
-    {
-        dialogueQueue.Add(dialogue);
-        if (dialogueQueue.Count == 1)
-        {
-            head = dialogue;
-            head.Play();
-            _currentLineTime = head.minDurationTimer;
-        }
-    }
-
-    public void DequeueDialogue()
-    {
-        dialogueQueue.Remove(head);
-        DialogueDisplay.Instance.HideDialogue();
-        if (dialogueQueue.Count > 0)
-        {
-            head = dialogueQueue[0];
-            head.Play();
-            _currentLineTime = head.minDurationTimer;
-        }
-        else
-        {
-            head = null;
-        }
-    }
-
     public DialogueLine NewDialogueLine(string speaker, string content, AudioClip clip)
-    {
-        DialogueLine line = new DialogueLine();
-        line.speaker = speaker;
-        line.contents = content;
-        line.clip = clip;
-
-        return line;
-    }
+        => new DialogueLine(speaker, content, clip);
 
     public DialogueLine NewDialogueLine(string speaker, string content, float time)
-    {
-        DialogueLine line = new DialogueLine();
-        line.speaker = speaker;
-        line.contents = content;
-        line.minDurationTimer = time;
+        => new DialogueLine(speaker, content, time);
 
-        return line;
+    public void EnqueueDialogue(DialogueLine dialogue)
+    {
+        if (dialogue == null) return;
+
+        dialogueQueue.Add(dialogue);
+        if (playRoutine == null)
+            playRoutine = StartCoroutine(PlayQueue());
     }
 
-    public void Update()
+    // Ends the current line early; the next one (if any) starts right after.
+    // Note: this doesn't stop the voice clip itself, that depends on your AudioBus.
+    public void SkipCurrent()
     {
-        if (dialogueQueue.Count > 0 && head.clip == null)
+        if (IsPlaying) skipRequested = true;
+    }
+
+    // The only place lines are started and removed, so there is no way to double-dequeue.
+    private IEnumerator PlayQueue()
+    {
+        while (dialogueQueue.Count > 0)
         {
-            if (_currentLineTime > 0)
+            DialogueLine line = dialogueQueue[0];   // == Head for the whole time it plays
+
+            if (DialogueDisplay.Instance != null)
             {
-                _currentLineTime -= Time.deltaTime;
+                DialogueDisplay.Instance.SetDialogueLine(line);
+                DialogueDisplay.Instance.ShowDialogue();
             }
-            else
+            if (line.clip != null)
+                AudioBus.Instance.PlaySFX(line.clip);
+
+            float elapsed = 0f;
+            while (elapsed < line.Duration && !skipRequested)
             {
-                DequeueDialogue();
+                elapsed += Time.deltaTime;
+                yield return null;
             }
+            skipRequested = false;
+
+            dialogueQueue.RemoveAt(0);
+            if (DialogueDisplay.Instance != null)
+                DialogueDisplay.Instance.HideDialogue();
         }
+
+        playRoutine = null;
     }
 
-    public DialogueLine GetHead()
+    public bool CurrentDialogueHasEvent()
     {
-        return head;
-    }
-}
-
-[Serializable]
-public class DialogueLine : MonoBehaviour
-{
-    public string speaker;
-    public string contents;
-    public AudioClip clip;
-    public float minDurationTimer;
-
-    public bool playing = false;
-        
-    public void Init(string speaker, string contents, AudioClip audio)
-    {
-        this.speaker = speaker;
-        this.contents = contents;
-        this.clip = audio;
-        this.minDurationTimer = -1f;
-    }
-    public void Init(string speaker, string contents, float minDuration)
-    {
-        this.speaker = speaker;
-        this.contents = contents;
-        this.clip = null;
-        this.minDurationTimer = minDuration;
-  
-    }
-
-    public void Play()
-    {
-        if (clip != null)
-        {
-            AudioBus.Instance.PlaySFX(clip);
-            StartCoroutine(WaitForClipEnd());
-        }
-        DialogueDisplay.Instance.SetDialogueLine(this);
-        DialogueDisplay.Instance.ShowDialogue();
-    }
-
-    private IEnumerator WaitForClipEnd()
-    {
-        yield return new WaitForSeconds(clip.length);
-
-        DialogueManager.Instance.DequeueDialogue();
+        return Head.hasEvent;
     }
 }

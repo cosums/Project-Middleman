@@ -733,7 +733,7 @@ MonoBehaviour:
   wallSlideAudio: {fileID: 8300000, guid: a86107db830e05260a272b1d5adc1cc6, type: 3}
   punchAudio: {fileID: 8300000, guid: 39be00f957baa9e3f8e2cab4e2d08d27, type: 3}
   kickAudio: {fileID: 0}
-  poseAudio: {fileID: 0}
+  poseAudio: {fileID: 8300000, guid: 08eb5d38ead7d8749b389628b72afb59, type: 3}
   cowboyShouts: []
   moveThreshold: 0.25
   maxWalkSpeed: 20
