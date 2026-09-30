@@ -65,11 +65,11 @@ public class AudioBus : MonoBehaviour
 
         if (pitchRandomization) {
             sfxSource.pitch = Random.Range(1.0f - pitchRandom, 1.0f + pitchRandom);
+        } else {
+            sfxSource.pitch = 1.0f;
         }
         
         sfxSource.PlayOneShot(clip, volume);
-
-        sfxSource.pitch = 1.0f;
     }
     
     public void PlayRandomSFX(AudioClip[] clips) {

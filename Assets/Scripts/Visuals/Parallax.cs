@@ -12,7 +12,15 @@ public class Parallax : MonoBehaviour
 
     void Awake()
     {
-        cam = GameObject.Find("Main Camera");
+        if (GameManager.Instance.CurrentState == GameState.Replaying)
+        {
+            cam = GameObject.Find("Film Camera");
+        } 
+        else
+        {
+            cam = GameObject.Find("Main Camera");
+        }
+        
         objStartPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         camStartPos = new Vector3(cam.transform.position.x, cam.transform.position.y, cam.transform.position.z);
     }

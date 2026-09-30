@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 65bf5ea3e78b6cd40b4f40b036a30c4d
+guid: 964dd51b0093b164691488922adc9a3f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PillarTiles_0
+      name: DoorHalfSize_0
       rect:
         serializedVersion: 2
         x: 0
@@ -112,14 +112,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 387a93e5bc50ad542a3b9103eb9ab873
-      internalID: 1791747448
+      spriteID: 28b6c9b546a5f3d4a9403f884f068bc0
+      internalID: -2077885512
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PillarTiles_1
+      name: DoorHalfSize_1
       rect:
         serializedVersion: 2
         x: 32
@@ -134,14 +134,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4240374d36f1b944c8461a49bc9efee6
-      internalID: 1100489936
+      spriteID: 3f26585921066f24eab89b97a95fc56b
+      internalID: -429691527
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PillarTiles_2
+      name: DoorHalfSize_2
       rect:
         serializedVersion: 2
         x: 0
@@ -156,14 +156,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 598363b4c940aca48a94c0d851221b59
-      internalID: -1464503400
+      spriteID: 3f15ea585364ce942a60a6b8ef6af64f
+      internalID: 908616454
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PillarTiles_3
+      name: DoorHalfSize_3
       rect:
         serializedVersion: 2
         x: 32
@@ -178,14 +178,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 13ca2b8c4bd99c240883cb0bb4794996
-      internalID: 1093550330
+      spriteID: 825b26a5e7591b5488cf7c7a5a85d2b4
+      internalID: 1194058331
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PillarTiles_4
+      name: DoorHalfSize_4
       rect:
         serializedVersion: 2
         x: 0
@@ -200,14 +200,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c4c8221bef741f4ab33bdc3781e5c7d
-      internalID: -1606282429
+      spriteID: 87e83a4e1a8833f45b18b4edcf8668ad
+      internalID: 651833324
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PillarTiles_5
+      name: DoorHalfSize_5
       rect:
         serializedVersion: 2
         x: 32
@@ -222,8 +222,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a724d098711c8cf4190c0199ddaa6b43
-      internalID: 883193325
+      spriteID: 8a517b294a2c2e04c8bdac8fb58dcc8e
+      internalID: 1263185067
       vertices: []
       indices: 
       edges: []
@@ -232,7 +232,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: f0b3c88bfea76744491cdc09779c4dd7
     internalID: 0
     vertices: []
     indices: 
@@ -244,12 +244,12 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      PillarTiles_0: 1791747448
-      PillarTiles_1: 1100489936
-      PillarTiles_2: -1464503400
-      PillarTiles_3: 1093550330
-      PillarTiles_4: -1606282429
-      PillarTiles_5: 883193325
+      DoorHalfSize_0: -2077885512
+      DoorHalfSize_1: -429691527
+      DoorHalfSize_2: 908616454
+      DoorHalfSize_3: 1194058331
+      DoorHalfSize_4: 651833324
+      DoorHalfSize_5: 1263185067
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

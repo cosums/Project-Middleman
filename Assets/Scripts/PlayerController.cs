@@ -3,12 +3,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEngine.U2D.Animation;
+using System.Collections;
 
 [RequireComponent(typeof(PlayerVisualsController))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Visuals")]
     PlayerVisualsController playerVisualsController;
+    [Header("Audio")]
+    public float footstepInterval = 0.2f; // Interval in seconds.
+    public AudioClip footstepAudio;
+    public AudioClip jumpAudio;
+    public AudioClip wallJumpAudio;
+    public AudioClip bounceAudio;
+    public AudioClip floorSlideAudio;
+    public AudioClip wallSlideAudio;
+    public AudioClip punchAudio;
+    public AudioClip kickAudio;
+    public AudioClip poseAudio;
+    public AudioClip[] cowboyShouts;
 
     [Header("Walk")]
     public float moveThreshold = 0.25f;
@@ -324,16 +337,30 @@ public class PlayerController : MonoBehaviour
 
     #region Movement
 
+    private Coroutine steppingCoroutine = null;
+
+    IEnumerator WaitForStep() {
+        AudioBus.Instance.PlaySFX(footstepAudio);
+        yield return new WaitForSeconds(footstepInterval);
+        steppingCoroutine = null;
+    }
+
     private void Move(float acceleration, float deceleration, Vector2 moveInput)
     {
         float targetVelocity = moveInput.x * maxWalkSpeed;
         if (Mathf.Abs(moveInput.x) >= moveThreshold)
         {
+            if (_isGrounded && steppingCoroutine == null) {
+                steppingCoroutine = StartCoroutine(WaitForStep());
+            }
+
             TurnCheck(moveInput);
             horizontalVelocity = Mathf.Lerp(horizontalVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
         }
         else if (Mathf.Abs(moveInput.x) < moveThreshold)
         {
+            StopAllCoroutines();
+            steppingCoroutine = null;
             horizontalVelocity = Mathf.Lerp(horizontalVelocity, 0f, deceleration * Time.fixedDeltaTime);
         }
     }
@@ -536,6 +563,8 @@ public class PlayerController : MonoBehaviour
     }
     private void InitiateJump(int numberOfJumpsUsed)
     {
+        AudioBus.Instance.PlaySFX(jumpAudio);
+
         if (!_isJumping)
         {
             _isJumping = true;
@@ -760,6 +789,7 @@ public class PlayerController : MonoBehaviour
         {
             _isWallSlideFalling = true;
             StopWallSlide();
+            AudioBus.Instance.PlaySFX(wallSlideAudio);
         }
         else
         {
@@ -828,6 +858,8 @@ public class PlayerController : MonoBehaviour
             _isWallJumping = true;
             _useWallJumpMoveStats = true;
         }
+
+        AudioBus.Instance.PlaySFX(wallJumpAudio);
 
         StopWallSlide();
         ResetJumpValues();
@@ -991,6 +1023,8 @@ public class PlayerController : MonoBehaviour
         _targetSlideSpeed = _slideSpeed * slideSpeedMultiplier;
         _slideMaxSpeedTimer = slideMaxSpeedTime;
         _slideTime = 0;
+
+        AudioBus.Instance.PlaySFX(floorSlideAudio);
     }
 
     private void Slide()
@@ -1076,6 +1110,9 @@ public class PlayerController : MonoBehaviour
     {
         if ((_currentInputFrame.AttackWasPressed && !_isSliding) || (_isSliding && Mathf.Abs(horizontalVelocity) >= minSlideSpeedToHit))
         {
+            if (_currentInputFrame.AttackWasPressed) {
+                AudioBus.Instance.PlaySFX(punchAudio);
+            }
             _isAttacking = true;
             if (!_isGrounded)
             {
@@ -1110,6 +1147,7 @@ public class PlayerController : MonoBehaviour
                 _slideAttackColl.enabled = false;
                 _attackColl.enabled = true;
             }
+
 
             OnPlayerAttack?.Invoke();
         }

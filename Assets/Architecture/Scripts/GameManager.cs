@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won }
+public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won, Finished }
 public enum DeathCondition { Death, OutOfFrame }
 
 public class GameManager : MonoBehaviour
@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
     public void WinGame()
     {
         ChangeState(GameState.Won);
+        PlayReplay(); // CHANGE THIS LATER
     }
 
     public void PlayReplay()
@@ -91,7 +92,33 @@ public class GameManager : MonoBehaviour
         LoadScene("Level");
     }
 
+    public void FinishReplay()
+    {
+        ChangeState(GameState.Finished);
+        LoadScene("Menu");
+    }
+
     public void LoadScene(string sceneToLoad)
+    {
+        if (SceneFader.Instance != null) {
+            FadeToSceneWrapper(sceneToLoad);
+        } 
+        else HardLoadScene(sceneToLoad);
+    }
+
+    private async void FadeToSceneWrapper(string sceneToLoad)
+    {
+        try
+        {
+            await SceneFader.Instance.FadeToScene(sceneToLoad);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Scene transition failed: {e.Message}");
+        }
+    }
+
+    public void HardLoadScene(string sceneToLoad)
     {
         Debug.Log($"Loading scene {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);

@@ -41,7 +41,8 @@ public class InputRecorder
                 a.SlideIsHeld == b.SlideIsHeld && 
                 a.SlideWasReleased == b.SlideWasReleased && 
                 a.PoseWasPressed == b.PoseWasPressed && 
-                a.PoseWasPressed == b.PoseWasPressed;
+                a.PoseWasPressed == b.PoseWasPressed &&
+                a.AttackWasPressed == b.AttackWasPressed;
     }
 
     public InputFrame[] ToFrameArray()
