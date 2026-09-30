@@ -39,7 +39,7 @@ public class InsideFilmFrame : MonoBehaviour
 
     void Update()
     {
-        if (_hasLost) return;
+        if (_hasLost || GameManager.Instance.CurrentState != GameState.Playing) return;
 
         if (playerInside)
         {
