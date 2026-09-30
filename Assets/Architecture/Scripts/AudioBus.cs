@@ -73,7 +73,7 @@ public class AudioBus : MonoBehaviour
     }
     
     public void PlayRandomSFX(AudioClip[] clips) {
-        sfxSource.PlayOneShot(clips[Random.Range(0, clips.Length - 1)]);
+        sfxSource.PlayOneShot(clips[Random.Range(0, clips.Length)]);
     }
     // Control music volume
     public void SetMusicVolume(float volume)

@@ -729,7 +729,8 @@ MonoBehaviour:
   jumpAudio: {fileID: 8300000, guid: d72d10b26e3f31b26a6a1a3ae2c69709, type: 3}
   wallJumpAudio: {fileID: 8300000, guid: 31e5291f948906b68892426351655de6, type: 3}
   bounceAudio: {fileID: 8300000, guid: 0d9b93b233b8c108397396b0cadda327, type: 3}
-  floorSlideAudio: {fileID: 8300000, guid: 462b2043e6818f168a18c4113bff0beb, type: 3}
+  floorSlideAudios:
+  - {fileID: 8300000, guid: eecd527ebfb4c4fbdb6f8632e5037dc7, type: 3}
   wallSlideAudio: {fileID: 8300000, guid: a86107db830e05260a272b1d5adc1cc6, type: 3}
   punchAudio: {fileID: 8300000, guid: 39be00f957baa9e3f8e2cab4e2d08d27, type: 3}
   kickAudio: {fileID: 0}

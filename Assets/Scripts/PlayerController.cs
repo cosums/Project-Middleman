@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip jumpAudio;
     public AudioClip wallJumpAudio;
     public AudioClip bounceAudio;
-    public AudioClip floorSlideAudio;
+    public AudioClip[] floorSlideAudios;
     public AudioClip wallSlideAudio;
     public AudioClip punchAudio;
     public AudioClip kickAudio;
@@ -1024,7 +1024,7 @@ public class PlayerController : MonoBehaviour
         _slideMaxSpeedTimer = slideMaxSpeedTime;
         _slideTime = 0;
 
-        AudioBus.Instance.PlaySFX(floorSlideAudio);
+        AudioBus.Instance.PlayRandomSFX(floorSlideAudios);
     }
 
     private void Slide()
