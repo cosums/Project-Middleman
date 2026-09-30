@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip punchAudio;
     public AudioClip kickAudio;
     public AudioClip poseAudio;
+    public AudioClip[] cowboyShouts;
 
     [Header("Walk")]
     public float moveThreshold = 0.25f;
@@ -793,6 +794,7 @@ public class PlayerController : MonoBehaviour
         {
             _isWallSlideFalling = true;
             StopWallSlide();
+            AudioBus.Instance.PlaySFX(wallSlideAudio);
         }
         else
         {
@@ -1102,6 +1104,9 @@ public class PlayerController : MonoBehaviour
     {
         if ((_currentInputFrame.AttackWasPressed && !_isSliding) || (_isSliding && Mathf.Abs(horizontalVelocity) >= minSlideSpeedToHit))
         {
+            if (_currentInputFrame.AttackWasPressed) {
+                AudioBus.Instance.PlaySFX(punchAudio);
+            }
             _isAttacking = true;
             if (!_isGrounded)
             {
@@ -1136,6 +1141,7 @@ public class PlayerController : MonoBehaviour
                 _slideAttackColl.enabled = false;
                 _attackColl.enabled = true;
             }
+
 
             // TODO attacking
             Debug.Log("Hit something!");
