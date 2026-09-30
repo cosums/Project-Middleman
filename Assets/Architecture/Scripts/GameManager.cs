@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public enum GameState { Menu, Playing, Replaying, Paused }
+    public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won }
     public GameState CurrentState { get; private set; }
 
     public static event Action<GameState> OnNewState;
@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     public void ChangeState(GameState newState)
     {
+        Debug.Log($"[GameManager]: Switching to game state {newState}");
         UpdateState(newState);
         CurrentState = newState;
         OnNewState?.Invoke(newState);
@@ -39,17 +40,35 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Replaying:
                 break;
+            case GameState.Failed:
+                break;
+            case GameState.Won:
+                break;
+            case GameState.Paused:
+                break;
         }
     }
 
-    public void WinGame()
+    public void StartGame()
     {
-        
+        ChangeState(GameState.Playing);
+        LoadScene("Level");
+    }
+
+    public void Pause()
+    {
+        ChangeState(GameState.Paused);
     }
 
     public void LoseGame()
     {
         Debug.Log("You lost idiot!");
+        ChangeState(GameState.Failed);
+    }
+
+    public void WinGame()
+    {
+        ChangeState(GameState.Won);
     }
 
     public void LoadScene(string sceneToLoad)
