@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 1880228720442522198}
   - component: {fileID: 175582210798936119}
   - component: {fileID: 175272440003104586}
-  - component: {fileID: 8734729972956625533}
+  - component: {fileID: 5996499494267632632}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -448,7 +448,7 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
---- !u!114 &8734729972956625533
+--- !u!114 &5996499494267632632
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -459,7 +459,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cde0dc230d4935f4b90b7a39d67c7119, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::CameraScreenParticles
+  playerController: {fileID: 0}
+  activeQuickTimeParticles: {fileID: 1801879400777592121}
+  burstQuickTimeParticles: {fileID: 9111362517787018593, guid: 442a6ef98bec9134abe08e5d9cff440f, type: 3}
 --- !u!1001 &7454442731472955480
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -517,6 +520,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f9a79198dfabdd49a948e64d42f5ac4, type: 3}
+--- !u!198 &1801879400777592121 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 9111362517787018593, guid: 3f9a79198dfabdd49a948e64d42f5ac4, type: 3}
+  m_PrefabInstance: {fileID: 7454442731472955480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3836765576127649591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5930517082897203055, guid: 3f9a79198dfabdd49a948e64d42f5ac4, type: 3}
