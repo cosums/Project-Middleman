@@ -227,26 +227,6 @@ public class PlayerController : MonoBehaviour
         transform.position = _startingPos;
     }
 
-    //private void FixedUpdate()
-    //{
-    //    CollisionCheck();
-    //    Jump();
-    //    LandCheck();
-    //    WallSlide();
-
-    //     if (_isGrounded)
-    //     {
-    //         Move(groundAcceleration, groundDeceleration, InputManager.movement);
-    //     }
-    //     else
-    //     {
-    //         Move(airAcceleration, airDeceleration, InputManager.movement);
-    //     }
-
-    //    ApplyVelocity();
-    //}
-
-    // effectively FixedUpdate, so put any changes here
     public void SimulateTick(InputFrame frame)
     {
         _currentInputFrame = frame;
@@ -328,6 +308,11 @@ public class PlayerController : MonoBehaviour
     public float GetPlayerSpeed()
     {
         return Mathf.Abs(rb.linearVelocityX);
+    }
+
+    public bool GetIsWallSliding()
+    {
+        return _isWallSliding;
     }
 
     #region Movement
