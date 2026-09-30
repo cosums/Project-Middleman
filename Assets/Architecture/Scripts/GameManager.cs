@@ -6,9 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public enum GameState { Menu, Playing, Replaying }
+    public enum GameState { Menu, Playing, Replaying, Paused }
     public GameState CurrentState { get; private set; }
 
+    public static event Action<GameState> OnNewState;
     public static event Action OnGameQuit;
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -19,11 +20,18 @@ public class GameManager : MonoBehaviour
 
         Instance = autoObj.GetComponent<GameManager>();
         DontDestroyOnLoad(autoObj);
+        Instance.CurrentState = GameState.Menu;
     }
 
     public void ChangeState(GameState newState)
     {
-        switch (newState)
+        UpdateState(newState);
+        CurrentState = newState;
+        OnNewState?.Invoke(newState);
+    }
+
+    private void UpdateState(GameState state) {
+        switch (state)
         {
             case GameState.Menu:
                 break;
@@ -32,6 +40,16 @@ public class GameManager : MonoBehaviour
             case GameState.Replaying:
                 break;
         }
+    }
+
+    public void WinGame()
+    {
+        
+    }
+
+    public void LoseGame()
+    {
+        Debug.Log("You lost idiot!");
     }
 
     public void LoadScene(string sceneToLoad)
