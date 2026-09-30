@@ -10,6 +10,7 @@ public static class FixedTickerUtility
 public class FixedTicker : MonoBehaviour
 {
     public PlayerController Player;
+    public DialogueTester Tester;
     public LiveInputProvider LiveProvider;
 
     public int CurrentTick;
@@ -81,6 +82,10 @@ public class FixedTicker : MonoBehaviour
 
         var frame = _inputProvider.GetInput(CurrentTick);
         Player.SimulateTick(frame);
+        if (Tester != null)
+        {
+            Tester.SimulateTick(frame);
+        }
         FixedTickerUtility.Recorder.RecordFrame(frame);
 
         CurrentTick++;
