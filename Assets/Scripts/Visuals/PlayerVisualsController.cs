@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Diagnostics.Tracing;
+using System.Runtime.CompilerServices;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -10,14 +12,24 @@ public class PlayerVisualsController : MonoBehaviour
     [SerializeField] ParticleSystem runParticle;
     [SerializeField] ParticleSystem slideParticle;
     [SerializeField] ParticleSystem punchParticle;
+    [SerializeField] ParticleSystem jumpParticle;
+    [SerializeField] ParticleSystem flipParticle;
+    [SerializeField] ParticleSystem kickParticle;
 
     private PlayerController playerController;
-    
-    static readonly int PoseTrigger = Animator.StringToHash("Pose");
-    static readonly int AttackTrigger = Animator.StringToHash("Attack");
-    static readonly int xVelocityFloat = Animator.StringToHash("xVelocity");
-    static readonly int JumpBool = Animator.StringToHash("inAir");
+
+    static readonly int IsAttackingBool = Animator.StringToHash("isAttacking");
+    static readonly int AttackTrigger = Animator.StringToHash("attack");
+    static readonly int XVelocityFloat = Animator.StringToHash("xVelocity");
+    static readonly int InAirBool = Animator.StringToHash("inAir");
+    static readonly int FlipBool = Animator.StringToHash("isFlipping");
     static readonly int SlideBool = Animator.StringToHash("isSliding");
+
+    private bool inAir;
+    private bool isFlipping;
+    private bool isSliding;
+    private bool isAttacking;
+
 
     InputFrame _currentInputFrame;
 
@@ -29,6 +41,7 @@ public class PlayerVisualsController : MonoBehaviour
     public void SimulateTick(InputFrame frame)
     {
         _currentInputFrame = frame;
+
         UpdatePlayerAnimation();
         UpdatePlayerParticles();
     }
@@ -38,33 +51,48 @@ public class PlayerVisualsController : MonoBehaviour
     private void UpdatePlayerAnimation()
     {
         var f = _currentInputFrame;
-
-        if (f.PoseWasPressed) playerRigAnimator.SetTrigger(PoseTrigger);
+        
         if (f.AttackWasPressed)
         {
             playerRigAnimator.SetTrigger(AttackTrigger);
-            if (punchParticle != null) punchParticle.Play();
+            StartCoroutine(AttackBoolSequence(true));
+
         }
 
-
-        if (playerController.GetInAir())
+        // jump
+        if (inAir != playerController.GetInAir())
         {
-            if (playerController.GetRemainingJumps() == 1)
-            {
-                playerRigAnimator.SetBool(JumpBool, true);
-            }
-            else if (playerController.GetRemainingJumps() == 0)
-            {
+            inAir = playerController.GetInAir();
+            playerRigAnimator.SetBool(InAirBool, inAir);
 
+            if (playerController.GetRemainingJumps() >= 0)
+            {
+                ParticleSystem particle = Instantiate(jumpParticle);
+                particle.transform.position = GetGroundPosition();
             }
         }
-        else
+
+        // flip
+        if (isFlipping != (playerController.GetRemainingJumps() == 0))
         {
-            playerRigAnimator.SetBool(JumpBool, false);
-        }
+            isFlipping = (playerController.GetRemainingJumps() == 0);
+            playerRigAnimator.SetBool(FlipBool, isFlipping);
 
-        playerRigAnimator.SetBool(SlideBool, playerController.GetIsSliding());
-        playerRigAnimator.SetFloat(xVelocityFloat, Mathf.Abs(f.Move.x));
+            if (playerController.GetInAir())
+            {
+                ParticleSystem particle = Instantiate(flipParticle);
+                particle.transform.position = playerController.GetFeetCollider().transform.position;
+                particle.transform.SetParent(playerController.GetFeetCollider().transform);
+            }
+        }
+        
+        // Movement
+        if (isSliding != playerController.GetIsSliding())
+        {
+            isSliding = playerController.GetIsSliding();
+            playerRigAnimator.SetBool(SlideBool, isSliding);
+        }
+        playerRigAnimator.SetFloat(XVelocityFloat, Mathf.Abs(f.Move.x));
     }
 
     private void UpdatePlayerParticles()
@@ -78,8 +106,6 @@ public class PlayerVisualsController : MonoBehaviour
             DisableParticle(slideParticle);
             return;
         }
-
-
 
         // Sliding Particles
         if (_currentInputFrame.SlideWasPressed)
@@ -97,6 +123,22 @@ public class PlayerVisualsController : MonoBehaviour
         if (Mathf.Abs(_currentInputFrame.Move.x) > 0.01f) EnableParticle(runParticle);
     }
 
+    private Vector3 GetGroundPosition()
+    {
+        Vector3 origin = playerController.groundPoint.transform.position;
+
+        // Start slightly above the feet so the ray doesn't begin inside the ground
+        RaycastHit2D hit = Physics2D.Raycast(origin + Vector3.up * 0.5f, Vector2.down, 10f, playerController.groundLayer);
+        if (hit.collider != null)
+        {
+            return hit.point;
+        }
+
+        // Fallback if nothing was hit
+        print("nothing hit");
+        return origin;
+    }
+
     private void EnableParticle(ParticleSystem particle)
     {
         if (!particle.isPlaying)
@@ -107,6 +149,21 @@ public class PlayerVisualsController : MonoBehaviour
     {
         if (particle.isPlaying)
             particle.Stop();
+    }
+
+    private IEnumerator AttackBoolSequence(bool enable)
+    {
+        if (isAttacking == enable) yield break;
+
+        Debug.Log("attack bool sequence");
+
+        isAttacking = enable;
+        playerRigAnimator.SetBool(IsAttackingBool, true);
+
+        yield return new WaitForSeconds(0.3f);
+
+        playerRigAnimator.SetBool(IsAttackingBool, !isAttacking);
+        isAttacking = !isAttacking;
     }
 
 

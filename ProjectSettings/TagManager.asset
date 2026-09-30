@@ -14,8 +14,8 @@ TagManager:
   - UI
   - Ground
   - Player
-  - 
-  - 
+  - Jumpthru Platform
+  - Jumpthru Platform Trigger
   - 
   - 
   - 
@@ -41,6 +41,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Film Frame
+    uniqueID: 528465517
     locked: 0
   m_RenderingLayers:
   - Default

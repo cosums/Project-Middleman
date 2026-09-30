@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Ground/Collision Checks")]
     public LayerMask groundLayer;
+    public LayerMask headBumbpLayer;
     public float groundDetectionRayLength = 0.02f;
     public float headDetectionRayLength = 0.02f;
     public float headWidth = 0.75f;
@@ -65,6 +66,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Collider2D _bodyColl;
     [SerializeField] private Collider2D _attackColl;
     [SerializeField] private Collider2D _slideAttackColl;
+    [SerializeField] private Collider2D _jumpThruScanColl;
+    public GameObject groundPoint;
 
     [Header("Slide")]
     public float slideSpeedMultiplier = 1.25f;
@@ -113,6 +116,7 @@ public class PlayerController : MonoBehaviour
     private bool _headBumped;
     private bool _isTouchingWall;
     private Rigidbody2D _currentGorund;
+    private int _numOveralppingPlatforms = 0;
 
     //jump vars
     public float verticalVelocity { get; private set; }
@@ -184,7 +188,8 @@ public class PlayerController : MonoBehaviour
     private bool _isPosing;
 
     // attack
-    private float _attackTimer;
+    private float _groundAttackTimer;
+    private float _airAttackTimer;
     private float _attackCooldownTimer;
     private bool _isAttacking;
 
@@ -416,7 +421,7 @@ public class PlayerController : MonoBehaviour
         Vector2 boxCastOrigin = new Vector2(_feetColl.bounds.center.x, _bodyColl.bounds.max.y);
         Vector2 boxCastSize = new Vector2(_feetColl.bounds.size.x * headWidth, headDetectionRayLength);
 
-        _headHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.up, headDetectionRayLength, groundLayer);
+        _headHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.up, headDetectionRayLength, headBumbpLayer);
         if (_headHit.collider != null)
         {
             _headBumped = true;
@@ -433,6 +438,16 @@ public class PlayerController : MonoBehaviour
         Vector2 boxCastSize = new Vector2(_feetColl.bounds.size.x, groundDetectionRayLength);
 
         _groundHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.down, groundDetectionRayLength, groundLayer);
+
+        // Ignore a ground hit against a jump-thru platform we're currently overlapping/passing through
+        if (_groundHit.collider != null &&
+            _groundHit.collider.gameObject.layer == LayerMask.NameToLayer("Jumpthru Platform Trigger") &&
+            _numOveralppingPlatforms > 0)
+        {
+            _groundHit = default;
+            return;
+        }
+
         if (_groundHit.collider != null)
         {
             _isGrounded = true;
@@ -463,7 +478,7 @@ public class PlayerController : MonoBehaviour
         Vector2 boxCastSize = new Vector2(wallDetectionRayLength, adjustedHeight);
 
         _wallHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, transform.right, wallDetectionRayLength, groundLayer);
-        if (_wallHit.collider != null)
+        if (_wallHit.collider != null && _numOveralppingPlatforms == 0)
         {
             _lastWallHit = _wallHit;
             _isTouchingWall = true;
@@ -476,9 +491,44 @@ public class PlayerController : MonoBehaviour
 
     private void CollisionCheck()
     {
+        LayerMask playerLayer = LayerMask.NameToLayer("Player");
+        LayerMask platformLayer = LayerMask.NameToLayer("Jumpthru Platform");
+
+        if (verticalVelocity > 0)
+        {
+            Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, true);
+        }
+        else if (_numOveralppingPlatforms == 0)
+        {
+            Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, false);
+        }
+
         IsGrounded();
         BumpedHead();
         IsTouchingWall();
+
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Jumpthru Platform Trigger"))
+        {
+            _numOveralppingPlatforms++;
+            print(_numOveralppingPlatforms);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Jumpthru Platform Trigger"))
+        {
+            _numOveralppingPlatforms--;
+            print(_numOveralppingPlatforms);
+        }
+    }
+
+    public Collider2D GetFeetCollider()
+    {
+        return _feetColl;
     }
 
     #endregion
@@ -595,6 +645,11 @@ public class PlayerController : MonoBehaviour
 
     private void JumpChecks()
     {
+        if (_isWallJumping && _wallJumpTime <= 0f)
+        {
+            return; // wall jump already handled this press
+        }
+
         //Jump button pressed
         if (_currentInputFrame.JumpWasPressed)
         {
@@ -692,7 +747,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallSlideCheck()
     {
-        if (_isTouchingWall && !_isGrounded)
+        if (_isTouchingWall && !_isGrounded && _numOveralppingPlatforms == 0)
         {
             if (verticalVelocity < 0 && !_isWallSliding)
             {
@@ -770,6 +825,7 @@ public class PlayerController : MonoBehaviour
         if (_currentInputFrame.JumpWasPressed && _wallJumpPostBufferTimer > 0f)
         {
             InitiateWallJump();
+            _wallJumpPostBufferTimer = 0f;
         }
     }
 
@@ -896,14 +952,7 @@ public class PlayerController : MonoBehaviour
 
     private bool ShouldApplyWallJumpBuffer()
     {
-        if (!_isGrounded && (_isTouchingWall || _isWallSliding))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return !_isGrounded && _numOveralppingPlatforms == 0 && (_isTouchingWall || _isWallSliding);
     }
 
     private void ResetWallJumpValues()
@@ -1027,10 +1076,22 @@ public class PlayerController : MonoBehaviour
         if ((_currentInputFrame.AttackWasPressed && !_isSliding) || (_isSliding && Mathf.Abs(horizontalVelocity) >= minSlideSpeedToHit))
         {
             _isAttacking = true;
+            if (!_isGrounded)
+            {
+                _airAttackTimer = 0.35f;
+            }
+            else
+            {
+                _groundAttackTimer = 0.15f;
+            }
         }
         else if (!_currentInputFrame.AttackWasPressed)
         {
-            _isAttacking = false;
+            if ((_isGrounded && _groundAttackTimer <= 0) || (!_isGrounded && _airAttackTimer <= 0))
+            {
+                _isAttacking = false;
+                _airAttackTimer = 0f;
+            }
         }
     }
 
@@ -1038,12 +1099,17 @@ public class PlayerController : MonoBehaviour
     {
         if (_isAttacking)
         {
-            if (_isSliding)
+            if (_isSliding || GetInAir())
             {
                 _slideAttackColl.enabled = true;
                 _attackColl.enabled = false;
             }
-            
+            else
+            {
+                _slideAttackColl.enabled = false;
+                _attackColl.enabled = true;
+            }
+
             // TODO attacking
             Debug.Log("Hit something!");
             OnPlayerAttack?.Invoke();
@@ -1085,7 +1151,17 @@ public class PlayerController : MonoBehaviour
         if (_attackCooldownTimer > 0f)
         {
             _attackCooldownTimer -= Time.deltaTime;
-        }        
+        }
+        
+        if (_airAttackTimer > 0f && !_isGrounded)
+        {
+            _airAttackTimer -= Time.deltaTime;
+        }
+
+        if (_groundAttackTimer > 0f && _isGrounded)
+        {
+            _groundAttackTimer -= Time.deltaTime;
+        }
     }
 
     #endregion
