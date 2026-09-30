@@ -19,6 +19,7 @@ public class PlayerVisualsController : MonoBehaviour
     private PlayerController playerController;
 
     static readonly int IsAttackingBool = Animator.StringToHash("isAttacking");
+    static readonly int IsKickingBool = Animator.StringToHash("isKicking");
     static readonly int AttackTrigger = Animator.StringToHash("attack");
     static readonly int XVelocityFloat = Animator.StringToHash("xVelocity");
     static readonly int InAirBool = Animator.StringToHash("inAir");
@@ -29,6 +30,7 @@ public class PlayerVisualsController : MonoBehaviour
     private bool isFlipping;
     private bool isSliding;
     private bool isAttacking;
+    private bool isKicking;
 
 
     InputFrame _currentInputFrame;
@@ -57,6 +59,13 @@ public class PlayerVisualsController : MonoBehaviour
             playerRigAnimator.SetTrigger(AttackTrigger);
             StartCoroutine(AttackBoolSequence(true));
 
+        }
+
+        // update isKicking bool (in air)
+        if (playerController.GetInAir() == false && isKicking == true)
+        {
+            isKicking = false;
+            playerRigAnimator.SetBool(IsKickingBool, isKicking);
         }
 
         // jump
@@ -155,10 +164,11 @@ public class PlayerVisualsController : MonoBehaviour
     {
         if (isAttacking == enable) yield break;
 
-        Debug.Log("attack bool sequence");
-
         isAttacking = enable;
         playerRigAnimator.SetBool(IsAttackingBool, true);
+
+        isKicking = true;
+        playerRigAnimator.SetBool(IsKickingBool, true);
 
         yield return new WaitForSeconds(0.3f);
 

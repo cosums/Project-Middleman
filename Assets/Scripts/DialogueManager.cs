@@ -1,12 +1,29 @@
 using NUnit.Framework;
 using System;
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 public class DialogueManager : MonoBehaviour
 {
     private List<DialogueLine> dialogueQueue = new List<DialogueLine>();
     private DialogueLine head;
+
+    public static DialogueManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void EnqueueDialogue(DialogueLine dialogue)
     {
@@ -14,15 +31,18 @@ public class DialogueManager : MonoBehaviour
         if (dialogueQueue.Count == 1)
         {
             head = dialogue;
+            head.Play();
         }
     }
 
     public void DequeueDialogue()
     {
         dialogueQueue.Remove(head);
+        DialogueDisplay.Instance.HideDialogue();
         if (dialogueQueue.Count > 0)
         {
             head = dialogueQueue[0];
+            head.Play();
         }
         else
         {
@@ -37,23 +57,63 @@ public class DialogueManager : MonoBehaviour
 }
 
 [Serializable]
-public class DialogueLine
+public class DialogueLine : MonoBehaviour
 {
     public string speaker;
     public string contents;
-    public AudioClip audio;
-    public float minDuration;
+    public AudioClip clip;
+    public float minDurationTimer;
+
+    private bool playing = false;
+
         
-    public DialogueLine(string speaker, string contents, AudioClip audio, float minDuration)
+    public void Init(string speaker, string contents, AudioClip audio)
     {
         this.speaker = speaker;
         this.contents = contents;
-        this.audio = audio;
-        this.minDuration = minDuration;
+        this.clip = audio;
+        this.minDurationTimer = -1f;
+    }
+    public void Init(string speaker, string contents, float minDuration)
+    {
+        this.speaker = speaker;
+        this.contents = contents;
+        this.clip = null;
+        this.minDurationTimer = minDuration;
+  
     }
 
     public void Play()
     {
+        playing = true;
+        if (clip != null)
+        {
+            AudioBus.Instance.PlaySFX(clip);
+            StartCoroutine(WaitForClipEnd());
+            DialogueDisplay.Instance.SetDialogueLine(this);
+            DialogueDisplay.Instance.ShowDialogue();
+        }
+    }
 
+    private IEnumerator WaitForClipEnd()
+    {
+        yield return new WaitForSeconds(clip.length);
+
+        DialogueManager.Instance.DequeueDialogue();
+    }
+
+    public void Update()
+    {
+        if (playing)
+        {
+            if (minDurationTimer > 0)
+            {
+                minDurationTimer -= Time.deltaTime;
+            }
+            else if (clip == null)
+            {
+                DialogueManager.Instance.DequeueDialogue();
+            }
+        }
     }
 }
