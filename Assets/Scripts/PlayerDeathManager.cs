@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerDeathManager : MonoBehaviour
@@ -37,7 +38,12 @@ public class PlayerDeathManager : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Static;
 
         Instantiate(deathParticles, transform);
+
+        GetComponent<CinemachineImpulseSource>().GenerateImpulse(screenShakeAmt);
+
         yield return new WaitForSeconds(0.15f);
+        
+        
         playerSprites.SetActive(false);
 
         yield return new WaitForSeconds(2);

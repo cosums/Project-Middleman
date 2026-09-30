@@ -566,7 +566,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1565410351
-  m_SortingLayer: 1
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 22de23622f8478643b21129f042835b7, type: 3}
@@ -658,6 +658,10 @@ GameObject:
   - component: {fileID: 6684989214810818614}
   - component: {fileID: 3290749341302098565}
   - component: {fileID: 6496630275529059177}
+  - component: {fileID: 7400396883679840354}
+  - component: {fileID: 5609188174657847377}
+  - component: {fileID: 3526585033382285429}
+  - component: {fileID: 645553381282732866}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -778,10 +782,6 @@ MonoBehaviour:
   _slideAttackColl: {fileID: 4311273045981576095}
   _jumpThruScanColl: {fileID: 3071796955792490385}
   groundPoint: {fileID: 8376839070288095231}
-  defaultFace: {fileID: -6919008638241797651, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
-  poseFace: {fileID: 21300000, guid: 22de23622f8478643b21129f042835b7, type: 3}
-  _faceRenderer: {fileID: 7833889849834701247}
-  _altFaceRenderer: {fileID: 3781967436139495595}
   slideSpeedMultiplier: 1.5
   slideBufferTime: 0.125
   slideAcceleration: 25
@@ -791,7 +791,6 @@ MonoBehaviour:
   minSlideSpeedToHit: 12.5
   poseTime: 1
   poseCooldown: 3
-  poseParticles: {fileID: 10316293373805713, guid: 974cd674e24d5f846833ae147775b125, type: 3}
   attackTime: 0.2
   attackCoolDown: 2
   attackParticles: {fileID: 0}
@@ -823,6 +822,144 @@ MonoBehaviour:
   flipParticle: {fileID: 922400818474702456, guid: 034aa4321b8d43447a5d454f9483d35a, type: 3}
   kickParticle: {fileID: 0}
   poseParticle: {fileID: 2084714503438401163, guid: 974cd674e24d5f846833ae147775b125, type: 3}
+--- !u!114 &7400396883679840354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6783144415912548418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 683938f8b6caae34a954c335dc8888e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDeathManager
+  rb: {fileID: 6684989214810818614}
+  playerSprites: {fileID: 4832080082089454570}
+  deathParticles: {fileID: 6135108520289902656, guid: 2cc4379504862644f9e9aff561d9c64c, type: 3}
+  screenShakeAmt: 0.2
+--- !u!114 &5609188174657847377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6783144415912548418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 2
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.2
+    ImpulseType: 0
+    DissipationRate: 0.25
+    RawSignal: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &3526585033382285429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6783144415912548418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 683938f8b6caae34a954c335dc8888e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDeathManager
+  rb: {fileID: 6684989214810818614}
+  playerSprites: {fileID: 4832080082089454570}
+  deathParticles: {fileID: 6135108520289902656, guid: 2cc4379504862644f9e9aff561d9c64c, type: 3}
+  screenShakeAmt: 0
+--- !u!114 &645553381282732866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6783144415912548418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 2
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.2
+    ImpulseType: 0
+    DissipationRate: 0.25
+    RawSignal: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!1 &7206434210162189124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,7 +1523,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5147229116124244467, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -5147229116124244467, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
@@ -1394,7 +1531,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4977047822150016468, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -4977047822150016468, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingOrder
@@ -1410,7 +1547,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4154801534342044505, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -4154801534342044505, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingOrder
@@ -1482,7 +1619,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1203895128304286047, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -1203895128304286047, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
@@ -1502,7 +1639,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 467848311545223208, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 467848311545223208, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
@@ -1514,7 +1651,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1046783822113781432, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1046783822113781432, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
@@ -1538,7 +1675,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2908940205763300328, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2908940205763300328, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
@@ -1546,7 +1683,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2913007426971998520, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2913007426971998520, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
@@ -1590,7 +1727,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4600508316499132082, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4600508316499132082, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
@@ -1610,7 +1747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4854236098448350205, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4854236098448350205, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
@@ -1618,7 +1755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5116368807220319231, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5116368807220319231, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
@@ -1630,7 +1767,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5377317524504523704, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5377317524504523704, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
@@ -1674,7 +1811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7802377832279557615, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7802377832279557615, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingOrder
@@ -1698,7 +1835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8311770379069077807, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8311770379069077807, guid: 8043a233f2511ef4ca0159c06d3a822b, type: 3}
       propertyPath: m_SortingLayerID
