@@ -20,6 +20,9 @@ public class PointSystem : MonoBehaviour
     [SerializeField] float quicktimeDelay = 5f;
     [SerializeField] float insideFrameDelay = 0.25f;
 
+    [Header("Audio")]
+    public AudioClip comboAudio;
+
     [Header("Combo")]
     [SerializeField] float comboDuration = 3;
 
@@ -188,6 +191,8 @@ public class PointSystem : MonoBehaviour
         comboPoints += pointsToAdd;
         comboEntries.Add((source, pointsToAdd));
         OnComboPointsChanged?.Invoke(source, pointsToAdd, multiplier);
+
+        AudioBus.Instance.PlaySFX(comboAudio);
 
         comboTimer = comboDuration;
         if (comboRoutine == null) comboRoutine = StartCoroutine(ComboTimer());
