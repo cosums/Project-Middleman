@@ -2502,8 +2502,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 0.9998571
+    width: 0.9997932
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -2997,6 +2997,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Film Frame
       objectReference: {fileID: 0}
+    - target: {fileID: 2730403917162389513, guid: b5948b1e960687b47b51dd6ee3b2c42f, type: 3}
+      propertyPath: CountDownText
+      value: 
+      objectReference: {fileID: 7583245607287617082}
     - target: {fileID: 5579178199525675002, guid: b5948b1e960687b47b51dd6ee3b2c42f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5069,6 +5073,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d97a06e174e131f4493bb9366786a0aa, type: 3}
+--- !u!114 &7583245607287617082 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3872512634194087621, guid: d97a06e174e131f4493bb9366786a0aa, type: 3}
+  m_PrefabInstance: {fileID: 7583245607287617081}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
