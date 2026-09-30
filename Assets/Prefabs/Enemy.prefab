@@ -591,9 +591,9 @@ MonoBehaviour:
   DeathParticles: {fileID: 482451271666234645, guid: 2cc4379504862644f9e9aff561d9c64c, type: 3}
   breakSounds:
   - {fileID: 8300000, guid: 1f248315ec93c84bd8e7de6f09923249, type: 3}
-  pointsGivenOnBreak: 0
-  onHitScoreMessage: 
-  screenShakeAmount: 0
+  pointsGivenOnBreak: 250
+  onHitScoreMessage: Committed homicide!
+  screenShakeAmount: 0.75
 --- !u!1 &6640774771604093147
 GameObject:
   m_ObjectHideFlags: 0
