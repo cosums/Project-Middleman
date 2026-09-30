@@ -2,11 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won }
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won }
     public GameState CurrentState { get; private set; }
 
     public static event Action<GameState> OnNewState;
@@ -63,7 +64,13 @@ public class GameManager : MonoBehaviour
     public void LoseGame()
     {
         Debug.Log("You lost idiot!");
-        ChangeState(GameState.Failed);
+        //ChangeState(GameState.Failed);
+    }
+
+    public void ReturnToMenu()
+    {
+        LoadScene("Menu");
+        ChangeState(GameState.Menu);
     }
 
     public void WinGame()
