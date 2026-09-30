@@ -2007,6 +2007,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1650857792}
+  - component: {fileID: 1650857793}
   m_Layer: 0
   m_Name: MenuMusic
   m_TagString: Untagged
@@ -2029,6 +2030,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1650857793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650857791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e84d58fdae82d0b9cad4d924093f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  menuMusic: {fileID: 8300000, guid: 4076b4dcf44b16df38ebe40c385155bb, type: 3}
 --- !u!1 &2097061358
 GameObject:
   m_ObjectHideFlags: 0
