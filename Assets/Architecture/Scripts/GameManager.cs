@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public GameState CurrentState { get; private set; }
+    public GameState CurrentState { get; private set; } = GameState.Menu;
 
     public static event Action<GameState> OnNewState;
     public static event Action OnGameQuit;
@@ -24,7 +24,11 @@ public class GameManager : MonoBehaviour
 
         Instance = autoObj.GetComponent<GameManager>();
         DontDestroyOnLoad(autoObj);
-        Instance.CurrentState = GameState.Menu;
+
+        if (SceneManager.GetActiveScene().name == "Level")
+        {
+            Instance.CurrentState = GameState.Playing;
+        }
     }
 
     public void ChangeState(GameState newState)
@@ -84,6 +88,7 @@ public class GameManager : MonoBehaviour
     public void PlayReplay()
     {
         ChangeState(GameState.Replaying);
+        LoadScene("Level");
     }
 
     public void LoadScene(string sceneToLoad)

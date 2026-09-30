@@ -3914,7 +3914,7 @@ MonoBehaviour:
   Player: {fileID: 1107036663}
   LiveProvider: {fileID: 1929632799}
   CurrentTick: 0
-  EditorTest: 1
+  EditorTest: 0
 --- !u!114 &1929632799
 MonoBehaviour:
   m_ObjectHideFlags: 0

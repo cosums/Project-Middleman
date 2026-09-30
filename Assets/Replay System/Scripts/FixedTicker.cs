@@ -1,11 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.Profiling;
+
+public static class FixedTickerUtility
+{
+    public static InputRecorder Recorder;
+}
 
 public class FixedTicker : MonoBehaviour
 {
     public PlayerController Player;
     public LiveInputProvider LiveProvider;
-    private InputRecorder _recorder;
 
     public int CurrentTick;
 
@@ -16,14 +21,29 @@ public class FixedTicker : MonoBehaviour
 
     void Awake()
     {
+        OnFinishedReplay += ReturnToLive;
+        GameManager.OnNewState += HandleNewState;
+
+        Debug.Log("Goofy guber");
+        
         if (EditorTest)
         {
+            FixedTickerUtility.Recorder = new InputRecorder();
             Begin(LiveProvider);
+            return;
         }
 
-        _recorder = new InputRecorder();
-
-        OnFinishedReplay += ReturnToLive;
+        if (GameManager.Instance.CurrentState == GameState.Playing)
+        {
+            FixedTickerUtility.Recorder = new InputRecorder();
+            Begin(LiveProvider);
+        } 
+        else if (GameManager.Instance.CurrentState == GameState.Replaying)
+        {
+            InputFrame[] recordedFrames = FixedTickerUtility.Recorder.ToFrameArray();
+            ReplayInputProvider replayProvider = new ReplayInputProvider(recordedFrames);
+            Begin(replayProvider);
+        }
     }
 
     public void Begin(IInputProvider inputProvder)
@@ -32,20 +52,20 @@ public class FixedTicker : MonoBehaviour
         CurrentTick = 0;
     }
 
-    public void FinishAndReplay()
-    {
-        _recorder.FinishRecording();
-        InputFrame[] recordedFrames = _recorder.ToFrameArray();
-        ReplayInputProvider replayProvider = new ReplayInputProvider(recordedFrames);
-        Begin(replayProvider);
-    }
-
     public void ReturnToLive()
     {
-        _recorder = new InputRecorder();
+        FixedTickerUtility.Recorder = new InputRecorder();
         LiveProvider.ResetLatches();
         Player.CaptureStart();
         Begin(LiveProvider);
+    }
+
+    private void HandleNewState(GameState state)
+    {
+        if (state != GameState.Playing && FixedTickerUtility.Recorder != null)
+        {
+            FixedTickerUtility.Recorder.FinishRecording();
+        }
     }
 
     private void FixedUpdate()
@@ -61,7 +81,7 @@ public class FixedTicker : MonoBehaviour
 
         var frame = _inputProvider.GetInput(CurrentTick);
         Player.SimulateTick(frame);
-        _recorder.RecordFrame(frame);
+        FixedTickerUtility.Recorder.RecordFrame(frame);
 
         CurrentTick++;
     }
