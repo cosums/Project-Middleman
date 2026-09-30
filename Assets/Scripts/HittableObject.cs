@@ -14,7 +14,6 @@ public class HittableObject : MonoBehaviour
 
     public static Action ObjectHit;
 
-    private bool _inPlayerAttackBox;
     private ContactFilter2D _playerFilter;
     private List<Collider2D> _overlaps = new();
     private CinemachineImpulseSource impulseSource;
