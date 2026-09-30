@@ -11,14 +11,14 @@ public class PlayerController : MonoBehaviour
     PlayerVisualsController playerVisualsController;
     [Header("Audio")]
     public float footstepInterval = 0.2f; // Interval in seconds.
-    public AudioClip footstep;
-    public AudioClip jump;
-    public AudioClip bounce;
-    public AudioClip floor_slide;
-    public AudioClip wall_slide;
-    public AudioClip punch;
-    public AudioClip kick;
-    public AudioClip pose;
+    public AudioClip footstepAudio;
+    public AudioClip jumpAudio;
+    public AudioClip bounceAudio;
+    public AudioClip floorSlideAudio;
+    public AudioClip wallSlideAudio;
+    public AudioClip punchAudio;
+    public AudioClip kickAudio;
+    public AudioClip poseAudio;
 
     [Header("Walk")]
     public float moveThreshold = 0.25f;
@@ -346,7 +346,7 @@ public class PlayerController : MonoBehaviour
     private Coroutine steppingCoroutine = null;
 
     IEnumerator WaitForStep() {
-        AudioBus.Instance.PlaySFX(footstep);
+        AudioBus.Instance.PlaySFX(footstepAudio);
         yield return new WaitForSeconds(footstepInterval);
         steppingCoroutine = null;
     }
@@ -1024,6 +1024,8 @@ public class PlayerController : MonoBehaviour
         _targetSlideSpeed = _slideSpeed * slideSpeedMultiplier;
         _slideMaxSpeedTimer = slideMaxSpeedTime;
         _slideTime = 0;
+
+        AudioBus.Instance.PlaySFX(floorSlideAudio);
     }
 
     private void Slide()
