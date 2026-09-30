@@ -2,12 +2,23 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 
 [RequireComponent(typeof(PlayerVisualsController))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Visuals")]
     PlayerVisualsController playerVisualsController;
+    [Header("Audio")]
+    public float footstepInterval = 0.2f; // Interval in seconds.
+    public AudioClip footstep;
+    public AudioClip jump;
+    public AudioClip bounce;
+    public AudioClip floor_slide;
+    public AudioClip wall_slide;
+    public AudioClip punch;
+    public AudioClip kick;
+    public AudioClip pose;
 
     [Header("Walk")]
     public float moveThreshold = 0.25f;
@@ -332,16 +343,30 @@ public class PlayerController : MonoBehaviour
 
     #region Movement
 
+    private Coroutine steppingCoroutine = null;
+
+    IEnumerator WaitForStep() {
+        AudioBus.Instance.PlaySFX(footstep);
+        yield return new WaitForSeconds(footstepInterval);
+        steppingCoroutine = null;
+    }
+
     private void Move(float acceleration, float deceleration, Vector2 moveInput)
     {
         float targetVelocity = moveInput.x * maxWalkSpeed;
         if (Mathf.Abs(moveInput.x) >= moveThreshold)
         {
+            if (_isGrounded && steppingCoroutine == null) {
+                steppingCoroutine = StartCoroutine(WaitForStep());
+            }
+
             TurnCheck(moveInput);
             horizontalVelocity = Mathf.Lerp(horizontalVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
         }
         else if (Mathf.Abs(moveInput.x) < moveThreshold)
         {
+            StopAllCoroutines();
+            steppingCoroutine = null;
             horizontalVelocity = Mathf.Lerp(horizontalVelocity, 0f, deceleration * Time.fixedDeltaTime);
         }
     }

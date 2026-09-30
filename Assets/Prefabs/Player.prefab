@@ -633,6 +633,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1ed9d2d9b61994caa5a9464e695196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  footstep: {fileID: 8300000, guid: db8716ebe290d2c619b4d5405d6fff60, type: 3}
+  jump: {fileID: 0}
+  bounce: {fileID: 0}
+  floor_slide: {fileID: 0}
+  wall_slide: {fileID: 0}
+  punch: {fileID: 0}
+  kick: {fileID: 0}
+  pose: {fileID: 0}
   moveThreshold: 0.25
   maxWalkSpeed: 20
   groundAcceleration: 5
