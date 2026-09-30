@@ -6,7 +6,12 @@ public class InsideFilmFrame : MonoBehaviour
     public float KillCountDown = 3f;
     public float insideFrameMult = 0.01f;
     private bool playerInside = false;
-    private float _timeOutside;
+    private float _timeOutside = 0;
+
+    void Start()
+    {
+        _timeOutside = 0;
+    } 
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -36,7 +41,7 @@ public class InsideFilmFrame : MonoBehaviour
             _timeOutside += Time.deltaTime;
             if (_timeOutside >= KillCountDown)
             {
-                GameManager.Instance.LoseGame();
+                GameManager.Instance.LoseGame(DeathCondition.OutOfFrame);
             }
         } 
     }

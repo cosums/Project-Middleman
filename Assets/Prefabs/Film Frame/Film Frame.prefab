@@ -139,7 +139,7 @@ BoxCollider2D:
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 24, y: 13}
+  m_Size: {x: 31.758842, y: 17.202705}
   m_EdgeRadius: 0
 --- !u!114 &2730403917162389513
 MonoBehaviour:
@@ -153,6 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 135b1089238a3714d9fb63aeca975524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InsideFilmFrame
+  playerEntered: {fileID: 0}
+  KillCountDown: 3
   insideFrameMult: 0.01
 --- !u!95 &6943521058714336623
 Animator:

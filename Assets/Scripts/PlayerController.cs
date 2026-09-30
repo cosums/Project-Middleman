@@ -240,26 +240,6 @@ public class PlayerController : MonoBehaviour
         transform.position = _startingPos;
     }
 
-    //private void FixedUpdate()
-    //{
-    //    CollisionCheck();
-    //    Jump();
-    //    LandCheck();
-    //    WallSlide();
-
-    //     if (_isGrounded)
-    //     {
-    //         Move(groundAcceleration, groundDeceleration, InputManager.movement);
-    //     }
-    //     else
-    //     {
-    //         Move(airAcceleration, airDeceleration, InputManager.movement);
-    //     }
-
-    //    ApplyVelocity();
-    //}
-
-    // effectively FixedUpdate, so put any changes here
     public void SimulateTick(InputFrame frame)
     {
         _currentInputFrame = frame;
@@ -341,6 +321,11 @@ public class PlayerController : MonoBehaviour
     public float GetPlayerSpeed()
     {
         return Mathf.Abs(rb.linearVelocityX);
+    }
+
+    public bool GetIsWallSliding()
+    {
+        return _isWallSliding;
     }
 
     #region Movement
@@ -1087,10 +1072,14 @@ public class PlayerController : MonoBehaviour
             particles.transform.position = this.transform.position;
             particles.transform.SetParent(this.transform);
             PointSystem.Instance.AddToComboScore(poseScore, "Strike a Pose!");
+            rb.constraints = RigidbodyConstraints2D.FreezePosition;
+            _poseTimer = poseTime;
         }
-        else if (!_currentInputFrame.PoseWasPressed)
+        else if (_isPosing && _poseTimer <= 0)
         {
             _isPosing = false;
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
 
@@ -1148,8 +1137,6 @@ public class PlayerController : MonoBehaviour
             }
 
 
-            // TODO attacking
-            Debug.Log("Hit something!");
             OnPlayerAttack?.Invoke();
         }
     }
@@ -1184,6 +1171,11 @@ public class PlayerController : MonoBehaviour
         if (_poseCooldownTimer > 0f)
         {
             _poseCooldownTimer -= Time.deltaTime;
+        }
+
+        if (_poseTimer > 0f)
+        {
+            _poseTimer -= Time.deltaTime;
         }
 
         if (_attackCooldownTimer > 0f)

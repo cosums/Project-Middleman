@@ -4,8 +4,6 @@ using UnityEngine.UI;
 public class TempReplayTester : MonoBehaviour
 {
     public Button ReplayButton;
-    public FixedTicker Ticker;
-    public PlayerController Controller;
 
     public void OnEnable()
     {
@@ -19,8 +17,7 @@ public class TempReplayTester : MonoBehaviour
 
     public void TriggerReplay()
     {
-        Controller.RestoreStart();
-        Ticker.FinishAndReplay();
+        GameManager.Instance.PlayReplay();
     }
 
     public void EndReplay()
