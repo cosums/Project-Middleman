@@ -7,6 +7,9 @@ using UnityEngine;
 public class PlayerVisualsController : MonoBehaviour
 {
     [SerializeField] Animator playerRigAnimator;
+    [SerializeField] SpriteRenderer playerFace;
+    [SerializeField] SpriteRenderer playerAlternateFace;
+
 
     [Header("Particles")]
     [SerializeField] ParticleSystem runParticle;
@@ -15,6 +18,7 @@ public class PlayerVisualsController : MonoBehaviour
     [SerializeField] ParticleSystem jumpParticle;
     [SerializeField] ParticleSystem flipParticle;
     [SerializeField] ParticleSystem kickParticle;
+    [SerializeField] ParticleSystem poseParticle;
 
     private PlayerController playerController;
 
@@ -26,6 +30,7 @@ public class PlayerVisualsController : MonoBehaviour
     static readonly int FlipBool = Animator.StringToHash("isFlipping");
     static readonly int SlideBool = Animator.StringToHash("isSliding");
     static readonly int WallSlideBool = Animator.StringToHash("isWallSliding");
+    static readonly int IsPosingBool = Animator.StringToHash("isPosing");
 
     private bool inAir;
     private bool isFlipping;
@@ -33,7 +38,7 @@ public class PlayerVisualsController : MonoBehaviour
     private bool isWallSliding;
     private bool isAttacking;
     private bool isKicking;
-
+    private bool isPosing;
 
     InputFrame _currentInputFrame;
 
@@ -61,6 +66,26 @@ public class PlayerVisualsController : MonoBehaviour
             playerRigAnimator.SetTrigger(AttackTrigger);
             StartCoroutine(AttackBoolSequence(true));
 
+        }
+
+        // pose
+        if (isPosing != playerController.GetIsPosing())
+        {
+            isPosing = playerController.GetIsPosing();
+            playerRigAnimator.SetBool(IsPosingBool, isPosing);
+
+            Instantiate(poseParticle, transform);
+
+            if (isPosing)
+            {
+                playerFace.enabled = false;
+                playerAlternateFace.enabled = true;
+            }
+            else
+            {
+                playerFace.enabled = true;
+                playerAlternateFace.enabled = false;
+            }
         }
 
         // update isKicking bool (in air)
