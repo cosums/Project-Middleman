@@ -41,7 +41,7 @@ public class InsideFilmFrame : MonoBehaviour
             _timeOutside += Time.deltaTime;
             if (_timeOutside >= KillCountDown)
             {
-                GameManager.Instance.LoseGame();
+                GameManager.Instance.LoseGame(DeathCondition.OutOfFrame);
             }
         } 
     }

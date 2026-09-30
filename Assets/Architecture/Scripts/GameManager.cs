@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won }
+public enum DeathCondition { Death, OutOfFrame }
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public static event Action<GameState> OnNewState;
     public static event Action OnGameQuit;
+
+    public DeathCondition LastDeathReason;
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Autoload()
@@ -61,9 +64,9 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Paused);
     }
 
-    public void LoseGame()
+    public void LoseGame(DeathCondition deathReason)
     {
-        Debug.Log("You lost idiot!");
+        LastDeathReason = deathReason;
         //ChangeState(GameState.Failed);
     }
 
@@ -76,6 +79,11 @@ public class GameManager : MonoBehaviour
     public void WinGame()
     {
         ChangeState(GameState.Won);
+    }
+
+    public void PlayReplay()
+    {
+        ChangeState(GameState.Replaying);
     }
 
     public void LoadScene(string sceneToLoad)
