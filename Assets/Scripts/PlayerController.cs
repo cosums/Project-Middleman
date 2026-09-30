@@ -82,11 +82,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Collider2D _slideAttackColl;
     [SerializeField] private Collider2D _jumpThruScanColl;
     public GameObject groundPoint;
-    public Sprite defaultFace;
-    public Sprite poseFace;
-    [SerializeField] private SpriteRenderer _faceRenderer;
-    [SerializeField] private SpriteRenderer _altFaceRenderer;
-
 
     [Header("Slide")]
     public float slideSpeedMultiplier = 1.25f;
@@ -100,7 +95,6 @@ public class PlayerController : MonoBehaviour
     [Header("Pose")]
     public float poseTime = 1f;
     public float poseCooldown = 3f;
-    public GameObject poseParticles;
 
     [Header("Attack")]
     public float attackTime = 0.2f;
@@ -335,6 +329,11 @@ public class PlayerController : MonoBehaviour
         return _isWallSliding;
     }
 
+    public bool GetIsPosing()
+    {
+        return _isPosing;
+    }
+    
     #region Movement
 
     private Coroutine steppingCoroutine = null;
@@ -1075,14 +1074,9 @@ public class PlayerController : MonoBehaviour
         if (_currentInputFrame.PoseWasPressed && !_isSliding && !_isTouchingWall && _poseCooldownTimer <= 0f)
         {
             _isPosing = true;
-            GameObject particles = GameObject.Instantiate(poseParticles);
-            particles.transform.position = this.transform.position;
-            particles.transform.SetParent(this.transform);
             PointSystem.Instance.AddToComboScore(poseScore, "Strike a Pose!");
             rb.constraints = RigidbodyConstraints2D.FreezePosition;
             _poseTimer = poseTime;
-            _faceRenderer.enabled = false;
-            _altFaceRenderer.enabled = true;
             AudioBus.Instance.PlaySFX(poseAudio);
             _poseCooldownTimer = poseCooldown;
             if (DialogueManager.Instance.CurrentDialogueHasEvent())
@@ -1095,8 +1089,6 @@ public class PlayerController : MonoBehaviour
             _isPosing = false;
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            _faceRenderer.enabled = true;
-            _altFaceRenderer.enabled = false;  
         }
     }
 

@@ -42,6 +42,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Player
+    uniqueID: 1565410351
+    locked: 0
+  - name: Overlay
+    uniqueID: 1423068121
+    locked: 0
   - name: Film Frame
     uniqueID: 528465517
     locked: 0
