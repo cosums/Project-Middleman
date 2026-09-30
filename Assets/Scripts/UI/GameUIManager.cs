@@ -19,9 +19,6 @@ public class GameUIManager : MonoBehaviour
         if (state == GameState.Failed)
         {
             FailUI.SetActive(true);
-        } else
-        {
-            FailUI.SetActive(false);
         }
     }
 }

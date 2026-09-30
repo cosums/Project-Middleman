@@ -25,6 +25,11 @@ public class PointSystemUI : MonoBehaviour
         PointSystem.Instance.OnComboPointsChanged += UpdateComboPointsUI;
         PointSystem.Instance.OnComboPointsChanged += UpdateComboPanelUI;
         PointSystem.Instance.OnMultiplierChanged += UpdateMultiplierUI;
+
+        if (GameManager.Instance.CurrentState == GameState.Replaying)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnDisable()

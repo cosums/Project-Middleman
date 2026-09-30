@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
     public void LoseGame(DeathCondition deathReason)
     {
         LastDeathReason = deathReason;
-        //ChangeState(GameState.Failed);
+        ChangeState(GameState.Failed);
     }
 
     public void ReturnToMenu()

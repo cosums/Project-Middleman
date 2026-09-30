@@ -157,6 +157,12 @@ MonoBehaviour:
   playerEntered: {fileID: 0}
   KillCountDown: 3
   insideFrameMult: 0.01
+  CountDownText: {fileID: 0}
+  CountDownColors:
+  - {r: 1, g: 0.91304016, b: 0, a: 1}
+  - {r: 1, g: 0.47470307, b: 0, a: 1}
+  - {r: 1, g: 0.25947002, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0.06774902, a: 1}
 --- !u!95 &6943521058714336623
 Animator:
   serializedVersion: 7
