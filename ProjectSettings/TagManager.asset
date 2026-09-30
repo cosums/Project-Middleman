@@ -18,7 +18,7 @@ TagManager:
   - Jumpthru Platform Trigger
   - Dialogue Zome Scan
   - 
-  - 
+  - OverlayParticle
   - 
   - 
   - 
@@ -42,11 +42,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Collider
-    uniqueID: 2176647339
-    locked: 0
   - name: Base2
     uniqueID: 2094844101
+    locked: 0
+  - name: Collider
+    uniqueID: 2176647339
     locked: 0
   - name: Player
     uniqueID: 1565410351
