@@ -1038,10 +1038,14 @@ public class PlayerController : MonoBehaviour
             particles.transform.position = this.transform.position;
             particles.transform.SetParent(this.transform);
             PointSystem.Instance.AddToComboScore(poseScore, "Strike a Pose!");
+            rb.constraints = RigidbodyConstraints2D.FreezePosition;
+            _poseTimer = poseTime;
         }
-        else if (!_currentInputFrame.PoseWasPressed)
+        else if (_isPosing && _poseTimer <= 0)
         {
             _isPosing = false;
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
 
@@ -1129,6 +1133,11 @@ public class PlayerController : MonoBehaviour
         if (_poseCooldownTimer > 0f)
         {
             _poseCooldownTimer -= Time.deltaTime;
+        }
+
+        if (_poseTimer > 0f)
+        {
+            _poseTimer -= Time.deltaTime;
         }
 
         if (_attackCooldownTimer > 0f)
