@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
 
     //pose
     private float _poseTimer;
-    private float _poseCooldownTimer;
+    private float _poseCooldownTimer = 0f;
     private bool _isPosing;
     
 
@@ -1072,7 +1072,7 @@ public class PlayerController : MonoBehaviour
     #region Pose
     public void PoseCheck()
     {
-        if (_currentInputFrame.PoseWasPressed && !_isSliding && !_isTouchingWall)
+        if (_currentInputFrame.PoseWasPressed && !_isSliding && !_isTouchingWall && _poseCooldownTimer <= 0f)
         {
             _isPosing = true;
             GameObject particles = GameObject.Instantiate(poseParticles);
@@ -1083,6 +1083,12 @@ public class PlayerController : MonoBehaviour
             _poseTimer = poseTime;
             _faceRenderer.enabled = false;
             _altFaceRenderer.enabled = true;
+            AudioBus.Instance.PlaySFX(poseAudio);
+            _poseCooldownTimer = poseCooldown;
+            if (DialogueManager.Instance.CurrentDialogueHasEvent())
+            {
+                print("QUICK TIME");
+            }
         }
         else if (_isPosing && _poseTimer <= 0)
         {
@@ -1090,7 +1096,7 @@ public class PlayerController : MonoBehaviour
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             _faceRenderer.enabled = true;
-            _altFaceRenderer.enabled = false;
+            _altFaceRenderer.enabled = false;  
         }
     }
 
@@ -1098,8 +1104,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_isPosing)
         {
-            // TODO posing
-            Debug.Log("Strike a pose!");
+
         }
     }
 
