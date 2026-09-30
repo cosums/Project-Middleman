@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.U2D.Animation;
 
 [RequireComponent(typeof(PlayerVisualsController))]
 public class PlayerController : MonoBehaviour
@@ -68,6 +69,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Collider2D _slideAttackColl;
     [SerializeField] private Collider2D _jumpThruScanColl;
     public GameObject groundPoint;
+    public Sprite defaultFace;
+    public Sprite poseFace;
+    [SerializeField] private SpriteRenderer _faceRenderer;
+    [SerializeField] private SpriteRenderer _altFaceRenderer;
+
 
     [Header("Slide")]
     public float slideSpeedMultiplier = 1.25f;
@@ -186,6 +192,7 @@ public class PlayerController : MonoBehaviour
     private float _poseTimer;
     private float _poseCooldownTimer;
     private bool _isPosing;
+    
 
     // attack
     private float _groundAttackTimer;
@@ -1040,12 +1047,16 @@ public class PlayerController : MonoBehaviour
             PointSystem.Instance.AddToComboScore(poseScore, "Strike a Pose!");
             rb.constraints = RigidbodyConstraints2D.FreezePosition;
             _poseTimer = poseTime;
+            _faceRenderer.enabled = false;
+            _altFaceRenderer.enabled = true;
         }
         else if (_isPosing && _poseTimer <= 0)
         {
             _isPosing = false;
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            _faceRenderer.enabled = true;
+            _altFaceRenderer.enabled = false;
         }
     }
 
@@ -1057,6 +1068,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Strike a pose!");
         }
     }
+
     #endregion
 
     #region Attack
