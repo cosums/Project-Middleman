@@ -84,6 +84,10 @@ public class DialogueManager : MonoBehaviour
 
     public bool CurrentDialogueHasEvent()
     {
-        return Head.hasEvent;
+        if (Head != null)
+        {
+            return Head.hasEvent;
+        }
+        else return false;
     }
 }

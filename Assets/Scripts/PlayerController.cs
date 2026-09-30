@@ -1075,20 +1075,20 @@ public class PlayerController : MonoBehaviour
         {
             _isPosing = true;
             PointSystem.Instance.AddToComboScore(poseScore, "Strike a Pose!");
-            rb.constraints = RigidbodyConstraints2D.FreezePosition;
+            rb.bodyType = RigidbodyType2D.Static;
             _poseTimer = poseTime;
             AudioBus.Instance.PlaySFX(poseAudio);
             _poseCooldownTimer = poseCooldown;
             if (DialogueManager.Instance.CurrentDialogueHasEvent())
             {
                 print("QUICK TIME");
+                PointSystem.Instance.AddToMultiplier(2.5f, "Pose On Queue!");
             }
         }
         else if (_isPosing && _poseTimer <= 0)
         {
             _isPosing = false;
-            rb.constraints = RigidbodyConstraints2D.None;
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb.bodyType = RigidbodyType2D.Dynamic;
         }
     }
 
