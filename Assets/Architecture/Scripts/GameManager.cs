@@ -84,7 +84,6 @@ public class GameManager : MonoBehaviour
     public void PlayReplay()
     {
         ChangeState(GameState.Replaying);
-        LoadScene("Level");
     }
 
     public void LoadScene(string sceneToLoad)
