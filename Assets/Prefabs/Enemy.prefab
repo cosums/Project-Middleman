@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4947971398943719919}
   m_Layer: 0
-  m_Name: Sand Enemy
+  m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
