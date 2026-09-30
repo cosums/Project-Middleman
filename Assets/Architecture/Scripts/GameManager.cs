@@ -2,14 +2,19 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won }
+public enum DeathCondition { Death, OutOfFrame }
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public enum GameState { Menu, Playing, Replaying }
     public GameState CurrentState { get; private set; }
 
+    public static event Action<GameState> OnNewState;
     public static event Action OnGameQuit;
+
+    public DeathCondition LastDeathReason;
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Autoload()
@@ -19,11 +24,19 @@ public class GameManager : MonoBehaviour
 
         Instance = autoObj.GetComponent<GameManager>();
         DontDestroyOnLoad(autoObj);
+        Instance.CurrentState = GameState.Menu;
     }
 
     public void ChangeState(GameState newState)
     {
-        switch (newState)
+        Debug.Log($"[GameManager]: Switching to game state {newState}");
+        UpdateState(newState);
+        CurrentState = newState;
+        OnNewState?.Invoke(newState);
+    }
+
+    private void UpdateState(GameState state) {
+        switch (state)
         {
             case GameState.Menu:
                 break;
@@ -31,7 +44,46 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Replaying:
                 break;
+            case GameState.Failed:
+                break;
+            case GameState.Won:
+                break;
+            case GameState.Paused:
+                break;
         }
+    }
+
+    public void StartGame()
+    {
+        ChangeState(GameState.Playing);
+        LoadScene("Level");
+    }
+
+    public void Pause()
+    {
+        ChangeState(GameState.Paused);
+    }
+
+    public void LoseGame(DeathCondition deathReason)
+    {
+        LastDeathReason = deathReason;
+        //ChangeState(GameState.Failed);
+    }
+
+    public void ReturnToMenu()
+    {
+        LoadScene("Menu");
+        ChangeState(GameState.Menu);
+    }
+
+    public void WinGame()
+    {
+        ChangeState(GameState.Won);
+    }
+
+    public void PlayReplay()
+    {
+        ChangeState(GameState.Replaying);
     }
 
     public void LoadScene(string sceneToLoad)

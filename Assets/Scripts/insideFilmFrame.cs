@@ -3,17 +3,30 @@ using UnityEngine;
 public class InsideFilmFrame : MonoBehaviour
 {
     public AudioClip playerEntered;
-
+    public float KillCountDown = 3f;
     public float insideFrameMult = 0.01f;
     private bool playerInside = false;
+    private float _timeOutside = 0;
+
+    void Start()
+    {
+        _timeOutside = 0;
+    } 
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        playerInside = true;
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            playerInside = true;
+            _timeOutside = 0;
+        }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        playerInside = false;
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            playerInside = false;
+        }
     }
 
     void Update()
@@ -22,5 +35,14 @@ public class InsideFilmFrame : MonoBehaviour
         {
             PointSystem.Instance.AddToMultiplier(insideFrameMult, "In Frame!");
         }
+
+        if (_timeOutside < KillCountDown)
+        {
+            _timeOutside += Time.deltaTime;
+            if (_timeOutside >= KillCountDown)
+            {
+                GameManager.Instance.LoseGame(DeathCondition.OutOfFrame);
+            }
+        } 
     }
 }

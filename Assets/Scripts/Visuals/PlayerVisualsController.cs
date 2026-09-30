@@ -25,10 +25,12 @@ public class PlayerVisualsController : MonoBehaviour
     static readonly int InAirBool = Animator.StringToHash("inAir");
     static readonly int FlipBool = Animator.StringToHash("isFlipping");
     static readonly int SlideBool = Animator.StringToHash("isSliding");
+    static readonly int WallSlideBool = Animator.StringToHash("isWallSliding");
 
     private bool inAir;
     private bool isFlipping;
     private bool isSliding;
+    private bool isWallSliding;
     private bool isAttacking;
     private bool isKicking;
 
@@ -95,12 +97,21 @@ public class PlayerVisualsController : MonoBehaviour
             }
         }
         
-        // Movement
+        // Sliding
         if (isSliding != playerController.GetIsSliding())
         {
             isSliding = playerController.GetIsSliding();
             playerRigAnimator.SetBool(SlideBool, isSliding);
         }
+
+        // Wall Sliding
+        if (isWallSliding != playerController.GetIsWallSliding())
+        {
+            isWallSliding = playerController.GetIsWallSliding();
+            playerRigAnimator.SetBool(WallSlideBool, isWallSliding);
+        }
+
+        // Running
         playerRigAnimator.SetFloat(XVelocityFloat, Mathf.Abs(f.Move.x));
     }
 
