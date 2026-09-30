@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     public static event Action OnGameQuit;
 
     public DeathCondition LastDeathReason;
+
+    [Header("Audio")]
+    public AudioClip levelMusic;
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Autoload()
@@ -60,6 +63,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         ChangeState(GameState.Playing);
+        AudioBus.Instance.PlayMusic(levelMusic);
         LoadScene("Level");
     }
 
