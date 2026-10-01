@@ -7,8 +7,11 @@ public class ClapboardAnimator : MonoBehaviour
 
     public Animator ClapAnimator;
 
-    public float ClapInTime;
+    public float TimeToClap;
+    public float TimeAfterClap;
     public float FlyOutTime;
+
+    public AudioClip ClapboardSFX;
 
     public void Awake()
     {
@@ -22,7 +25,11 @@ public class ClapboardAnimator : MonoBehaviour
     {
         ClapAnimator.SetTrigger("Start Load");
         
-        await Awaitable.WaitForSecondsAsync(ClapInTime);
+        await Awaitable.WaitForSecondsAsync(TimeToClap);
+
+        AudioBus.Instance.PlaySFX(ClapboardSFX);
+        
+        await Awaitable.WaitForSecondsAsync(TimeAfterClap);
         
         await SceneManager.LoadSceneAsync(scene);
 

@@ -2845,8 +2845,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ClapAnimator: {fileID: 1276476529}
-  ClapInTime: 2.75
+  TimeToClap: 1.5
+  TimeAfterClap: 1.5
   FlyOutTime: 1
+  ClapboardSFX: {fileID: 8300000, guid: 9eae4539da5ed134f95e5252bba480e6, type: 3}
 --- !u!114 &1276476531
 MonoBehaviour:
   m_ObjectHideFlags: 0
