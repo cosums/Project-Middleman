@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
     {
         try
         {
-            await SceneFader.Instance.FadeToScene(sceneToLoad);
+            await ClapboardAnimator.Instance.FadeToScene(sceneToLoad);
         }
         catch (System.Exception e)
         {
