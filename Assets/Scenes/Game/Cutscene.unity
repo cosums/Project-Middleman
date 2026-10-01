@@ -3043,6 +3043,18 @@ PrefabInstance:
       propertyPath: m_text
       value: Skip Cutscene
       objectReference: {fileID: 0}
+    - target: {fileID: 601057841715329766, guid: e9db321ed194c5840890e1601c011f9f, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -5348596135996648339, guid: b0eb008607396094497c262b054574ef, type: 2}
+    - target: {fileID: 601057841715329766, guid: e9db321ed194c5840890e1601c011f9f, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 601057841715329766, guid: e9db321ed194c5840890e1601c011f9f, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3226779874720537652, guid: e9db321ed194c5840890e1601c011f9f, type: 3}
       propertyPath: m_Color.a
       value: 1
