@@ -17,6 +17,6 @@ public class MenuPlayButton : MonoBehaviour
 
     public void PlayGame()
     {
-        GameManager.Instance.StartGame();
+        GameManager.Instance.StartCutscene();
     }
 }

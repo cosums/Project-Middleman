@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won, Finished }
+public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won, Finished, Cutscene }
 public enum DeathCondition { Death, OutOfFrame }
 
 public class GameManager : MonoBehaviour
@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     public DeathCondition LastDeathReason;
 
+    private bool _loadingScene;
+    
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Autoload()
     {
@@ -57,10 +59,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void StartCutscene()
+    {
+        ChangeState(GameState.Cutscene);
+        FadeLoadScene("Cutscene");
+    }
+
     public void StartGame()
     {
         ChangeState(GameState.Playing);
-        LoadScene("Level");
+        ClapLoadScene("Level");
     }
 
     public void Pause()
@@ -77,7 +85,7 @@ public class GameManager : MonoBehaviour
     public void ReturnToMenu()
     {
         GameObject.Find("LevelMusic").GetComponent<LevelMusic>().PlayLevelAudio();
-        LoadScene("Menu");
+        ClapLoadScene("Menu");
         ChangeState(GameState.Menu);
     }
 
@@ -91,17 +99,29 @@ public class GameManager : MonoBehaviour
     {
         GameObject.Find("LevelMusic").GetComponent<LevelMusic>().PlayLevelAudio();
         ChangeState(GameState.Replaying);
-        LoadScene("Level");
+        ClapLoadScene("Level");
     }
 
     public void FinishReplay()
     {
         ChangeState(GameState.Finished);
-        LoadScene("Menu");
+        ClapLoadScene("Menu");
     }
 
-    public void LoadScene(string sceneToLoad)
+    public void ClapLoadScene(string sceneToLoad)
     {
+        if (_loadingScene) return;
+        _loadingScene = true;
+        if (SceneFader.Instance != null) {
+            ClapboardToSceneWrapper(sceneToLoad);
+        } 
+        else HardLoadScene(sceneToLoad);
+    }
+
+    public void FadeLoadScene(string sceneToLoad)
+    {
+        if (_loadingScene) return;
+        _loadingScene = true;
         if (SceneFader.Instance != null) {
             FadeToSceneWrapper(sceneToLoad);
         } 
@@ -120,10 +140,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private async void ClapboardToSceneWrapper(string sceneToLoad)
+    {
+        try
+        {
+            await ClapboardAnimator.Instance.FadeToScene(sceneToLoad);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Scene transition failed: {e.Message}");
+        }
+    }
+
+    public void FinishLoadingScene()
+    {
+        _loadingScene = false;
+    }
+
     public void HardLoadScene(string sceneToLoad)
     {
         Debug.Log($"Loading scene {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);
+        FinishLoadingScene();
     }
 
     public void QuitGame()
