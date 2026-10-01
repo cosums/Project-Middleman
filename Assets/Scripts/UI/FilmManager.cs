@@ -9,6 +9,7 @@ public class FilmManager : MonoBehaviour
 
     public AudioClip trainHorn;
     public AudioClip trainRunning;
+    public Train train;
     
     public void Awake()
     {
@@ -43,5 +44,10 @@ public class FilmManager : MonoBehaviour
     public void PlayTrainRunning()
     {
         AudioBus.Instance.PlaySFX(trainRunning);
+    }
+
+    public void StartTrain()
+    {
+        train.StartTrain();
     }
 }
