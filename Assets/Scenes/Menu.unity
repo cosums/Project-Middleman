@@ -360,7 +360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b6a0aef0d87664ab74881e71c05849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Parallax
-  effectMultipler: 0.1
+  effectMultipler: 1
 --- !u!1 &141476984
 GameObject:
   m_ObjectHideFlags: 0
@@ -3153,6 +3153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1650857792}
+  - component: {fileID: 1650857793}
   m_Layer: 0
   m_Name: MenuMusic
   m_TagString: Untagged
@@ -3542,6 +3543,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1979230612}
   m_CullTransparentMesh: 1
+--- !u!114 &1650857793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650857791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e84d58fdae82d0b9cad4d924093f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  menuMusic: {fileID: 8300000, guid: 4076b4dcf44b16df38ebe40c385155bb, type: 3}
+  startupSound: {fileID: 8300000, guid: 1a0952cde606f0e8bbc62e7588f2429e, type: 3}
 --- !u!1 &2097061358
 GameObject:
   m_ObjectHideFlags: 0

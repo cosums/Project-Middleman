@@ -12,6 +12,9 @@ public class PlayerDeathManager : MonoBehaviour
 
     [SerializeField] float screenShakeAmt;
 
+    public AudioClip deathAudio;
+    public AudioClip loseAudio;
+
     private bool isDead = false;
 
     private void Awake()
@@ -30,7 +33,11 @@ public class PlayerDeathManager : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
+        AudioBus.Instance.PlaySFX(deathAudio);
+        AudioBus.Instance.FadeMusicOut(2.0f);
+
         StartCoroutine(DieSequence());
+
     }
 
     IEnumerator DieSequence()
@@ -49,6 +56,7 @@ public class PlayerDeathManager : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         GameManager.Instance.LoseGame(DeathCondition.Death);
+        AudioBus.Instance.PlaySFX(loseAudio, 1.0f, false);
     }
 
 

@@ -192,7 +192,7 @@ public class PointSystem : MonoBehaviour
         comboEntries.Add((source, pointsToAdd));
         OnComboPointsChanged?.Invoke(source, pointsToAdd, multiplier);
 
-        AudioBus.Instance.PlaySFX(comboAudio);
+        AudioBus.Instance.PlaySFX(comboAudio, 0.3f);
 
         comboTimer = comboDuration;
         if (comboRoutine == null) comboRoutine = StartCoroutine(ComboTimer());
