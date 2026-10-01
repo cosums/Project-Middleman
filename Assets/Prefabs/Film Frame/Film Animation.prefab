@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4026221902645408683}
   - component: {fileID: 975774504909758926}
-  - component: {fileID: 7202743868986508485}
+  - component: {fileID: 7991621679619766776}
   m_Layer: 0
   m_Name: Film Animation
   m_TagString: Untagged
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   FilmCamera: {fileID: 4090242576887073106}
---- !u!95 &7202743868986508485
+--- !u!95 &7991621679619766776
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
