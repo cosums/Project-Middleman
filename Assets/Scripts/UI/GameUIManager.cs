@@ -14,6 +14,14 @@ public class GameUIManager : MonoBehaviour
         GameManager.OnNewState -= HandleNewState;
     }
 
+    void Start()
+    {
+        if (GameManager.Instance.CurrentState != GameState.Playing)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
     public void HandleNewState(GameState state)
     {
         if (state == GameState.Failed)
