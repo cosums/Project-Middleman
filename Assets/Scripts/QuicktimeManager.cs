@@ -24,9 +24,9 @@ public class QuicktimeManager : MonoBehaviour
         }
 
         line1 = new DialogueLine("Director", "Strick a pose in 3...", 1f);
-        line2 = new DialogueLine("Director", "2...", 1f);
-        line3 = new DialogueLine("Director", "1...", 1f);
-        line4 = new DialogueLine("Director", "Now!!", 1f, true);
+        line2 = new DialogueLine("Director", "Strick a pose in 2...", 1f);
+        line3 = new DialogueLine("Director", "Strick a pose in 1...", 1f);
+        line4 = new DialogueLine("Director", "NOW!", 1f, true);
 
     }
 
