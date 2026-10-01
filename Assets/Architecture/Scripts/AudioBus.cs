@@ -3,6 +3,8 @@ using UnityEngine;
 public class AudioBus : MonoBehaviour
 {
     public static AudioBus Instance;
+    const float defaultMusicVolume = 0.5f;
+    const float defaultSFXVolume = 1.0f;
     public float pitchRandom = 0.15f;
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -32,13 +34,13 @@ public class AudioBus : MonoBehaviour
         // Music audio source
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.loop = true;        // Music usually loops
-        musicSource.volume = 0.5f;      // Lower volume for background music
+        musicSource.volume = defaultMusicVolume;      // Lower volume for background music
         musicSource.priority = 0;       // Highest priority
         
         // SFX audio source
         sfxSource = gameObject.AddComponent<AudioSource>();
         sfxSource.loop = false;         // Sound effects don't usually loop
-        sfxSource.volume = 1.0f;        // Full volume for sound effects
+        sfxSource.volume = defaultSFXVolume;        // Full volume for sound effects
         sfxSource.priority = 128;       // Normal priority
     }
     
@@ -76,7 +78,7 @@ public class AudioBus : MonoBehaviour
         sfxSource.PlayOneShot(clips[Random.Range(0, clips.Length)]);
     }
     // Control music volume
-    public void SetMusicVolume(float volume)
+    public void SetMusicVolume(float volume = defaultMusicVolume)
     {
         musicSource.volume = Mathf.Clamp01(volume);
     }
