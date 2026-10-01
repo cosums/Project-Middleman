@@ -749,42 +749,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tile Map Grid
       objectReference: {fileID: 0}
-    - target: {fileID: 5687617276839596634, guid: d6c8383b98de8234590d817073233e07, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[3].m_Data
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5687617276839596634, guid: d6c8383b98de8234590d817073233e07, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[30].m_Data
-      value: 
-      objectReference: {fileID: -1645890263, guid: 5e53ac7a5dc03294f80c24e8bdf767b1, type: 3}
-    - target: {fileID: 5687617276839596634, guid: d6c8383b98de8234590d817073233e07, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[41].m_Data
-      value: 
-      objectReference: {fileID: -513390640, guid: 21baf922ac8d5a1448aa5c2c00c3fb8b, type: 3}
-    - target: {fileID: 5687617276839596634, guid: d6c8383b98de8234590d817073233e07, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[0].m_RefCount
-      value: 945
-      objectReference: {fileID: 0}
-    - target: {fileID: 5687617276839596634, guid: d6c8383b98de8234590d817073233e07, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[3].m_RefCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5687617276839596634, guid: d6c8383b98de8234590d817073233e07, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[30].m_RefCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5687617276839596634, guid: d6c8383b98de8234590d817073233e07, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[41].m_RefCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5687617276839596634, guid: d6c8383b98de8234590d817073233e07, type: 3}
-      propertyPath: m_Tiles.Array.data[491].second.m_TileSpriteIndex
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5687617276839596634, guid: d6c8383b98de8234590d817073233e07, type: 3}
-      propertyPath: m_Tiles.Array.data[705].second.m_TileSpriteIndex
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
