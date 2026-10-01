@@ -62,6 +62,6 @@ public class HittableObject : MonoBehaviour
         AudioBus.Instance.PlayRandomSFX(breakSounds);
 
         Destroy(gameObject);
-        
+
     }
 }
