@@ -26,8 +26,6 @@ public class ClapboardAnimator : MonoBehaviour
         ClapAnimator.SetTrigger("Start Load");
         
         await Awaitable.WaitForSecondsAsync(TimeToClap);
-
-        AudioBus.Instance.PlaySFX(ClapboardSFX);
         
         await Awaitable.WaitForSecondsAsync(TimeAfterClap);
         
@@ -38,5 +36,10 @@ public class ClapboardAnimator : MonoBehaviour
         await Awaitable.WaitForSecondsAsync(FlyOutTime);
 
         GameManager.Instance.FinishLoadingScene();
+    }
+
+    public void PlayClap()
+    {
+        AudioBus.Instance.PlaySFX(ClapboardSFX);
     }
 }
