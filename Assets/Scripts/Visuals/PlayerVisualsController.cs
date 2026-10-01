@@ -19,6 +19,7 @@ public class PlayerVisualsController : MonoBehaviour
     [SerializeField] ParticleSystem flipParticle;
     [SerializeField] ParticleSystem kickParticle;
     [SerializeField] ParticleSystem poseParticle;
+    [SerializeField] ParticleSystem wallSlideParticle;
 
     private PlayerController playerController;
 
@@ -162,6 +163,25 @@ public class PlayerVisualsController : MonoBehaviour
             EnableParticle(slideParticle);
             DisableParticle(runParticle);
             return;
+        }
+
+        //Wall Sliding Particles
+        if (isWallSliding)
+        {
+            var velocityModule = wallSlideParticle.velocityOverLifetime;
+            if (playerController.IsFacingRight())
+            {
+                velocityModule.x = new ParticleSystem.MinMaxCurve(-2f, -6f);
+            }
+            else
+            {
+                velocityModule.x = new ParticleSystem.MinMaxCurve(2f, 6f);
+            }
+                EnableParticle(wallSlideParticle);
+        }
+        else
+        {
+            DisableParticle(wallSlideParticle);
         }
 
         // Running particles

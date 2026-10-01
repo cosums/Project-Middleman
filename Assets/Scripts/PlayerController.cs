@@ -397,6 +397,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool IsFacingRight()
+    {
+        return isFacingRight;
+    }
+
     #endregion
     #region Land/Fall
 
