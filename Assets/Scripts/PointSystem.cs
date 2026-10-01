@@ -7,10 +7,10 @@ using UnityEngine;
 public class PointSystem : MonoBehaviour
 {
     [Header("Mulitplier")]
-    [SerializeField] float minMultiplier = 0.5f;
+    [SerializeField] float minMultiplier = 0f;
     [SerializeField] float multiplierDuration = 3f; // delay before an individual source starts decaying
     [SerializeField] float multiplierDecayRate = 1f; // multiplier units lost per second while decaying
-    [SerializeField] float airtimeMaxMult = 1f;
+    [SerializeField] float airtimeMaxMult = 1.5f;
     [SerializeField] float slidingMaxMult = 1f;
     [SerializeField] float quicktimeMaxMult = 2.5f;
 
