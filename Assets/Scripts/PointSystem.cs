@@ -226,7 +226,9 @@ public class PointSystem : MonoBehaviour
     public void AddToComboScore(int baseScore, string source)
     {
         int pointsToAdd = (int)(baseScore * multiplier);
-        
+
+        if (pointsToAdd <= 0) return;
+
         // add to main score
         Points += pointsToAdd;
         OnPointsChanged?.Invoke("");

@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class PointSystemUI : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class PointSystemUI : MonoBehaviour
     [SerializeField] Animator totalPointsAnimator;
 
     [Header("Combo UI")]
+    [SerializeField] GameObject comboParentPanel;
     [SerializeField] GameObject comboScorePanel;
+    [SerializeField] TextMeshProUGUI comboTMP;
     [SerializeField] TextMeshProUGUI comboPointsTMP;
     [SerializeField] Animator comboPointsAnimator;
     [SerializeField] GameObject comboEntriesPanel;
@@ -52,6 +55,8 @@ public class PointSystemUI : MonoBehaviour
     private void UpdateComboPointsUI(string source, int points, float multiplier)
     {
         comboPointsTMP.text = PointSystem.Instance.ComboPoints.ToString();
+        comboTMP.color = MultiplierToColor(multiplier);
+        comboPointsTMP.color = MultiplierToColor(multiplier);
         comboPointsAnimator.SetTrigger("change");
     }
 
@@ -61,13 +66,29 @@ public class PointSystemUI : MonoBehaviour
         if (PointSystem.Instance.ComboEntries.Count == 0)
         {
             Debug.Log("Empty Combo Panel");
+            
+
+            foreach (Transform child in comboEntriesPanel.transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+
+            comboParentPanel.SetActive(false);
+
             return;
         }
 
+        
+        
         TextMeshProUGUI entry = Instantiate(comboEntryPrefab, comboEntriesPanel.transform).comboText;
         entry.text = "+" + points.ToString() + " " + source;
         entry.gameObject.SetActive(true);
         entry.color = MultiplierToColor(multiplier);
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(comboEntriesPanel.GetComponent<RectTransform>());
+
+        comboParentPanel.SetActive(true);
     }
 
     #endregion

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2725210369577587924}
   - component: {fileID: 247800261123789524}
   - component: {fileID: 7048253287257375071}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Kill Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 1808115421275495664}
   - component: {fileID: 9160048421846062751}
   - component: {fileID: 5839827131184599704}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Passenger Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9139854176047715137}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

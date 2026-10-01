@@ -823,13 +823,6 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 6.1833334
-    functionName: FinishReplay
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
   - time: 17.716667
     functionName: QuickTimeEvent
     data: 
@@ -860,6 +853,13 @@ AnimationClip:
     messageOptions: 0
   - time: 43.533333
     functionName: PlayTrainHorn
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 51.216667
+    functionName: FinishReplay
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

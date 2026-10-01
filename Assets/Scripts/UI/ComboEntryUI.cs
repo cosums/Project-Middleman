@@ -34,7 +34,7 @@ public class ComboEntryUI : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(SlideIn());
-        Invoke(nameof(PlayFadeOutAndDestroy), 3);
+        Invoke(nameof(PlayFadeOutAndDestroy), 2f);
     }
 
     private IEnumerator SlideIn()
@@ -45,15 +45,27 @@ public class ComboEntryUI : MonoBehaviour
             yield break;
         }
 
+        // Wait for Unity's layout system to position the entry.
+        yield return null;
+
         _targetAnchoredPos = slideInObject.anchoredPosition;
-        Vector2 startPos = _targetAnchoredPos + Vector2.left * slideOffScreenDistance;
+
+        Vector2 startPos =
+            _targetAnchoredPos + Vector2.left * slideOffScreenDistance;
 
         float elapsed = 0f;
+
         while (elapsed < slideInDuration)
         {
             elapsed += Time.deltaTime;
-            float t = slideInCurve.Evaluate(Mathf.Clamp01(elapsed / slideInDuration));
-            slideInObject.anchoredPosition = Vector2.LerpUnclamped(startPos, _targetAnchoredPos, t);
+
+            float t = slideInCurve.Evaluate(
+                Mathf.Clamp01(elapsed / slideInDuration)
+            );
+
+            slideInObject.anchoredPosition =
+                Vector2.LerpUnclamped(startPos, _targetAnchoredPos, t);
+
             yield return null;
         }
 
