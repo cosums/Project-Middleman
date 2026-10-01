@@ -1111,7 +1111,7 @@ public class PlayerController : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Dynamic;
             
         }
-        if (_quicktime && _quicktimeTimer <= 0f)
+        if (_quicktime && _quicktimeTimer <= 0.25f)
         {
             _quicktime = false;
         }
