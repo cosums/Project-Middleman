@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour
 
     public void ClapLoadScene(string sceneToLoad)
     {
+        if (_loadingScene) return;
         _loadingScene = true;
         if (SceneFader.Instance != null) {
             ClapboardToSceneWrapper(sceneToLoad);
