@@ -2628,7 +2628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ClapAnimator: {fileID: 1276476529}
-  ClapInTime: 3
+  ClapInTime: 2.75
   FlyOutTime: 1
 --- !u!114 &1276476531
 MonoBehaviour:
