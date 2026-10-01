@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5930517082897203055}
   - component: {fileID: 9111362517787018593}
   - component: {fileID: 1592631703641873254}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: QuickTimeScreenParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4850,7 +4850,7 @@ GameObject:
   - component: {fileID: 1012435625268093899}
   - component: {fileID: 1600471370130476327}
   - component: {fileID: 2885747004907406637}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: QuickTimeScreenParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9686,7 +9686,7 @@ GameObject:
   - component: {fileID: 8742810081588735595}
   - component: {fileID: 3614639146834285014}
   - component: {fileID: 9139133845683027912}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: QuickTimeScreenParticles (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14522,7 +14522,7 @@ GameObject:
   - component: {fileID: 5129121364329297803}
   - component: {fileID: 8412934313533951191}
   - component: {fileID: 692547272046790660}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: QuickTimeScreenParticles (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

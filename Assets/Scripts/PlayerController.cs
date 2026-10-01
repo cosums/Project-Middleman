@@ -102,6 +102,7 @@ public class PlayerController : MonoBehaviour
     public float attackTime = 0.2f;
     public float attackCoolDown = 2f;
     public GameObject attackParticles;
+    public float airAttackBounceHeight = 3f;
 
     [Header("Score Multipliers")]
     public float insideFrameScore = 0.1f;
@@ -226,6 +227,7 @@ public class PlayerController : MonoBehaviour
         _currentMaxWalkSpeed = maxWalkSpeed;
         _absoluteMaxSlideSpeed = maxWalkSpeed * slideSpeedMultiplier;
         _impulseSource = GetComponent<CinemachineImpulseSource>();
+        HittableObject.ObjectHit += AirAttack;
 
         CaptureStart();
     }
@@ -1164,6 +1166,14 @@ public class PlayerController : MonoBehaviour
 
 
             OnPlayerAttack?.Invoke();
+        }
+    }
+
+    public void AirAttack()
+    {
+        if (_isAttacking && !_isGrounded)
+        {
+            verticalVelocity = airAttackBounceHeight;
         }
     }
 
