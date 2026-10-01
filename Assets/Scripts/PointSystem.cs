@@ -27,7 +27,6 @@ public class PointSystem : MonoBehaviour
     [SerializeField] float comboDuration = 3;
 
     public static PointSystem Instance;
-    //public static int Points => points;
     public int ComboPoints => comboPoints;
     public float Multiplier => multiplier;
     public IReadOnlyList<(string pointSource, int points)> ComboEntries => comboEntries;
@@ -36,7 +35,9 @@ public class PointSystem : MonoBehaviour
     public Action<string, int, float> OnComboPointsChanged;
     public Action<string> OnPointsChanged;
 
-    public static int Points = 0;
+    public static int HighScore;
+    public static int LastScore = 0;
+    public static int Points = 0; // current score
     private int comboPoints = 0;
     private float multiplier = 1;
     private float maxMultiplier = 5;
@@ -70,9 +71,16 @@ public class PointSystem : MonoBehaviour
             return;
         }
         Instance = this;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
+    {
+        OnGameStart();
+    }
+
+    private void OnGameStart()
     {
         Points = 0;
 
@@ -90,6 +98,26 @@ public class PointSystem : MonoBehaviour
         quicktime.delay = quicktimeDelay;
 
         maxMultiplier = (minMultiplier + airtimeMaxMult + slidingMaxMult + quicktimeMaxMult) * insideMult;
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnNewState += CalculateHighScore;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnNewState -= CalculateHighScore;
+    }
+
+    private void CalculateHighScore(GameState gameState)
+    {
+        if (gameState == GameState.Failed || gameState == GameState.Won)
+        {
+            HighScore = Mathf.Max(HighScore, Points);
+            LastScore = Points;
+            Points = 0;
+        }
     }
 
     #region Multiplier

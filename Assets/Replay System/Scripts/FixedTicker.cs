@@ -24,8 +24,6 @@ public class FixedTicker : MonoBehaviour
     {
         //OnFinishedReplay += ReturnToLive;
         GameManager.OnNewState += HandleNewState;
-
-        Debug.Log("Goofy guber");
         
         if (EditorTest)
         {

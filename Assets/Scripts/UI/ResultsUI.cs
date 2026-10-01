@@ -8,7 +8,8 @@ public class ResultsUI : MonoBehaviour
 
     private void Start()
     {
-        
+        overallScoreTMP.text = "Overall Score: " + PointSystem.LastScore.ToString();
+        highScoreTMP.text = "High Score: " + PointSystem.HighScore.ToString();
     }
 
 }

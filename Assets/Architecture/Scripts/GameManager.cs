@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
     public void LoseGame(ResultCondition deathReason)
     {
         LastResult = deathReason;
+        ChangeState(GameState.Failed);
         PlayReplay();
     }
 
