@@ -22,7 +22,7 @@ public class FixedTicker : MonoBehaviour
 
     void Awake()
     {
-        OnFinishedReplay += ReturnToLive;
+        //OnFinishedReplay += ReturnToLive;
         GameManager.OnNewState += HandleNewState;
 
         Debug.Log("Goofy guber");
@@ -53,19 +53,20 @@ public class FixedTicker : MonoBehaviour
         CurrentTick = 0;
     }
 
-    public void ReturnToLive()
-    {
-        FixedTickerUtility.Recorder = new InputRecorder();
-        LiveProvider.ResetLatches();
-        Player.CaptureStart();
-        Begin(LiveProvider);
-    }
+    // public void ReturnToLive()
+    // {
+    //     FixedTickerUtility.Recorder = new InputRecorder();
+    //     LiveProvider.ResetLatches();
+    //     Player.CaptureStart();
+    //     Begin(LiveProvider);
+    // }
 
     private void HandleNewState(GameState state)
     {
         if (state != GameState.Playing && FixedTickerUtility.Recorder != null)
         {
             FixedTickerUtility.Recorder.FinishRecording();
+            Debug.Log("Stopping recording!");
         }
     }
 
@@ -75,8 +76,10 @@ public class FixedTicker : MonoBehaviour
 
         if (_inputProvider.IsFinished)
         {
+            Debug.Log("Finished replay!");
             _inputProvider = null;
             OnFinishedReplay?.Invoke();
+            GameManager.Instance.FinishReplay();
             return;
         }
 
