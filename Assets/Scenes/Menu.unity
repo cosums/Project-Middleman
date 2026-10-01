@@ -2862,19 +2862,17 @@ MonoBehaviour:
   m_text: 'W,A,S,D to move
 
 
-    K to Attack
-
-
-    L to Pose
-
-
-    Left Shift to
-    Slide
-
-
     Space Bar to Jump
 
 
+    Left Shift to Slide
+
+
+    K
+    to Attack
+
+
+    L to Pose
 
 
 
