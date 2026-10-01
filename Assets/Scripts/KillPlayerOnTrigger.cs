@@ -6,7 +6,10 @@ public class KillPlayerOnTrigger : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            PlayerDeathManager.Instance.KillPlayer();
+            if (GameManager.Instance.CurrentState == GameState.Playing) 
+            {
+                PlayerDeathManager.Instance.KillPlayer();
+            }
         }
     }
 }
