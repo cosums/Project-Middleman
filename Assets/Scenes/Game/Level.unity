@@ -2911,10 +2911,6 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.0000005513429
       objectReference: {fileID: 0}
-    - target: {fileID: 7400396883679840354, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
-      propertyPath: loseAudio
-      value: 
-      objectReference: {fileID: 8300000, guid: f27275f1d2ba2cd4ba56fb5036547777, type: 3}
     - target: {fileID: 9219159258489043394, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.5
@@ -16994,7 +16990,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5742204573663695361, guid: 28d1d600b8b29fa4f84b6cff6ba1aaa3, type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 0.99975586
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5996499494267632632, guid: 28d1d600b8b29fa4f84b6cff6ba1aaa3, type: 3}
       propertyPath: playerController

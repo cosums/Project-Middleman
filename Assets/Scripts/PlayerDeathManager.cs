@@ -48,16 +48,45 @@ public class PlayerDeathManager : MonoBehaviour
 
         GetComponent<CinemachineImpulseSource>().GenerateImpulse(screenShakeAmt);
 
-        yield return new WaitForSeconds(0.15f);
-        
+        yield return new WaitForSeconds(0.15f);        
         
         playerSprites.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        AudioBus.Instance.PlaySFX(loseAudio, 1.0f, false);
 
         yield return new WaitForSeconds(2);
 
         GameManager.Instance.LoseGame(ResultCondition.Death);
-        AudioBus.Instance.PlaySFX(loseAudio, 1.0f, false);
     }
 
+    public void ReplayKillPlayer()
+    {
+        if (isDead) return;
 
+        isDead = true;
+
+        AudioBus.Instance.PlaySFX(deathAudio);
+        AudioBus.Instance.FadeMusicOut(2.0f);
+
+        StartCoroutine(ReplayDeathSequence());
+    }
+
+    IEnumerator ReplayDeathSequence()
+    {
+        rb.bodyType = RigidbodyType2D.Static;
+
+        Instantiate(deathParticles, transform);
+
+        GetComponent<CinemachineImpulseSource>().GenerateImpulse(screenShakeAmt);
+
+        yield return new WaitForSeconds(0.15f);        
+        
+        playerSprites.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        AudioBus.Instance.PlaySFX(loseAudio, 1.0f, false);
+    }
 }

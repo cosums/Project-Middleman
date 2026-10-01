@@ -67,6 +67,7 @@ public class AudioBus : MonoBehaviour
 
         GameObject soundSource = new GameObject($"SFX_{clip.name}");
         soundSource.transform.position = transform.position;
+        soundSource.transform.SetParent(transform);
 
         AudioSource source = soundSource.AddComponent<AudioSource>();
         source.clip = clip;
@@ -80,6 +81,13 @@ public class AudioBus : MonoBehaviour
         source.Play();
         // Higher pitch makes the clip finish sooner.
         Destroy(soundSource, clip.length / source.pitch);
+    }
+
+    public void PlayOneshotSFX(AudioClip clip, float volume = 1.0f)
+    {
+        if (clip == null) return;
+
+        sfxSource.PlayOneShot(clip, volume);
     }
     
     public void PlayRandomSFX(AudioClip[] clips) {

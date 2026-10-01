@@ -9,6 +9,9 @@ public class KillPlayerOnTrigger : MonoBehaviour
             if (GameManager.Instance.CurrentState == GameState.Playing) 
             {
                 PlayerDeathManager.Instance.KillPlayer();
+            } else
+            {
+                PlayerDeathManager.Instance.ReplayKillPlayer();
             }
         }
     }

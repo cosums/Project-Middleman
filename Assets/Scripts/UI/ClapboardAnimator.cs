@@ -19,23 +19,35 @@ public class ClapboardAnimator : MonoBehaviour
         else { Destroy(gameObject); return; }
         
         DontDestroyOnLoad(gameObject);
+        ClapAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
     public async Awaitable FadeToScene(string scene)
     {
+        Time.timeScale = 0;
+        
         ClapAnimator.SetTrigger("Start Load");
         
-        await Awaitable.WaitForSecondsAsync(TimeToClap);
+        await WaitUnscaled(TimeToClap);
         
-        await Awaitable.WaitForSecondsAsync(TimeAfterClap);
+        await WaitUnscaled(TimeAfterClap);
         
         await SceneManager.LoadSceneAsync(scene);
 
         ClapAnimator.SetTrigger("Finish Load");
 
-        await Awaitable.WaitForSecondsAsync(FlyOutTime);
+        Time.timeScale = 1;
+
+        await WaitUnscaled(FlyOutTime);
 
         GameManager.Instance.FinishLoadingScene();
+    }
+
+    private static async Awaitable WaitUnscaled(float seconds)
+    {
+        float end = Time.realtimeSinceStartup + seconds;
+        while (Time.realtimeSinceStartup < end)
+            await Awaitable.NextFrameAsync();
     }
 
     public void PlayClap()
