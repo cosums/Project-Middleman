@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won, Finished, Cutscene }
-public enum DeathCondition { Death, OutOfFrame }
+public enum ResultCondition { Death, OutOfFrame, Win }
 
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public static event Action<GameState> OnNewState;
     public static event Action OnGameQuit;
 
-    public DeathCondition LastDeathReason;
+    public ResultCondition LastResult;
 
     private bool _loadingScene;
     
@@ -76,10 +76,10 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Paused);
     }
 
-    public void LoseGame(DeathCondition deathReason)
+    public void LoseGame(ResultCondition deathReason)
     {
-        LastDeathReason = deathReason;
-        ChangeState(GameState.Failed);
+        LastResult = deathReason;
+        PlayReplay();
     }
 
     public void ReturnToMenu()
@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
 
     public void WinGame()
     {
+        LastResult = ResultCondition.Win;
         ChangeState(GameState.Won);
         PlayReplay(); // CHANGE THIS LATER
     }
@@ -105,7 +106,7 @@ public class GameManager : MonoBehaviour
     public void FinishReplay()
     {
         ChangeState(GameState.Finished);
-        ClapLoadScene("Menu");
+        ClapLoadScene("Results");
     }
 
     public void ClapLoadScene(string sceneToLoad)
