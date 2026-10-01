@@ -45,7 +45,7 @@ public class PointSystemUI : MonoBehaviour
     #region Points UI
     private void UpdateTotalPointsUI(string source)
     {
-        totalPointsTMP.text = PointSystem.Instance.Points.ToString();
+        totalPointsTMP.text = PointSystem.Points.ToString();
         totalPointsAnimator.SetTrigger("change");
     }
 

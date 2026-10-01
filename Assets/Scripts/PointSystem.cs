@@ -27,7 +27,7 @@ public class PointSystem : MonoBehaviour
     [SerializeField] float comboDuration = 3;
 
     public static PointSystem Instance;
-    public int Points => points;
+    //public static int Points => points;
     public int ComboPoints => comboPoints;
     public float Multiplier => multiplier;
     public IReadOnlyList<(string pointSource, int points)> ComboEntries => comboEntries;
@@ -36,7 +36,7 @@ public class PointSystem : MonoBehaviour
     public Action<string, int, float> OnComboPointsChanged;
     public Action<string> OnPointsChanged;
 
-    private int points = 0;
+    public static int Points = 0;
     private int comboPoints = 0;
     private float multiplier = 1;
     private float maxMultiplier = 5;
@@ -74,6 +74,8 @@ public class PointSystem : MonoBehaviour
 
     private void Start()
     {
+        Points = 0;
+
         OnMultiplierChanged?.Invoke(false);
         OnComboPointsChanged?.Invoke("", 0, 0);
         OnPointsChanged?.Invoke("");
@@ -121,7 +123,7 @@ public class PointSystem : MonoBehaviour
         if (src.value < 0) src.value = 0;
 
         RecalculateMultiplier();
-        OnMultiplierChanged?.Invoke(true);
+        OnMultiplierChanged?.Invoke(insideMult != 0);
 
         // Reset (or start) this source's own delay-before-decay timer
         src.timer = src.delay;
@@ -196,6 +198,12 @@ public class PointSystem : MonoBehaviour
     public void AddToComboScore(int baseScore, string source)
     {
         int pointsToAdd = (int)(baseScore * multiplier);
+        
+        // add to main score
+        Points += pointsToAdd;
+        OnPointsChanged?.Invoke("");
+
+        // combo
         comboPoints += pointsToAdd;
         comboEntries.Add((source, pointsToAdd));
         OnComboPointsChanged?.Invoke(source, pointsToAdd, multiplier);
@@ -214,8 +222,8 @@ public class PointSystem : MonoBehaviour
             yield return null;
         }
         Debug.Log("Combo time ended");
-        points += comboPoints;
-        OnPointsChanged?.Invoke("combo");
+        //Points += comboPoints;
+        //OnPointsChanged?.Invoke("combo");
 
         ClearComboState();
     }
@@ -231,7 +239,7 @@ public class PointSystem : MonoBehaviour
 
     public void AddToTotalScore(int baseScore, string source)
     {
-        points += (int)(baseScore * multiplier);
+        Points += (int)(baseScore * multiplier);
         OnPointsChanged?.Invoke(source);
     }
 
