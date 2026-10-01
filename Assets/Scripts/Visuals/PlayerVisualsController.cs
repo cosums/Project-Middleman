@@ -166,7 +166,7 @@ public class PlayerVisualsController : MonoBehaviour
         }
 
         //Wall Sliding Particles
-        if (isWallSliding)
+        if (isWallSliding && !wallSlideParticle.isPlaying)
         {
             var velocityModule = wallSlideParticle.velocityOverLifetime;
             if (playerController.IsFacingRight())
@@ -177,9 +177,9 @@ public class PlayerVisualsController : MonoBehaviour
             {
                 velocityModule.x = new ParticleSystem.MinMaxCurve(2f, 6f);
             }
-                EnableParticle(wallSlideParticle);
+            EnableParticle(wallSlideParticle);
         }
-        else
+        else if (!isWallSliding && wallSlideParticle.isPlaying)
         {
             DisableParticle(wallSlideParticle);
         }
