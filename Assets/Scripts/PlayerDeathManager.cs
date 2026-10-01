@@ -55,7 +55,7 @@ public class PlayerDeathManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        GameManager.Instance.LoseGame(DeathCondition.Death);
+        GameManager.Instance.LoseGame(ResultCondition.Death);
         AudioBus.Instance.PlaySFX(loseAudio, 1.0f, false);
     }
 

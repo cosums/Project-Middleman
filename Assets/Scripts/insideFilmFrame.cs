@@ -31,6 +31,13 @@ public class InsideFilmFrame : MonoBehaviour
         _playerFilter.useTriggers = true;
 
         countdownUI = Object.FindAnyObjectByType<CountdownUI>(FindObjectsInactive.Include);
+
+        if (GameManager.Instance.CurrentState == GameState.Playing) {
+            //UpdateCountdownUI();
+        } else
+        {
+            countdownUI.gameObject.SetActive(false);
+        }
     } 
 
     private bool IsPlayerOverlapping()
@@ -58,7 +65,7 @@ public class InsideFilmFrame : MonoBehaviour
                 _timeOutside = _totalTime;
                 _hasLost = true;
                 AudioBus.Instance.FadeMusicOut(2.0f);
-                GameManager.Instance.LoseGame(DeathCondition.OutOfFrame);
+                GameManager.Instance.LoseGame(ResultCondition.OutOfFrame);
             }
         }
 
@@ -72,6 +79,8 @@ public class InsideFilmFrame : MonoBehaviour
 
     private void UpdateCountdownUI()
     {
+        if (GameManager.Instance.CurrentState != GameState.Playing) return;
+        
         // Skip the first second so the UI first appears at KillCountDown (3)
         float graceTime = 1f;
         bool showCountdown = _timeOutside >= graceTime;

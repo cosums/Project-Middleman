@@ -2,31 +2,16 @@ using UnityEngine;
 
 public class GameUIManager : MonoBehaviour
 {
-    public GameObject PointUI, DialogueUI, FailUI;
-
-    public void OnEnable()
-    {
-        GameManager.OnNewState += HandleNewState;
-    }
-
-    public void OnDisable()
-    {
-        GameManager.OnNewState -= HandleNewState;
-    }
+    public GameObject PointUI, DialogueUI, ReplayUI;
 
     void Start()
     {
         if (GameManager.Instance.CurrentState != GameState.Playing)
         {
-            gameObject.SetActive(false);
+            PointUI.SetActive(false);
+            DialogueUI.SetActive(false);
+            ReplayUI.SetActive(true);
         }
     }
 
-    public void HandleNewState(GameState state)
-    {
-        if (state == GameState.Failed)
-        {
-            FailUI.SetActive(true);
-        }
-    }
 }
