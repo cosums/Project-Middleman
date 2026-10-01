@@ -24,6 +24,6 @@ public class SceneLoader : MonoBehaviour
 
     private void LoadScene()
     {
-        GameManager.Instance.LoadScene(SceneToLoad);
+        GameManager.Instance.ClapLoadScene(SceneToLoad);
     }
 }

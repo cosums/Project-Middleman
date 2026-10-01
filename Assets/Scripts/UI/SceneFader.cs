@@ -21,6 +21,8 @@ public class SceneFader : MonoBehaviour
 
         await SceneManager.LoadSceneAsync(scene);
 
+        await Awaitable.WaitForSecondsAsync(1f);
+
         await Fade(1f, 0f, SceneTransitionTime / 2f);
     }
 

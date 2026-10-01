@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won, Finished }
+public enum GameState { Menu, Playing, Replaying, Paused, Failed, Won, Finished, Cutscene }
 public enum DeathCondition { Death, OutOfFrame }
 
 public class GameManager : MonoBehaviour
@@ -57,10 +57,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void StartCutscene()
+    {
+        ChangeState(GameState.Cutscene);
+        FadeLoadScene("Cutscene");
+    }
+
     public void StartGame()
     {
         ChangeState(GameState.Playing);
-        LoadScene("Level");
+        ClapLoadScene("Level");
     }
 
     public void Pause()
@@ -76,7 +82,7 @@ public class GameManager : MonoBehaviour
 
     public void ReturnToMenu()
     {
-        LoadScene("Menu");
+        ClapLoadScene("Menu");
         ChangeState(GameState.Menu);
     }
 
@@ -89,16 +95,24 @@ public class GameManager : MonoBehaviour
     public void PlayReplay()
     {
         ChangeState(GameState.Replaying);
-        LoadScene("Level");
+        ClapLoadScene("Level");
     }
 
     public void FinishReplay()
     {
         ChangeState(GameState.Finished);
-        LoadScene("Menu");
+        ClapLoadScene("Menu");
     }
 
-    public void LoadScene(string sceneToLoad)
+    public void ClapLoadScene(string sceneToLoad)
+    {
+        if (SceneFader.Instance != null) {
+            ClapboardToSceneWrapper(sceneToLoad);
+        } 
+        else HardLoadScene(sceneToLoad);
+    }
+
+    public void FadeLoadScene(string sceneToLoad)
     {
         if (SceneFader.Instance != null) {
             FadeToSceneWrapper(sceneToLoad);
@@ -111,6 +125,18 @@ public class GameManager : MonoBehaviour
         try
         {
             await SceneFader.Instance.FadeToScene(sceneToLoad);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Scene transition failed: {e.Message}");
+        }
+    }
+
+    private async void ClapboardToSceneWrapper(string sceneToLoad)
+    {
+        try
+        {
+            await ClapboardAnimator.Instance.FadeToScene(sceneToLoad);
         }
         catch (System.Exception e)
         {
