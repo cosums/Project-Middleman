@@ -57,6 +57,7 @@ public class InsideFilmFrame : MonoBehaviour
             {
                 _timeOutside = _totalTime;
                 _hasLost = true;
+                AudioBus.Instance.FadeMusicOut(2.0f);
                 GameManager.Instance.LoseGame(DeathCondition.OutOfFrame);
             }
         }
