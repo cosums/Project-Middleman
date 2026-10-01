@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.U2D.Animation;
 using System.Collections;
+using Unity.Cinemachine;
 
 [RequireComponent(typeof(PlayerVisualsController))]
 public class PlayerController : MonoBehaviour
@@ -95,6 +96,7 @@ public class PlayerController : MonoBehaviour
     [Header("Pose")]
     public float poseTime = 1f;
     public float poseCooldown = 3f;
+    public float quicktimeTime = 10f;
 
     [Header("Attack")]
     public float attackTime = 0.2f;
@@ -199,6 +201,8 @@ public class PlayerController : MonoBehaviour
     private float _poseTimer;
     private float _poseCooldownTimer = 0f;
     private bool _isPosing;
+    private bool _quicktime = false;
+    private float _quicktimeTimer = 0f;
     
 
     // attack
@@ -211,6 +215,9 @@ public class PlayerController : MonoBehaviour
     // references for replay
     private Vector3 _startingPos;
 
+    //other references
+    private CinemachineImpulseSource _impulseSource;
+
     private void Awake()
     {
         isFacingRight = true;
@@ -218,6 +225,7 @@ public class PlayerController : MonoBehaviour
         playerVisualsController = GetComponent<PlayerVisualsController>();
         _currentMaxWalkSpeed = maxWalkSpeed;
         _absoluteMaxSlideSpeed = maxWalkSpeed * slideSpeedMultiplier;
+        _impulseSource = GetComponent<CinemachineImpulseSource>();
 
         CaptureStart();
     }
@@ -260,7 +268,6 @@ public class PlayerController : MonoBehaviour
         WallSlide();
         WallJump();
         Slide();
-        Pose();
         Attack();
 
         if (AirCheck())
@@ -388,6 +395,11 @@ public class PlayerController : MonoBehaviour
             isFacingRight = false;
             transform.Rotate(0f, -180f, 0f);
         }
+    }
+
+    public bool IsFacingRight()
+    {
+        return isFacingRight;
     }
 
     #endregion
@@ -1075,29 +1087,34 @@ public class PlayerController : MonoBehaviour
         {
             _isPosing = true;
             PointSystem.Instance.AddToComboScore(poseScore, "Strike a Pose!");
-            rb.constraints = RigidbodyConstraints2D.FreezePosition;
+            rb.bodyType = RigidbodyType2D.Static;
             _poseTimer = poseTime;
             AudioBus.Instance.PlaySFX(poseAudio);
             _poseCooldownTimer = poseCooldown;
             if (DialogueManager.Instance.CurrentDialogueHasEvent())
             {
                 print("QUICK TIME");
+                PointSystem.Instance.AddToMultiplier(2.5f, "Pose On Queue!");
+                _quicktime = true;
+                _quicktimeTimer = quicktimeTime;
+                _impulseSource.GenerateImpulse(2.5f);
             }
         }
         else if (_isPosing && _poseTimer <= 0)
         {
             _isPosing = false;
-            rb.constraints = RigidbodyConstraints2D.None;
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            
+        }
+        if (_quicktime && _quicktimeTimer <= 0f)
+        {
+            _quicktime = false;
         }
     }
 
-    public void Pose()
+    public bool IsInQuicktime()
     {
-        if (_isPosing)
-        {
-
-        }
+        return _quicktime;
     }
 
     #endregion
@@ -1185,6 +1202,11 @@ public class PlayerController : MonoBehaviour
         if (_poseTimer > 0f)
         {
             _poseTimer -= Time.deltaTime;
+        }
+
+        if (_quicktimeTimer > 0f)
+        {
+            _quicktimeTimer -= Time.deltaTime;
         }
 
         if (_attackCooldownTimer > 0f)

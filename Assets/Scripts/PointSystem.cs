@@ -17,7 +17,7 @@ public class PointSystem : MonoBehaviour
     [Header("Multiplier Decay Delays")]
     [SerializeField] float airtimeDelay = 0.5f;
     [SerializeField] float slidingDelay = 1f;
-    [SerializeField] float quicktimeDelay = 5f;
+    [SerializeField] float quicktimeDelay = 10f;
     [SerializeField] float insideFrameDelay = 0.25f;
 
     [Header("Audio")]
@@ -100,7 +100,7 @@ public class PointSystem : MonoBehaviour
         {
             case "Air Time!": return airtime;
             case "Sliding!": return sliding;
-            case "Pose on Queue!": return quicktime;
+            case "Pose On Queue!": return quicktime;
             case "In Frame!": return insideFrame;
             default:
                 Debug.LogWarning($"Unknown multiplier source: {source}");

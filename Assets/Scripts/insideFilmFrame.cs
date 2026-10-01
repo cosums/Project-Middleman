@@ -1,49 +1,51 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class InsideFilmFrame : MonoBehaviour
 {
+    public Collider2D Collider;
     public AudioClip playerEntered;
     public float KillCountDown = 3f;
     public float insideFrameMult = 0.01f;
     private bool _hasLost = false;
-    private bool playerInside = false;
     private float _timeOutside = 0;
 
     public TMP_Text CountDownText;
 
     public Color[] CountDownColors = new Color[4];
 
+    
+    private ContactFilter2D _playerFilter;
+    private List<Collider2D> _overlaps = new();
+
     private float _totalTime => KillCountDown + 1;
 
     void Start()
     {
         _timeOutside = 0;
+        Collider = GetComponent<Collider2D>();
+
+        _playerFilter = new ContactFilter2D();
+        _playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
+        _playerFilter.useTriggers = true;
     } 
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private bool IsPlayerOverlapping()
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-            playerInside = true;
-            _timeOutside = 0;
-        }
-    }
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-            playerInside = false;
-        }
+        _overlaps.Clear();
+        Collider.Overlap(_playerFilter, _overlaps);
+        return _overlaps.Count > 0;
     }
 
     void Update()
     {
-        if (_hasLost) return;
+        if (_hasLost || GameManager.Instance.CurrentState != GameState.Playing) return;
 
-        if (playerInside)
+        if (IsPlayerOverlapping())
         {
             PointSystem.Instance.AddToMultiplier(insideFrameMult, "In Frame!");
+            _timeOutside = 0;
         }
         else
         {

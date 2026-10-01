@@ -257,11 +257,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1 &63455117 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5959756460567721599, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
-  m_PrefabInstance: {fileID: 7384047222624101244}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &125977786
 GameObject:
   m_ObjectHideFlags: 0
@@ -3171,8 +3166,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ReplayButton: {fileID: 790861591}
-  Ticker: {fileID: 1929632798}
-  Controller: {fileID: 1107036663}
 --- !u!114 &790861591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4329,6 +4322,11 @@ MonoBehaviour:
   slidingMaxMult: 1.5
   quicktimeMaxMult: 1
   insideFrameMaxMult: 1.5
+  airtimeDelay: 0.5
+  slidingDelay: 1
+  quicktimeDelay: 10
+  insideFrameDelay: 0.25
+  comboAudio: {fileID: 0}
   comboDuration: 3
 --- !u!1001 &1107036662
 PrefabInstance:
@@ -4348,11 +4346,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 720316351468041462, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.17462748
+      value: 0.13392262
       objectReference: {fileID: 0}
     - target: {fileID: 720316351468041462, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.9846346
+      value: 0.99099183
       objectReference: {fileID: 0}
     - target: {fileID: 1315530614480815447, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4372,11 +4370,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2760201860508885682, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9950522
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2760201860508885682, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.09935325
+      value: 0.00000014827435
       objectReference: {fileID: 0}
     - target: {fileID: 3151161701860054660, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4388,11 +4386,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3589585355957675911, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99830025
       objectReference: {fileID: 0}
     - target: {fileID: 3589585355957675911, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000011846422
+      value: 0.05828183
       objectReference: {fileID: 0}
     - target: {fileID: 4390501587430066096, guid: 015a2e36dd38a7243a853e102ffb4383, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7745,6 +7743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FixedTicker
   Player: {fileID: 1107036663}
+  Tester: {fileID: 0}
   LiveProvider: {fileID: 1929632799}
   CurrentTick: 0
   EditorTest: 1
@@ -9198,17 +9197,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 352323991824767430, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9983004
+      objectReference: {fileID: 0}
+    - target: {fileID: 352323991824767430, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.058278807
+      objectReference: {fileID: 0}
     - target: {fileID: 1178621693023751361, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
       propertyPath: m_Name
       value: Sand Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 1787533859383696087, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2968245416819810402, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.00000949949
+      objectReference: {fileID: 0}
+    - target: {fileID: 3371900289563414935, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9973114
+      objectReference: {fileID: 0}
+    - target: {fileID: 3371900289563414935, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.073280334
+      objectReference: {fileID: 0}
+    - target: {fileID: 4046582037421250576, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.00000086426724
+      objectReference: {fileID: 0}
     - target: {fileID: 4947971398943719919, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 33.64
+      value: 33.33
       objectReference: {fileID: 0}
     - target: {fileID: 4947971398943719919, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.15
+      value: -3.41
       objectReference: {fileID: 0}
     - target: {fileID: 4947971398943719919, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9242,33 +9269,43 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6039741796597775677, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.27996626
+      objectReference: {fileID: 0}
+    - target: {fileID: 6039741796597775677, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.9600099
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525967228329239306, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99353915
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525967228329239306, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.113490485
+      objectReference: {fileID: 0}
+    - target: {fileID: 8094274394751889282, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.16050567
+      objectReference: {fileID: 0}
+    - target: {fileID: 8094274394751889282, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.987035
+      objectReference: {fileID: 0}
+    - target: {fileID: 8550087527895858205, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.3023224
+      objectReference: {fileID: 0}
+    - target: {fileID: 8550087527895858205, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.95320576
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5959756460567721599, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7384047222624101246}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
---- !u!61 &7384047222624101245 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 1787533859383696087, guid: 73cf13169555c7248a0d0d7253feff62, type: 3}
-  m_PrefabInstance: {fileID: 7384047222624101244}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7384047222624101246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 63455117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3474f1760dd6957479d1e6f116d17eb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  Collider: {fileID: 7384047222624101245}
-  DeathParticles: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

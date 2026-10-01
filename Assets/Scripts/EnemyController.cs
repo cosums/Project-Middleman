@@ -38,6 +38,7 @@ public class EnemyController : MonoBehaviour
         float step = MoveSpeed * Time.deltaTime;
 
         transform.position = Vector3.MoveTowards(transform.position, Waypoints[_waypointIndex].position, step);
+        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * _dir, transform.localScale.y, transform.localScale.z);
 
         if (transform.position == Waypoints[_waypointIndex].position)
         {
