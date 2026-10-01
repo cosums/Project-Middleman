@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public static event Action OnGameQuit;
 
     public DeathCondition LastDeathReason;
+
+    private bool _loadingScene;
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Autoload()
@@ -106,6 +108,8 @@ public class GameManager : MonoBehaviour
 
     public void ClapLoadScene(string sceneToLoad)
     {
+        if (_loadingScene) return;
+        _loadingScene = true;
         if (SceneFader.Instance != null) {
             ClapboardToSceneWrapper(sceneToLoad);
         } 
@@ -114,6 +118,8 @@ public class GameManager : MonoBehaviour
 
     public void FadeLoadScene(string sceneToLoad)
     {
+        if (_loadingScene) return;
+        _loadingScene = true;
         if (SceneFader.Instance != null) {
             FadeToSceneWrapper(sceneToLoad);
         } 
@@ -144,10 +150,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void FinishLoadingScene()
+    {
+        _loadingScene = false;
+    }
+
     public void HardLoadScene(string sceneToLoad)
     {
         Debug.Log($"Loading scene {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);
+        FinishLoadingScene();
     }
 
     public void QuitGame()

@@ -29,5 +29,7 @@ public class ClapboardAnimator : MonoBehaviour
         ClapAnimator.SetTrigger("Finish Load");
 
         await Awaitable.WaitForSecondsAsync(FlyOutTime);
+
+        GameManager.Instance.FinishLoadingScene();
     }
 }

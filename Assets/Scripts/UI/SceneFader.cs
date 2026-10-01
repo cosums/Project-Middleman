@@ -41,5 +41,6 @@ public class SceneFader : MonoBehaviour
         }
 
         FaderGroup.alpha = endAlpha;
+        GameManager.Instance.FinishLoadingScene();
     }
 }
