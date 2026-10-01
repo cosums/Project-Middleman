@@ -70,6 +70,7 @@ public class InsideFilmFrame : MonoBehaviour
         if (IsPlayerOverlapping())
         {
             inside = true;
+            _timeOutside = 0f;
         }
         else
         {
