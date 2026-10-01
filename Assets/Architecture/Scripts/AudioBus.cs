@@ -65,17 +65,25 @@ public class AudioBus : MonoBehaviour
     {
         if (clip == null) return;
 
+        GameObject soundSource = new GameObject($"SFX_{clip.name}");
+        soundSource.transform.position = transform.position;
+
+        AudioSource source = soundSource.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume = volume;
+        source.loop = false;
         if (pitchRandomization) {
-            sfxSource.pitch = Random.Range(1.0f - pitchRandom, 1.0f + pitchRandom);
+            source.pitch = Random.Range(1.0f - pitchRandom, 1.0f + pitchRandom);
         } else {
-            sfxSource.pitch = 1.0f;
+            source.pitch = 1.0f;
         }
-        
-        sfxSource.PlayOneShot(clip, volume);
+        source.Play();
+        // Higher pitch makes the clip finish sooner.
+        Destroy(soundSource, clip.length / source.pitch);
     }
     
     public void PlayRandomSFX(AudioClip[] clips) {
-        sfxSource.PlayOneShot(clips[Random.Range(0, clips.Length)]);
+        PlaySFX(clips[Random.Range(0, clips.Length)]);
     }
     // Control music volume
     public void SetMusicVolume(float volume = defaultMusicVolume)
