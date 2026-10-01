@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip punchAudio;
     public AudioClip kickAudio;
     public AudioClip poseAudio;
+    public AudioClip quicktimeAudio;
     public AudioClip[] cowboyShouts;
 
     [Header("Walk")]
@@ -1096,6 +1097,8 @@ public class PlayerController : MonoBehaviour
             if (DialogueManager.Instance.CurrentDialogueHasEvent())
             {
                 print("QUICK TIME");
+                AudioBus.Instance.PlaySFX(quicktimeAudio);
+                _poseCooldownTimer = poseCooldown;
                 PointSystem.Instance.AddToMultiplier(2.5f, "Pose On Queue!");
                 _quicktime = true;
                 _quicktimeTimer = quicktimeTime;
