@@ -7,8 +7,15 @@ public class MenuMusic : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AudioBus.Instance.PlayMusic(menuMusic);
+        PlayMenuMusic();
         // AudioBus.Instance.PlaySFX(startupSound, 1.0f, false);
+    }
+
+    public void PlayMenuMusic()
+    {
+        AudioBus.Instance.PlayMusic(menuMusic);
+        AudioBus.Instance.SetMusicVolume();
+
     }
 
     // Update is called once per frame
