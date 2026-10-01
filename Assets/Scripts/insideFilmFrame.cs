@@ -6,12 +6,12 @@ public class InsideFilmFrame : MonoBehaviour
 {
     public Collider2D Collider;
     public AudioClip playerEntered;
-    public float KillCountDown = 3f;
+    public static float KillCountDown = 4f;
     public float insideFrameMult = 0.01f;
     private bool _hasLost = false;
     private float _timeOutside = 0;
 
-    public TMP_Text CountDownText;
+    [SerializeField] CountdownUI countdownUI;
 
     public Color[] CountDownColors = new Color[4];
 
@@ -29,6 +29,8 @@ public class InsideFilmFrame : MonoBehaviour
         _playerFilter = new ContactFilter2D();
         _playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
         _playerFilter.useTriggers = true;
+
+        countdownUI = Object.FindAnyObjectByType<CountdownUI>(FindObjectsInactive.Include);
     } 
 
     private bool IsPlayerOverlapping()
@@ -63,23 +65,26 @@ public class InsideFilmFrame : MonoBehaviour
             UpdateCountdownUI();
         } else
         {
-            CountDownText.gameObject.SetActive(false);
+            countdownUI.gameObject.SetActive(false);
         }
     }
 
     private void UpdateCountdownUI()
     {
-        bool showCountdown = _timeOutside > 0f;
-        CountDownText.gameObject.SetActive(showCountdown);
+        // Skip the first second so the UI first appears at KillCountDown (3)
+        float graceTime = 1f;
+        bool showCountdown = _timeOutside >= graceTime;
+        countdownUI.gameObject.SetActive(showCountdown);
         if (!showCountdown) return;
 
         int displayNumber = Mathf.Max(0, Mathf.FloorToInt(_totalTime - _timeOutside));
-        CountDownText.text = displayNumber.ToString();
+        countdownUI.UpdateCountdownText(displayNumber.ToString());
 
         if (CountDownColors.Length > 0)
         {
-            int colorIndex = Mathf.Clamp(Mathf.FloorToInt(_timeOutside), 0, CountDownColors.Length - 1);
-            CountDownText.color = CountDownColors[colorIndex];
+            // Offset by the grace time so the first color maps to the first visible number
+            int colorIndex = Mathf.Clamp(Mathf.FloorToInt(_timeOutside - graceTime), 0, CountDownColors.Length - 1);
+            countdownUI.UpdateCountdownColor(CountDownColors[colorIndex]);
         }
     }
 }
