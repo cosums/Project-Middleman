@@ -96,4 +96,9 @@ public class ComboEntryUI : MonoBehaviour
         _canvasGroup.alpha = 0f;
         Destroy(gameObject);
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }
