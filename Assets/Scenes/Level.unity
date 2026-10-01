@@ -3502,11 +3502,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1926416060 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5579178199525675002, guid: b5948b1e960687b47b51dd6ee3b2c42f, type: 3}
-  m_PrefabInstance: {fileID: 1149124983}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1929632797
 GameObject:
   m_ObjectHideFlags: 0
@@ -4363,6 +4358,5 @@ SceneRoots:
   - {fileID: 812242267}
   - {fileID: 349216993157012523}
   - {fileID: 1522564836}
-  - {fileID: 1354591112}
   - {fileID: 1792481735}
   - {fileID: 1828416008}
