@@ -484,7 +484,7 @@ public class PlayerController : MonoBehaviour
         if (_groundHit.collider != null)
         {
             _isGrounded = true;
-            _currentGorund = _groundHit.collider.gameObject.GetComponent<Rigidbody2D>();
+            _currentGorund = _groundHit.collider.attachedRigidbody;
         }
         else
         {
