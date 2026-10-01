@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class QuicktimeManager : MonoBehaviour
 {
+    public AudioClip quicktimeMusic;
+
     private DialogueLine line1;
     private DialogueLine line2;
     private DialogueLine line3;
