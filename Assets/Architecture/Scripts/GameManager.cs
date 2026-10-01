@@ -84,8 +84,9 @@ public class GameManager : MonoBehaviour
 
     public void ReturnToMenu()
     {
-        GameObject.Find("LevelMusic").GetComponent<LevelMusic>().PlayLevelAudio();
-        ClapLoadScene("Menu");
+        GameObject music = GameObject.Find("LevelMusic");
+        if (music != null) GetComponent<LevelMusic>().PlayLevelAudio();
+        FadeLoadScene("Menu");
         ChangeState(GameState.Menu);
     }
 

@@ -7,7 +7,6 @@ public class InsideFilmFrame : MonoBehaviour
     public Collider2D Collider;
     public AudioClip playerEntered;
     public static float KillCountDown = 4f;
-    public float insideFrameMult = 0.01f;
     private bool _hasLost = false;
     private float _timeOutside = 0;
 
@@ -20,6 +19,23 @@ public class InsideFilmFrame : MonoBehaviour
     private List<Collider2D> _overlaps = new();
 
     private float _totalTime => KillCountDown + 1;
+
+    public static InsideFilmFrame Instance { get; private set; }
+
+    public bool inside;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -53,11 +69,11 @@ public class InsideFilmFrame : MonoBehaviour
 
         if (IsPlayerOverlapping())
         {
-            PointSystem.Instance.AddToMultiplier(insideFrameMult, "In Frame!");
-            _timeOutside = 0;
+            inside = true;
         }
         else
         {
+            inside = false;
             _timeOutside += Time.deltaTime;
 
             if (_timeOutside >= _totalTime)

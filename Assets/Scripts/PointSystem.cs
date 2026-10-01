@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PointSystem : MonoBehaviour
@@ -12,7 +13,6 @@ public class PointSystem : MonoBehaviour
     [SerializeField] float airtimeMaxMult = 1f;
     [SerializeField] float slidingMaxMult = 1f;
     [SerializeField] float quicktimeMaxMult = 2.5f;
-    [SerializeField] float insideFrameMaxMult = 1.5f;
 
     [Header("Multiplier Decay Delays")]
     [SerializeField] float airtimeDelay = 0.5f;
@@ -41,6 +41,7 @@ public class PointSystem : MonoBehaviour
     private float multiplier = 1;
     private float maxMultiplier = 5;
     private List<(string pointSource, int points)> comboEntries = new List<(string pointSource, int points)>();
+    private float insideMult = 1;
 
     // Timers
     private float comboTimer = 0;
@@ -60,7 +61,6 @@ public class PointSystem : MonoBehaviour
     private MultiplierSource airtime = new MultiplierSource();
     private MultiplierSource sliding = new MultiplierSource();
     private MultiplierSource quicktime = new MultiplierSource();
-    private MultiplierSource insideFrame = new MultiplierSource();
 
     private void Awake()
     {
@@ -87,10 +87,7 @@ public class PointSystem : MonoBehaviour
         quicktime.maxValue = quicktimeMaxMult;
         quicktime.delay = quicktimeDelay;
 
-        insideFrame.maxValue = insideFrameMaxMult;
-        insideFrame.delay = insideFrameDelay;
-
-        maxMultiplier = minMultiplier + airtimeMaxMult + slidingMaxMult + quicktimeMaxMult + insideFrameMaxMult;
+        maxMultiplier = (minMultiplier + airtimeMaxMult + slidingMaxMult + quicktimeMaxMult) * insideMult;
     }
 
     #region Multiplier
@@ -101,7 +98,6 @@ public class PointSystem : MonoBehaviour
             case "Air Time!": return airtime;
             case "Sliding!": return sliding;
             case "Pose On Queue!": return quicktime;
-            case "In Frame!": return insideFrame;
             default:
                 Debug.LogWarning($"Unknown multiplier source: {source}");
                 return null;
@@ -175,7 +171,7 @@ public class PointSystem : MonoBehaviour
 
     private void RecalculateMultiplier()
     {
-        multiplier = minMultiplier + airtime.value + sliding.value + quicktime.value + insideFrame.value;
+        multiplier = (minMultiplier + airtime.value + sliding.value + quicktime.value) * insideMult;
 
         if (multiplier > maxMultiplier) multiplier = maxMultiplier;
         else if (multiplier < minMultiplier) multiplier = minMultiplier;
@@ -183,6 +179,18 @@ public class PointSystem : MonoBehaviour
         multiplier = MathF.Floor(multiplier * 100f) / 100f;
     }
     #endregion
+
+    public void Update()
+    {
+        if (InsideFilmFrame.Instance.inside)
+        {
+            insideMult = 1f;
+        }
+        else
+        {
+            insideMult = 0f;
+        }
+    }
 
     #region Combo Score
     public void AddToComboScore(int baseScore, string source)
