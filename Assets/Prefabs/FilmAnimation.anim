@@ -844,22 +844,22 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 42.55
-    functionName: PlayTrainRunning
+  - time: 40.333332
+    functionName: PlayTrainHorn
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 43.116665
+  - time: 40.366665
     functionName: StartTrain
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 43.533333
-    functionName: PlayTrainHorn
+  - time: 41.533333
+    functionName: PlayTrainRunning
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

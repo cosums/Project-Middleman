@@ -859,7 +859,7 @@ MonoBehaviour:
   groundAcceleration: 5
   groundDeceleration: 20
   airAcceleration: 5
-  airDeceleration: 5
+  airDeceleration: 1
   wallJumpMoveAcceleration: 5
   wallJumpMoveDeceleration: 5
   jumpHeight: 4
