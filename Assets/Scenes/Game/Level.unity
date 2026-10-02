@@ -5277,30 +5277,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 623607342018030794, guid: d1afdef3062c46848abae188a7e14fda, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 935457020974486908, guid: d1afdef3062c46848abae188a7e14fda, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1564013449972410373, guid: d1afdef3062c46848abae188a7e14fda, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1729412382337924865, guid: d1afdef3062c46848abae188a7e14fda, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3444527083825184617, guid: d1afdef3062c46848abae188a7e14fda, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3962097049114835695, guid: d1afdef3062c46848abae188a7e14fda, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6788687624710986506, guid: d1afdef3062c46848abae188a7e14fda, type: 3}
       propertyPath: m_Name
       value: Train
