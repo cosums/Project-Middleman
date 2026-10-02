@@ -887,7 +887,7 @@ MonoBehaviour:
   wallDetectionRayHeightMultiplier: 0.9
   wallSlideSpeed: 5
   wallSlideDecelerationSpeed: 50
-  wallJumpDirection: {x: -15, y: 6.5}
+  wallJumpDirection: {x: -15, y: 8}
   wallJumpPostBufferTime: 0.125
   wallJumpGravityOnReleaseMultiplier: 1
   _feetColl: {fileID: 1799783505468356424}
