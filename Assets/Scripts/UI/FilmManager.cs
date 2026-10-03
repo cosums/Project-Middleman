@@ -4,11 +4,14 @@ using UnityEngine;
 public class FilmManager : MonoBehaviour
 {
     public GameObject FilmCamera;
+    public GameObject MainCamera;
 
     [Header("Audio")]
 
     public AudioClip trainHorn;
     public AudioClip trainRunning;
+    public AudioClip whistle;
+    public ParticleSystem confetti;
     public Train train;
     
     public void Awake()
@@ -23,12 +26,21 @@ public class FilmManager : MonoBehaviour
     {
         if (GameManager.Instance.CurrentState == GameState.Playing)
         {
-            GameManager.Instance.WinGame();
+            DialogueLine line = DialogueManager.Instance.NewDialogueLine("Director", "Cut! That's a wrap!", whistle);
+            DialogueManager.Instance.EnqueueDialogue(line);
+            ParticleSystem confettiParticles = Instantiate(confetti);
+            confetti.transform.position = MainCamera.transform.position;
+            confetti.transform.parent = MainCamera.transform;
         } 
         else if (GameManager.Instance.CurrentState == GameState.Replaying)
         {
             GameManager.Instance.FinishReplay();
         }
+    }
+
+    public void WinState()
+    {
+        GameManager.Instance.WinGame();
     }
 
     public void QuickTimeEvent()
