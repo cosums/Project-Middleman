@@ -34,6 +34,11 @@ public class InsideFilmFrame : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
+        }
+
+        if (GameManager.Instance.CurrentState != GameState.Playing) {
+            gameObject.SetActive(false);
         }
     }
 
