@@ -37,8 +37,9 @@ public class InsideFilmFrame : MonoBehaviour
             return;
         }
 
-        if (GameManager.Instance.CurrentState != GameState.Playing) {
-            gameObject.SetActive(false);
+        if (GameManager.Instance.CurrentState != GameState.Playing)
+        {
+            GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 
