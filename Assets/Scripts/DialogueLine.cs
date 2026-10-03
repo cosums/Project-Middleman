@@ -48,6 +48,15 @@ public class DialogueLine
         this.hasEvent = hasEvent;
     }
 
+    public DialogueLine(string speaker, string contents, float minDuration, AudioClip clip, bool hasEvent)
+    {
+        this.speaker = speaker;
+        this.contents = contents;
+        this.clip = clip;
+        this.minDuration = minDuration;
+        this.hasEvent = hasEvent;
+    }
+
     // How long the line stays active: the clip length if there is a clip, otherwise minDuration.
     public float Duration => clip != null ? clip.length : minDuration;
 }

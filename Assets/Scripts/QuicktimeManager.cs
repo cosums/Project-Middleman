@@ -8,6 +8,7 @@ public class QuicktimeManager : MonoBehaviour
     private DialogueLine line2;
     private DialogueLine line3;
     private DialogueLine line4;
+    public AudioClip whistle;
 
     public static QuicktimeManager Instance { get; private set; }
 
@@ -23,9 +24,9 @@ public class QuicktimeManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        line1 = new DialogueLine("Director", "Strick a pose in 3...", 1f);
-        line2 = new DialogueLine("Director", "Strick a pose in 2...", 1f);
-        line3 = new DialogueLine("Director", "Strick a pose in 1...", 0.5f);
+        line1 = new DialogueLine("Director", "Strick a pose in 3...", 1f, whistle, false);
+        line2 = new DialogueLine("Director", "Strick a pose in 2...", 1f, whistle, false);
+        line3 = new DialogueLine("Director", "Strick a pose in 1...", 0.5f, whistle, false);
         line4 = new DialogueLine("Director", "NOW!", 1f, true);
 
     }

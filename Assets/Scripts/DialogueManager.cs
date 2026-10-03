@@ -64,7 +64,7 @@ public class DialogueManager : MonoBehaviour
                 DialogueDisplay.Instance.ShowDialogue();
             }
             if (line.clip != null)
-                AudioBus.Instance.PlaySFX(line.clip);
+                AudioBus.Instance.PlaySFX(line.clip, 1, false);
 
             float elapsed = 0f;
             while (elapsed < line.Duration && !skipRequested)
