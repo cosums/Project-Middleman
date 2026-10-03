@@ -8,7 +8,7 @@ public class ResultsUI : MonoBehaviour
     [SerializeField] RectTransform parentPanel;
 
     [SerializeField] List<GameObject> resultsEntries = new List<GameObject>();
-
+    [SerializeField] GameObject buttonsParent;
     [SerializeField] TextMeshProUGUI resultTMP;
     [SerializeField] TextMeshProUGUI overallScoreTMP;
     [SerializeField] TextMeshProUGUI highScoreTMP;
@@ -42,7 +42,7 @@ public class ResultsUI : MonoBehaviour
     {
         ToggleEntries(false);
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.25f);
 
         foreach (var entry in resultsEntries)
         {
@@ -50,10 +50,12 @@ public class ResultsUI : MonoBehaviour
 
             AudioBus.Instance.PlaySFX(whipCrackSFX);
 
-            yield return new WaitForSeconds(0.75f);
+            yield return new WaitForSeconds(0.5f);
         }
 
         yield return new WaitForSeconds(0.5f);
+
+        buttonsParent.SetActive(true);
     }
 
     private void ToggleEntries(bool enable)

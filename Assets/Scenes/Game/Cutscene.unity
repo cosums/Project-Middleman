@@ -2269,8 +2269,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ClapAnimator: {fileID: 1276476529}
-  ClapInTime: 4
+  TimeToClap: 0
+  TimeAfterClap: 0
   FlyOutTime: 2
+  ClapboardSFX: {fileID: 0}
 --- !u!114 &1276476531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3178,6 +3180,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5893554752200515891, guid: e9db321ed194c5840890e1601c011f9f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1840604155}
+    - targetCorrespondingSourceObject: {fileID: 5893554752200515891, guid: e9db321ed194c5840890e1601c011f9f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1840604156}
   m_SourcePrefab: {fileID: 100100000, guid: e9db321ed194c5840890e1601c011f9f, type: 3}
 --- !u!224 &1840604152 stripped
 RectTransform:
@@ -3213,6 +3218,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   MenuButton: {fileID: 1840604154}
+--- !u!114 &1840604156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840604153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125cd617e166a844c9b2617fdef6b468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonAudioPlayer
+  hoverSFX: {fileID: 0}
+  clickSFX: {fileID: 0}
 --- !u!1 &2103384068
 GameObject:
   m_ObjectHideFlags: 0

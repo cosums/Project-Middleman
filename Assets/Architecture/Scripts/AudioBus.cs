@@ -6,7 +6,16 @@ public class AudioBus : MonoBehaviour
     const float defaultMusicVolume = 0.5f;
     const float defaultSFXVolume = 1.0f;
     public float pitchRandom = 0.15f;
-    
+
+    // UI Button SFX
+    public static AudioClip DefaultButtonHoverSFX { get; private set; }
+    public static AudioClip DefaultButtonClickSFX { get; private set; }
+
+    void Awake()
+    {
+
+    }
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Autoload()
     {
@@ -14,6 +23,10 @@ public class AudioBus : MonoBehaviour
         autoObj.AddComponent<AudioBus>();
 
         Instance = autoObj.GetComponent<AudioBus>();
+
+        DefaultButtonHoverSFX = Resources.Load<AudioClip>("ButtonHover");
+        DefaultButtonClickSFX = Resources.Load<AudioClip>("ButtonClick");
+
         DontDestroyOnLoad(autoObj);
     }
     
