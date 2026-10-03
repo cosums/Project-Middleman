@@ -144,22 +144,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Locomotive
       objectReference: {fileID: 0}
-    - target: {fileID: 9154600022738365752, guid: 7c3a4255539619a438b742d506b21054, type: 3}
-      propertyPath: m_Size.x
-      value: 1.0961618
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154600022738365752, guid: 7c3a4255539619a438b742d506b21054, type: 3}
-      propertyPath: m_Size.y
-      value: 0.9059669
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154600022738365752, guid: 7c3a4255539619a438b742d506b21054, type: 3}
-      propertyPath: m_Offset.x
-      value: 0.04808104
-      objectReference: {fileID: 0}
-    - target: {fileID: 9154600022738365752, guid: 7c3a4255539619a438b742d506b21054, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.04701656
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
