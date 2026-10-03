@@ -26,10 +26,11 @@ public class FilmManager : MonoBehaviour
     {
         if (GameManager.Instance.CurrentState == GameState.Playing)
         {
+            ParticleSystem confettiParticles = Instantiate(confetti);
+            Vector3 pos = MainCamera.transform.position;
+            confettiParticles.transform.position = new Vector3(pos.x, pos.y - 17, 0);
             DialogueLine line = DialogueManager.Instance.NewDialogueLine("Director", "Cut! That's a wrap!", whistle);
             DialogueManager.Instance.EnqueueDialogue(line);
-            ParticleSystem confettiParticles = Instantiate(confetti);
-            confetti.transform.position = MainCamera.transform.position;
         } 
         else if (GameManager.Instance.CurrentState == GameState.Replaying)
         {
