@@ -28,6 +28,6 @@ public class Parallax : MonoBehaviour
     {
         Vector2 dist = new Vector2((cam.transform.position.x - camStartPos.x),
             (cam.transform.position.y - camStartPos.y)) * effectMultipler;
-        transform.position = new Vector3(objStartPos.x + dist.x, objStartPos.y + dist.y, transform.position.z);
+        transform.position = new Vector3(objStartPos.x + dist.x, objStartPos.y, transform.position.z);
     }
 }
