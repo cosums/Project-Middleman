@@ -30,7 +30,6 @@ public class FilmManager : MonoBehaviour
             DialogueManager.Instance.EnqueueDialogue(line);
             ParticleSystem confettiParticles = Instantiate(confetti);
             confetti.transform.position = MainCamera.transform.position;
-            confetti.transform.parent = MainCamera.transform;
         } 
         else if (GameManager.Instance.CurrentState == GameState.Replaying)
         {
