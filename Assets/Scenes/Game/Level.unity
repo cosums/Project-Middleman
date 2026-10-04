@@ -1755,9 +1755,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5893554752200515891, guid: e9db321ed194c5840890e1601c011f9f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 507703226}
-    - targetCorrespondingSourceObject: {fileID: 5893554752200515891, guid: e9db321ed194c5840890e1601c011f9f, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 507703225}
     - targetCorrespondingSourceObject: {fileID: 5893554752200515891, guid: e9db321ed194c5840890e1601c011f9f, type: 3}
       insertIndex: -1
@@ -1828,19 +1825,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ButtonAudioPlayer
   hoverSFX: {fileID: 0}
   clickSFX: {fileID: 0}
---- !u!114 &507703226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 507703221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96ad1af129def6d498de02aa8ce91168, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuPlayButton
-  MenuButton: {fileID: 507703222}
 --- !u!1 &553282289
 GameObject:
   m_ObjectHideFlags: 0
@@ -121447,11 +121431,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5742204573663695361, guid: 28d1d600b8b29fa4f84b6cff6ba1aaa3, type: 3}
       propertyPath: m_NormalizedViewPortRect.width
-      value: 0.9982175
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5742204573663695361, guid: 28d1d600b8b29fa4f84b6cff6ba1aaa3, type: 3}
       propertyPath: m_NormalizedViewPortRect.height
-      value: 1
+      value: 0.99984723
       objectReference: {fileID: 0}
     - target: {fileID: 5996499494267632632, guid: 28d1d600b8b29fa4f84b6cff6ba1aaa3, type: 3}
       propertyPath: playerController
