@@ -55,7 +55,7 @@ public class FilmManager : MonoBehaviour
 
     public void PlayTrainRunning()
     {
-        AudioBus.Instance.PlaySFX(trainRunning);
+        AudioBus.Instance.PlaySFX(trainRunning, 0.7f);
     }
 
     public void StartTrain()
